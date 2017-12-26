@@ -32,6 +32,10 @@ public class MatchCriteria implements Serializable {
 
     private ZonedDateTimeFilter endDateTime;
 
+    private DoubleFilter pointsForFranchise1;
+
+    private DoubleFilter pointsForFranchise2;
+
     private LongFilter tournamentId;
 
     private LongFilter franchise1Id;
@@ -65,6 +69,22 @@ public class MatchCriteria implements Serializable {
 
     public void setEndDateTime(ZonedDateTimeFilter endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public DoubleFilter getPointsForFranchise1() {
+        return pointsForFranchise1;
+    }
+
+    public void setPointsForFranchise1(DoubleFilter pointsForFranchise1) {
+        this.pointsForFranchise1 = pointsForFranchise1;
+    }
+
+    public DoubleFilter getPointsForFranchise2() {
+        return pointsForFranchise2;
+    }
+
+    public void setPointsForFranchise2(DoubleFilter pointsForFranchise2) {
+        this.pointsForFranchise2 = pointsForFranchise2;
     }
 
     public LongFilter getTournamentId() {
@@ -105,6 +125,8 @@ public class MatchCriteria implements Serializable {
                 (id != null ? "id=" + id + ", " : "") +
                 (startDateTime != null ? "startDateTime=" + startDateTime + ", " : "") +
                 (endDateTime != null ? "endDateTime=" + endDateTime + ", " : "") +
+                (pointsForFranchise1 != null ? "pointsForFranchise1=" + pointsForFranchise1 + ", " : "") +
+                (pointsForFranchise2 != null ? "pointsForFranchise2=" + pointsForFranchise2 + ", " : "") +
                 (tournamentId != null ? "tournamentId=" + tournamentId + ", " : "") +
                 (franchise1Id != null ? "franchise1Id=" + franchise1Id + ", " : "") +
                 (franchise2Id != null ? "franchise2Id=" + franchise2Id + ", " : "") +

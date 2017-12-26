@@ -40,6 +40,14 @@
         {
             "fieldName": "endDateTime",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "pointsForFranchise1",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "pointsForFranchise2",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20171218190035",

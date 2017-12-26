@@ -17,6 +17,8 @@
             },
             "startDateTime": "Start Date Time",
             "endDateTime": "End Date Time",
+            "pointsForFranchise1": "Points For Franchise 1",
+            "pointsForFranchise2": "Points For Franchise 2",
             "tournament": "Tournament",
             "franchise1": "Franchise 1",
             "franchise2": "Franchise 2",

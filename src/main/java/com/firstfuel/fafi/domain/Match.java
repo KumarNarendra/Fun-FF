@@ -29,6 +29,12 @@ public class Match implements Serializable {
     @Column(name = "end_date_time")
     private ZonedDateTime endDateTime;
 
+    @Column(name = "points_for_franchise_1")
+    private Double pointsForFranchise1;
+
+    @Column(name = "points_for_franchise_2")
+    private Double pointsForFranchise2;
+
     @ManyToOne
     private Tournament tournament;
 
@@ -77,6 +83,32 @@ public class Match implements Serializable {
 
     public void setEndDateTime(ZonedDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public Double getPointsForFranchise1() {
+        return pointsForFranchise1;
+    }
+
+    public Match pointsForFranchise1(Double pointsForFranchise1) {
+        this.pointsForFranchise1 = pointsForFranchise1;
+        return this;
+    }
+
+    public void setPointsForFranchise1(Double pointsForFranchise1) {
+        this.pointsForFranchise1 = pointsForFranchise1;
+    }
+
+    public Double getPointsForFranchise2() {
+        return pointsForFranchise2;
+    }
+
+    public Match pointsForFranchise2(Double pointsForFranchise2) {
+        this.pointsForFranchise2 = pointsForFranchise2;
+        return this;
+    }
+
+    public void setPointsForFranchise2(Double pointsForFranchise2) {
+        this.pointsForFranchise2 = pointsForFranchise2;
     }
 
     public Tournament getTournament() {
@@ -158,6 +190,8 @@ public class Match implements Serializable {
             "id=" + getId() +
             ", startDateTime='" + getStartDateTime() + "'" +
             ", endDateTime='" + getEndDateTime() + "'" +
+            ", pointsForFranchise1=" + getPointsForFranchise1() +
+            ", pointsForFranchise2=" + getPointsForFranchise2() +
             "}";
     }
 }

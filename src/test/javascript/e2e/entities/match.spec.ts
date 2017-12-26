@@ -35,6 +35,10 @@ describe('Match e2e test', () => {
         expect(matchDialogPage.getStartDateTimeInput()).toMatch('2001-12-31T02:30');
         matchDialogPage.setEndDateTimeInput(12310020012301);
         expect(matchDialogPage.getEndDateTimeInput()).toMatch('2001-12-31T02:30');
+        matchDialogPage.setPointsForFranchise1Input('5');
+        expect(matchDialogPage.getPointsForFranchise1Input()).toMatch('5');
+        matchDialogPage.setPointsForFranchise2Input('5');
+        expect(matchDialogPage.getPointsForFranchise2Input()).toMatch('5');
         matchDialogPage.tournamentSelectLastOption();
         matchDialogPage.franchise1SelectLastOption();
         matchDialogPage.franchise2SelectLastOption();
@@ -67,6 +71,8 @@ export class MatchDialogPage {
     closeButton = element(by.css('button.close'));
     startDateTimeInput = element(by.css('input#field_startDateTime'));
     endDateTimeInput = element(by.css('input#field_endDateTime'));
+    pointsForFranchise1Input = element(by.css('input#field_pointsForFranchise1'));
+    pointsForFranchise2Input = element(by.css('input#field_pointsForFranchise2'));
     tournamentSelect = element(by.css('select#field_tournament'));
     franchise1Select = element(by.css('select#field_franchise1'));
     franchise2Select = element(by.css('select#field_franchise2'));
@@ -90,6 +96,22 @@ export class MatchDialogPage {
 
     getEndDateTimeInput = function() {
         return this.endDateTimeInput.getAttribute('value');
+    }
+
+    setPointsForFranchise1Input = function(pointsForFranchise1) {
+        this.pointsForFranchise1Input.sendKeys(pointsForFranchise1);
+    }
+
+    getPointsForFranchise1Input = function() {
+        return this.pointsForFranchise1Input.getAttribute('value');
+    }
+
+    setPointsForFranchise2Input = function(pointsForFranchise2) {
+        this.pointsForFranchise2Input.sendKeys(pointsForFranchise2);
+    }
+
+    getPointsForFranchise2Input = function() {
+        return this.pointsForFranchise2Input.getAttribute('value');
     }
 
     tournamentSelectLastOption = function() {

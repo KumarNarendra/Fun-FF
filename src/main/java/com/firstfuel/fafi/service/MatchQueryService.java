@@ -85,6 +85,12 @@ public class MatchQueryService extends QueryService<Match> {
             if (criteria.getEndDateTime() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getEndDateTime(), Match_.endDateTime));
             }
+            if (criteria.getPointsForFranchise1() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPointsForFranchise1(), Match_.pointsForFranchise1));
+            }
+            if (criteria.getPointsForFranchise2() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPointsForFranchise2(), Match_.pointsForFranchise2));
+            }
             if (criteria.getTournamentId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getTournamentId(), Match_.tournament, Tournament_.id));
             }

@@ -24,11 +24,19 @@
                 <a [routerLink]="['/franchise', match.franchise1Id]">{{match.franchise1Name}}</a>
             </div>
         </dd>
+        <dt><span jhiTranslate="fafiApp.match.pointsForFranchise1">Points For Franchise 1</span></dt>
+        <dd>
+            <span>{{match.pointsForFranchise1}}</span>
+        </dd>
         <dt><span jhiTranslate="fafiApp.match.franchise2">Franchise 2</span></dt>
         <dd>
             <div *ngIf="match.franchise2Id">
                 <a [routerLink]="['/franchise', match.franchise2Id]">{{match.franchise2Name}}</a>
             </div>
+        </dd>
+        <dt><span jhiTranslate="fafiApp.match.pointsForFranchise2">Points For Franchise 2</span></dt>
+        <dd>
+            <span>{{match.pointsForFranchise2}}</span>
         </dd>
         <dt><span jhiTranslate="fafiApp.match.winner">Winner</span></dt>
         <dd>

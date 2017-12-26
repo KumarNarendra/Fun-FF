@@ -18,6 +18,10 @@ public class MatchDTO implements Serializable {
 
     private ZonedDateTime endDateTime;
 
+    private Double pointsForFranchise1;
+
+    private Double pointsForFranchise2;
+
     private Long tournamentId;
 
     private Long franchise1Id;
@@ -56,6 +60,22 @@ public class MatchDTO implements Serializable {
 
     public void setEndDateTime(ZonedDateTime endDateTime) {
         this.endDateTime = endDateTime;
+    }
+
+    public Double getPointsForFranchise1() {
+        return pointsForFranchise1;
+    }
+
+    public void setPointsForFranchise1(Double pointsForFranchise1) {
+        this.pointsForFranchise1 = pointsForFranchise1;
+    }
+
+    public Double getPointsForFranchise2() {
+        return pointsForFranchise2;
+    }
+
+    public void setPointsForFranchise2(Double pointsForFranchise2) {
+        this.pointsForFranchise2 = pointsForFranchise2;
     }
 
     public Long getTournamentId() {
@@ -149,6 +169,8 @@ public class MatchDTO implements Serializable {
             "id=" + getId() +
             ", startDateTime='" + getStartDateTime() + "'" +
             ", endDateTime='" + getEndDateTime() + "'" +
+            ", pointsForFranchise1=" + getPointsForFranchise1() +
+            ", pointsForFranchise2=" + getPointsForFranchise2() +
             "}";
     }
 }
