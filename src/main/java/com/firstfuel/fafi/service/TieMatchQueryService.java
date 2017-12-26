@@ -78,6 +78,12 @@ public class TieMatchQueryService extends QueryService<TieMatch> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildSpecification(criteria.getId(), TieMatch_.id));
             }
+            if (criteria.getPointsForTieTeam1() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPointsForTieTeam1(), TieMatch_.pointsForTieTeam1));
+            }
+            if (criteria.getPointsForTieTeam2() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPointsForTieTeam2(), TieMatch_.pointsForTieTeam2));
+            }
             if (criteria.getMatchId() != null) {
                 specification = specification.and(buildReferringEntitySpecification(criteria.getMatchId(), TieMatch_.match, Match_.id));
             }

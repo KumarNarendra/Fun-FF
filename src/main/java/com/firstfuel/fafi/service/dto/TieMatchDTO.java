@@ -13,6 +13,10 @@ public class TieMatchDTO implements Serializable {
 
     private Long id;
 
+    private Double pointsForTieTeam1;
+
+    private Double pointsForTieTeam2;
+
     private Long matchId;
 
     private Long team1Id;
@@ -33,6 +37,22 @@ public class TieMatchDTO implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Double getPointsForTieTeam1() {
+        return pointsForTieTeam1;
+    }
+
+    public void setPointsForTieTeam1(Double pointsForTieTeam1) {
+        this.pointsForTieTeam1 = pointsForTieTeam1;
+    }
+
+    public Double getPointsForTieTeam2() {
+        return pointsForTieTeam2;
+    }
+
+    public void setPointsForTieTeam2(Double pointsForTieTeam2) {
+        this.pointsForTieTeam2 = pointsForTieTeam2;
     }
 
     public Long getMatchId() {
@@ -116,6 +136,8 @@ public class TieMatchDTO implements Serializable {
     public String toString() {
         return "TieMatchDTO{" +
             "id=" + getId() +
+            ", pointsForTieTeam1=" + getPointsForTieTeam1() +
+            ", pointsForTieTeam2=" + getPointsForTieTeam2() +
             "}";
     }
 }

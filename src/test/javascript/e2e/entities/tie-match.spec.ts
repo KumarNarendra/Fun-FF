@@ -31,6 +31,10 @@ describe('TieMatch e2e test', () => {
 
     it('should create and save TieMatches', () => {
         tieMatchComponentsPage.clickOnCreateButton();
+        tieMatchDialogPage.setPointsForTieTeam1Input('5');
+        expect(tieMatchDialogPage.getPointsForTieTeam1Input()).toMatch('5');
+        tieMatchDialogPage.setPointsForTieTeam2Input('5');
+        expect(tieMatchDialogPage.getPointsForTieTeam2Input()).toMatch('5');
         tieMatchDialogPage.matchSelectLastOption();
         tieMatchDialogPage.team1SelectLastOption();
         tieMatchDialogPage.team2SelectLastOption();
@@ -60,12 +64,30 @@ export class TieMatchDialogPage {
     modalTitle = element(by.css('h4#myTieMatchLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
+    pointsForTieTeam1Input = element(by.css('input#field_pointsForTieTeam1'));
+    pointsForTieTeam2Input = element(by.css('input#field_pointsForTieTeam2'));
     matchSelect = element(by.css('select#field_match'));
     team1Select = element(by.css('select#field_team1'));
     team2Select = element(by.css('select#field_team2'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
+    }
+
+    setPointsForTieTeam1Input = function(pointsForTieTeam1) {
+        this.pointsForTieTeam1Input.sendKeys(pointsForTieTeam1);
+    }
+
+    getPointsForTieTeam1Input = function() {
+        return this.pointsForTieTeam1Input.getAttribute('value');
+    }
+
+    setPointsForTieTeam2Input = function(pointsForTieTeam2) {
+        this.pointsForTieTeam2Input.sendKeys(pointsForTieTeam2);
+    }
+
+    getPointsForTieTeam2Input = function() {
+        return this.pointsForTieTeam2Input.getAttribute('value');
     }
 
     matchSelectLastOption = function() {

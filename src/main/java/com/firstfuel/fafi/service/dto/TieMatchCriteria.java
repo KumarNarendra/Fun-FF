@@ -28,6 +28,10 @@ public class TieMatchCriteria implements Serializable {
 
     private LongFilter id;
 
+    private DoubleFilter pointsForTieTeam1;
+
+    private DoubleFilter pointsForTieTeam2;
+
     private LongFilter matchId;
 
     private LongFilter team1Id;
@@ -45,6 +49,22 @@ public class TieMatchCriteria implements Serializable {
 
     public void setId(LongFilter id) {
         this.id = id;
+    }
+
+    public DoubleFilter getPointsForTieTeam1() {
+        return pointsForTieTeam1;
+    }
+
+    public void setPointsForTieTeam1(DoubleFilter pointsForTieTeam1) {
+        this.pointsForTieTeam1 = pointsForTieTeam1;
+    }
+
+    public DoubleFilter getPointsForTieTeam2() {
+        return pointsForTieTeam2;
+    }
+
+    public void setPointsForTieTeam2(DoubleFilter pointsForTieTeam2) {
+        this.pointsForTieTeam2 = pointsForTieTeam2;
     }
 
     public LongFilter getMatchId() {
@@ -83,6 +103,8 @@ public class TieMatchCriteria implements Serializable {
     public String toString() {
         return "TieMatchCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
+                (pointsForTieTeam1 != null ? "pointsForTieTeam1=" + pointsForTieTeam1 + ", " : "") +
+                (pointsForTieTeam2 != null ? "pointsForTieTeam2=" + pointsForTieTeam2 + ", " : "") +
                 (matchId != null ? "matchId=" + matchId + ", " : "") +
                 (team1Id != null ? "team1Id=" + team1Id + ", " : "") +
                 (team2Id != null ? "team2Id=" + team2Id + ", " : "") +

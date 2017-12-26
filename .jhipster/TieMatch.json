@@ -31,7 +31,16 @@
             "otherEntityRelationshipName": "tieMatch"
         }
     ],
-    "fields": [],
+    "fields": [
+        {
+            "fieldName": "pointsForTieTeam1",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "pointsForTieTeam2",
+            "fieldType": "Double"
+        }
+    ],
     "changelogDate": "20171220185648",
     "dto": "mapstruct",
     "service": "serviceImpl",

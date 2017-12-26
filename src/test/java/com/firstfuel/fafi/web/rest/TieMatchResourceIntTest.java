@@ -47,6 +47,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = FafiApp.class)
 public class TieMatchResourceIntTest {
 
+    private static final Double DEFAULT_POINTS_FOR_TIE_TEAM_1 = 1D;
+    private static final Double UPDATED_POINTS_FOR_TIE_TEAM_1 = 2D;
+
+    private static final Double DEFAULT_POINTS_FOR_TIE_TEAM_2 = 1D;
+    private static final Double UPDATED_POINTS_FOR_TIE_TEAM_2 = 2D;
+
     @Autowired
     private TieMatchRepository tieMatchRepository;
 
@@ -93,7 +99,9 @@ public class TieMatchResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static TieMatch createEntity(EntityManager em) {
-        TieMatch tieMatch = new TieMatch();
+        TieMatch tieMatch = new TieMatch()
+            .pointsForTieTeam1(DEFAULT_POINTS_FOR_TIE_TEAM_1)
+            .pointsForTieTeam2(DEFAULT_POINTS_FOR_TIE_TEAM_2);
         return tieMatch;
     }
 
@@ -118,6 +126,8 @@ public class TieMatchResourceIntTest {
         List<TieMatch> tieMatchList = tieMatchRepository.findAll();
         assertThat(tieMatchList).hasSize(databaseSizeBeforeCreate + 1);
         TieMatch testTieMatch = tieMatchList.get(tieMatchList.size() - 1);
+        assertThat(testTieMatch.getPointsForTieTeam1()).isEqualTo(DEFAULT_POINTS_FOR_TIE_TEAM_1);
+        assertThat(testTieMatch.getPointsForTieTeam2()).isEqualTo(DEFAULT_POINTS_FOR_TIE_TEAM_2);
     }
 
     @Test
@@ -150,7 +160,9 @@ public class TieMatchResourceIntTest {
         restTieMatchMockMvc.perform(get("/api/tie-matches?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tieMatch.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tieMatch.getId().intValue())))
+            .andExpect(jsonPath("$.[*].pointsForTieTeam1").value(hasItem(DEFAULT_POINTS_FOR_TIE_TEAM_1.doubleValue())))
+            .andExpect(jsonPath("$.[*].pointsForTieTeam2").value(hasItem(DEFAULT_POINTS_FOR_TIE_TEAM_2.doubleValue())));
     }
 
     @Test
@@ -163,7 +175,87 @@ public class TieMatchResourceIntTest {
         restTieMatchMockMvc.perform(get("/api/tie-matches/{id}", tieMatch.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(tieMatch.getId().intValue()));
+            .andExpect(jsonPath("$.id").value(tieMatch.getId().intValue()))
+            .andExpect(jsonPath("$.pointsForTieTeam1").value(DEFAULT_POINTS_FOR_TIE_TEAM_1.doubleValue()))
+            .andExpect(jsonPath("$.pointsForTieTeam2").value(DEFAULT_POINTS_FOR_TIE_TEAM_2.doubleValue()));
+    }
+
+    @Test
+    @Transactional
+    public void getAllTieMatchesByPointsForTieTeam1IsEqualToSomething() throws Exception {
+        // Initialize the database
+        tieMatchRepository.saveAndFlush(tieMatch);
+
+        // Get all the tieMatchList where pointsForTieTeam1 equals to DEFAULT_POINTS_FOR_TIE_TEAM_1
+        defaultTieMatchShouldBeFound("pointsForTieTeam1.equals=" + DEFAULT_POINTS_FOR_TIE_TEAM_1);
+
+        // Get all the tieMatchList where pointsForTieTeam1 equals to UPDATED_POINTS_FOR_TIE_TEAM_1
+        defaultTieMatchShouldNotBeFound("pointsForTieTeam1.equals=" + UPDATED_POINTS_FOR_TIE_TEAM_1);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTieMatchesByPointsForTieTeam1IsInShouldWork() throws Exception {
+        // Initialize the database
+        tieMatchRepository.saveAndFlush(tieMatch);
+
+        // Get all the tieMatchList where pointsForTieTeam1 in DEFAULT_POINTS_FOR_TIE_TEAM_1 or UPDATED_POINTS_FOR_TIE_TEAM_1
+        defaultTieMatchShouldBeFound("pointsForTieTeam1.in=" + DEFAULT_POINTS_FOR_TIE_TEAM_1 + "," + UPDATED_POINTS_FOR_TIE_TEAM_1);
+
+        // Get all the tieMatchList where pointsForTieTeam1 equals to UPDATED_POINTS_FOR_TIE_TEAM_1
+        defaultTieMatchShouldNotBeFound("pointsForTieTeam1.in=" + UPDATED_POINTS_FOR_TIE_TEAM_1);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTieMatchesByPointsForTieTeam1IsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tieMatchRepository.saveAndFlush(tieMatch);
+
+        // Get all the tieMatchList where pointsForTieTeam1 is not null
+        defaultTieMatchShouldBeFound("pointsForTieTeam1.specified=true");
+
+        // Get all the tieMatchList where pointsForTieTeam1 is null
+        defaultTieMatchShouldNotBeFound("pointsForTieTeam1.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllTieMatchesByPointsForTieTeam2IsEqualToSomething() throws Exception {
+        // Initialize the database
+        tieMatchRepository.saveAndFlush(tieMatch);
+
+        // Get all the tieMatchList where pointsForTieTeam2 equals to DEFAULT_POINTS_FOR_TIE_TEAM_2
+        defaultTieMatchShouldBeFound("pointsForTieTeam2.equals=" + DEFAULT_POINTS_FOR_TIE_TEAM_2);
+
+        // Get all the tieMatchList where pointsForTieTeam2 equals to UPDATED_POINTS_FOR_TIE_TEAM_2
+        defaultTieMatchShouldNotBeFound("pointsForTieTeam2.equals=" + UPDATED_POINTS_FOR_TIE_TEAM_2);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTieMatchesByPointsForTieTeam2IsInShouldWork() throws Exception {
+        // Initialize the database
+        tieMatchRepository.saveAndFlush(tieMatch);
+
+        // Get all the tieMatchList where pointsForTieTeam2 in DEFAULT_POINTS_FOR_TIE_TEAM_2 or UPDATED_POINTS_FOR_TIE_TEAM_2
+        defaultTieMatchShouldBeFound("pointsForTieTeam2.in=" + DEFAULT_POINTS_FOR_TIE_TEAM_2 + "," + UPDATED_POINTS_FOR_TIE_TEAM_2);
+
+        // Get all the tieMatchList where pointsForTieTeam2 equals to UPDATED_POINTS_FOR_TIE_TEAM_2
+        defaultTieMatchShouldNotBeFound("pointsForTieTeam2.in=" + UPDATED_POINTS_FOR_TIE_TEAM_2);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTieMatchesByPointsForTieTeam2IsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tieMatchRepository.saveAndFlush(tieMatch);
+
+        // Get all the tieMatchList where pointsForTieTeam2 is not null
+        defaultTieMatchShouldBeFound("pointsForTieTeam2.specified=true");
+
+        // Get all the tieMatchList where pointsForTieTeam2 is null
+        defaultTieMatchShouldNotBeFound("pointsForTieTeam2.specified=false");
     }
 
     @Test
@@ -231,7 +323,7 @@ public class TieMatchResourceIntTest {
         em.persist(winner);
         em.flush();
         tieMatch.setWinner(winner);
-        winner.setTieMatch(tieMatch);
+        //winner.setTieMatch(tieMatch);
         tieMatchRepository.saveAndFlush(tieMatch);
         Long winnerId = winner.getId();
 
@@ -249,7 +341,9 @@ public class TieMatchResourceIntTest {
         restTieMatchMockMvc.perform(get("/api/tie-matches?sort=id,desc&" + filter))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tieMatch.getId().intValue())));
+            .andExpect(jsonPath("$.[*].id").value(hasItem(tieMatch.getId().intValue())))
+            .andExpect(jsonPath("$.[*].pointsForTieTeam1").value(hasItem(DEFAULT_POINTS_FOR_TIE_TEAM_1.doubleValue())))
+            .andExpect(jsonPath("$.[*].pointsForTieTeam2").value(hasItem(DEFAULT_POINTS_FOR_TIE_TEAM_2.doubleValue())));
     }
 
     /**
@@ -283,6 +377,9 @@ public class TieMatchResourceIntTest {
         TieMatch updatedTieMatch = tieMatchRepository.findOne(tieMatch.getId());
         // Disconnect from session so that the updates on updatedTieMatch are not directly saved in db
         em.detach(updatedTieMatch);
+        updatedTieMatch
+            .pointsForTieTeam1(UPDATED_POINTS_FOR_TIE_TEAM_1)
+            .pointsForTieTeam2(UPDATED_POINTS_FOR_TIE_TEAM_2);
         TieMatchDTO tieMatchDTO = tieMatchMapper.toDto(updatedTieMatch);
 
         restTieMatchMockMvc.perform(put("/api/tie-matches")
@@ -294,6 +391,8 @@ public class TieMatchResourceIntTest {
         List<TieMatch> tieMatchList = tieMatchRepository.findAll();
         assertThat(tieMatchList).hasSize(databaseSizeBeforeUpdate);
         TieMatch testTieMatch = tieMatchList.get(tieMatchList.size() - 1);
+        assertThat(testTieMatch.getPointsForTieTeam1()).isEqualTo(UPDATED_POINTS_FOR_TIE_TEAM_1);
+        assertThat(testTieMatch.getPointsForTieTeam2()).isEqualTo(UPDATED_POINTS_FOR_TIE_TEAM_2);
     }
 
     @Test

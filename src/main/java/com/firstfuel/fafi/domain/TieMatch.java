@@ -23,6 +23,12 @@ public class TieMatch implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "points_for_tie_team_1")
+    private Double pointsForTieTeam1;
+
+    @Column(name = "points_for_tie_team_2")
+    private Double pointsForTieTeam2;
+
     @ManyToOne
     private Match match;
 
@@ -45,6 +51,32 @@ public class TieMatch implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Double getPointsForTieTeam1() {
+        return pointsForTieTeam1;
+    }
+
+    public TieMatch pointsForTieTeam1(Double pointsForTieTeam1) {
+        this.pointsForTieTeam1 = pointsForTieTeam1;
+        return this;
+    }
+
+    public void setPointsForTieTeam1(Double pointsForTieTeam1) {
+        this.pointsForTieTeam1 = pointsForTieTeam1;
+    }
+
+    public Double getPointsForTieTeam2() {
+        return pointsForTieTeam2;
+    }
+
+    public TieMatch pointsForTieTeam2(Double pointsForTieTeam2) {
+        this.pointsForTieTeam2 = pointsForTieTeam2;
+        return this;
+    }
+
+    public void setPointsForTieTeam2(Double pointsForTieTeam2) {
+        this.pointsForTieTeam2 = pointsForTieTeam2;
     }
 
     public Match getMatch() {
@@ -124,6 +156,8 @@ public class TieMatch implements Serializable {
     public String toString() {
         return "TieMatch{" +
             "id=" + getId() +
+            ", pointsForTieTeam1=" + getPointsForTieTeam1() +
+            ", pointsForTieTeam2=" + getPointsForTieTeam2() +
             "}";
     }
 }
