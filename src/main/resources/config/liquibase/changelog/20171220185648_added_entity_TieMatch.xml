@@ -35,12 +35,16 @@
             </column>
             <column name="team1_id" type="bigint">
                 <constraints unique="true" nullable="true" />
-            </column>            <column name="team2_id" type="bigint">
+            </column>
+            <column name="team2_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
+            <column name="winner_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
