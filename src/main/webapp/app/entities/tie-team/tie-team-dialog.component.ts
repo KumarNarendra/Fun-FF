@@ -23,7 +23,7 @@ export class TieTeamDialogComponent implements OnInit {
     isSaving: boolean;
 
     players: Player[];
-
+    franchise: Franchise;
     franchises: Franchise[];
 
     constructor(
@@ -50,6 +50,11 @@ export class TieTeamDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.tieTeam.name = '';
+        this.tieTeam.franchiseId = this.franchise.id;
+        this.tieTeam.name = this.tieTeam.name.concat(this.franchise.name).concat('-');
+        this.tieTeam.tiePlayers.forEach((value) => this.tieTeam.name = this.tieTeam.name.concat(',').concat(value.name));
+console.log('name = ', this.tieTeam.name);
         if (this.tieTeam.id !== undefined) {
             this.subscribeToSaveResponse(
                 this.tieTeamService.update(this.tieTeam));

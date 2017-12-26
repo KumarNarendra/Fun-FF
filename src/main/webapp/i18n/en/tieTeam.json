@@ -15,6 +15,7 @@
             "detail": {
                 "title": "Tie Team"
             },
+            "name": "Name",
             "points": "Points",
             "tiePlayers": "Tie Players",
             "franchise": "Franchise"

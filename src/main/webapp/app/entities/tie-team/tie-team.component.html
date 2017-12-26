@@ -17,6 +17,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
                 <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+                <th><span jhiTranslate="fafiApp.tieTeam.name">Name</span></th>
                 <th jhiSortBy="franchiseId"><span jhiTranslate="fafiApp.tieTeam.franchise">Franchise</span> <span class="fa fa-sort"></span></th>
                 <th><span jhiTranslate="fafiApp.tieTeam.tiePlayers">Tie Players</span></th>
                 <th jhiSortBy="points"><span jhiTranslate="fafiApp.tieTeam.points">Points</span> <span class="fa fa-sort"></span></th>
@@ -26,6 +27,7 @@
             <tbody>
             <tr *ngFor="let tieTeam of tieTeams ;trackBy: trackId">
                 <td><a [routerLink]="['../tie-team', tieTeam.id ]">{{tieTeam.id}}</a></td>
+                <td>{{tieTeam.name}}</td>
                 <td>
                     <div *ngIf="tieTeam.franchiseId">
                         <a [routerLink]="['../franchise', tieTeam.franchiseId  ]" >{{tieTeam.franchiseName}}</a>
