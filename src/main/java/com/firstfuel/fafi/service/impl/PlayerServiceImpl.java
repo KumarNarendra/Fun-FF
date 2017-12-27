@@ -1,16 +1,18 @@
 package com.firstfuel.fafi.service.impl;
 
-import com.firstfuel.fafi.service.PlayerService;
-import com.firstfuel.fafi.domain.Player;
-import com.firstfuel.fafi.repository.PlayerRepository;
-import com.firstfuel.fafi.service.dto.PlayerDTO;
-import com.firstfuel.fafi.service.mapper.PlayerMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.firstfuel.fafi.domain.Player;
+import com.firstfuel.fafi.repository.PlayerRepository;
+import com.firstfuel.fafi.service.PlayerService;
+import com.firstfuel.fafi.service.dto.PlayerDTO;
+import com.firstfuel.fafi.service.mapper.PlayerMapper;
 
 
 /**
@@ -18,18 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class PlayerServiceImpl implements PlayerService{
+public class PlayerServiceImpl
+    implements PlayerService {
 
-    private final Logger log = LoggerFactory.getLogger(PlayerServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger( PlayerServiceImpl.class );
 
-    private final PlayerRepository playerRepository;
+    @Autowired
+    private PlayerRepository playerRepository;
 
-    private final PlayerMapper playerMapper;
+    @Autowired
+    private PlayerMapper playerMapper;
 
-    public PlayerServiceImpl(PlayerRepository playerRepository, PlayerMapper playerMapper) {
-        this.playerRepository = playerRepository;
-        this.playerMapper = playerMapper;
-    }
 
     /**
      * Save a player.
@@ -38,11 +39,11 @@ public class PlayerServiceImpl implements PlayerService{
      * @return the persisted entity
      */
     @Override
-    public PlayerDTO save(PlayerDTO playerDTO) {
-        log.debug("Request to save Player : {}", playerDTO);
-        Player player = playerMapper.toEntity(playerDTO);
-        player = playerRepository.save(player);
-        return playerMapper.toDto(player);
+    public PlayerDTO save( PlayerDTO playerDTO ) {
+        log.debug( "Request to save Player : {}", playerDTO );
+        Player player = playerMapper.toEntity( playerDTO );
+        player = playerRepository.save( player );
+        return playerMapper.toDto( player );
     }
 
     /**
@@ -53,10 +54,9 @@ public class PlayerServiceImpl implements PlayerService{
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<PlayerDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Players");
-        return playerRepository.findAll(pageable)
-            .map(playerMapper::toDto);
+    public Page<PlayerDTO> findAll( Pageable pageable ) {
+        log.debug( "Request to get all Players" );
+        return playerRepository.findAll( pageable ).map( playerMapper::toDto );
     }
 
     /**
@@ -67,10 +67,10 @@ public class PlayerServiceImpl implements PlayerService{
      */
     @Override
     @Transactional(readOnly = true)
-    public PlayerDTO findOne(Long id) {
-        log.debug("Request to get Player : {}", id);
-        Player player = playerRepository.findOne(id);
-        return playerMapper.toDto(player);
+    public PlayerDTO findOne( Long id ) {
+        log.debug( "Request to get Player : {}", id );
+        Player player = playerRepository.findOne( id );
+        return playerMapper.toDto( player );
     }
 
     /**
@@ -79,8 +79,8 @@ public class PlayerServiceImpl implements PlayerService{
      * @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Player : {}", id);
-        playerRepository.delete(id);
+    public void delete( Long id ) {
+        log.debug( "Request to delete Player : {}", id );
+        playerRepository.delete( id );
     }
 }

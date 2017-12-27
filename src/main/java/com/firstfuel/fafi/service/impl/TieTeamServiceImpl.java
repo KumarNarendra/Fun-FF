@@ -1,16 +1,18 @@
 package com.firstfuel.fafi.service.impl;
 
-import com.firstfuel.fafi.service.TieTeamService;
-import com.firstfuel.fafi.domain.TieTeam;
-import com.firstfuel.fafi.repository.TieTeamRepository;
-import com.firstfuel.fafi.service.dto.TieTeamDTO;
-import com.firstfuel.fafi.service.mapper.TieTeamMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.firstfuel.fafi.domain.TieTeam;
+import com.firstfuel.fafi.repository.TieTeamRepository;
+import com.firstfuel.fafi.service.TieTeamService;
+import com.firstfuel.fafi.service.dto.TieTeamDTO;
+import com.firstfuel.fafi.service.mapper.TieTeamMapper;
 
 
 /**
@@ -18,18 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class TieTeamServiceImpl implements TieTeamService{
+public class TieTeamServiceImpl
+    implements TieTeamService {
 
-    private final Logger log = LoggerFactory.getLogger(TieTeamServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger( TieTeamServiceImpl.class );
 
-    private final TieTeamRepository tieTeamRepository;
+    @Autowired
+    private TieTeamRepository tieTeamRepository;
 
-    private final TieTeamMapper tieTeamMapper;
+    @Autowired
+    private TieTeamMapper tieTeamMapper;
 
-    public TieTeamServiceImpl(TieTeamRepository tieTeamRepository, TieTeamMapper tieTeamMapper) {
-        this.tieTeamRepository = tieTeamRepository;
-        this.tieTeamMapper = tieTeamMapper;
-    }
 
     /**
      * Save a tieTeam.
@@ -38,11 +39,11 @@ public class TieTeamServiceImpl implements TieTeamService{
      * @return the persisted entity
      */
     @Override
-    public TieTeamDTO save(TieTeamDTO tieTeamDTO) {
-        log.debug("Request to save TieTeam : {}", tieTeamDTO);
-        TieTeam tieTeam = tieTeamMapper.toEntity(tieTeamDTO);
-        tieTeam = tieTeamRepository.save(tieTeam);
-        return tieTeamMapper.toDto(tieTeam);
+    public TieTeamDTO save( TieTeamDTO tieTeamDTO ) {
+        log.debug( "Request to save TieTeam : {}", tieTeamDTO );
+        TieTeam tieTeam = tieTeamMapper.toEntity( tieTeamDTO );
+        tieTeam = tieTeamRepository.save( tieTeam );
+        return tieTeamMapper.toDto( tieTeam );
     }
 
     /**
@@ -53,10 +54,9 @@ public class TieTeamServiceImpl implements TieTeamService{
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<TieTeamDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all TieTeams");
-        return tieTeamRepository.findAll(pageable)
-            .map(tieTeamMapper::toDto);
+    public Page<TieTeamDTO> findAll( Pageable pageable ) {
+        log.debug( "Request to get all TieTeams" );
+        return tieTeamRepository.findAll( pageable ).map( tieTeamMapper::toDto );
     }
 
     /**
@@ -67,10 +67,10 @@ public class TieTeamServiceImpl implements TieTeamService{
      */
     @Override
     @Transactional(readOnly = true)
-    public TieTeamDTO findOne(Long id) {
-        log.debug("Request to get TieTeam : {}", id);
-        TieTeam tieTeam = tieTeamRepository.findOneWithEagerRelationships(id);
-        return tieTeamMapper.toDto(tieTeam);
+    public TieTeamDTO findOne( Long id ) {
+        log.debug( "Request to get TieTeam : {}", id );
+        TieTeam tieTeam = tieTeamRepository.findOneWithEagerRelationships( id );
+        return tieTeamMapper.toDto( tieTeam );
     }
 
     /**
@@ -79,8 +79,8 @@ public class TieTeamServiceImpl implements TieTeamService{
      * @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
-        log.debug("Request to delete TieTeam : {}", id);
-        tieTeamRepository.delete(id);
+    public void delete( Long id ) {
+        log.debug( "Request to delete TieTeam : {}", id );
+        tieTeamRepository.delete( id );
     }
 }

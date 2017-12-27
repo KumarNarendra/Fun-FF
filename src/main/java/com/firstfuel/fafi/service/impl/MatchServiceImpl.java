@@ -1,16 +1,18 @@
 package com.firstfuel.fafi.service.impl;
 
-import com.firstfuel.fafi.service.MatchService;
-import com.firstfuel.fafi.domain.Match;
-import com.firstfuel.fafi.repository.MatchRepository;
-import com.firstfuel.fafi.service.dto.MatchDTO;
-import com.firstfuel.fafi.service.mapper.MatchMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.firstfuel.fafi.domain.Match;
+import com.firstfuel.fafi.repository.MatchRepository;
+import com.firstfuel.fafi.service.MatchService;
+import com.firstfuel.fafi.service.dto.MatchDTO;
+import com.firstfuel.fafi.service.mapper.MatchMapper;
 
 
 /**
@@ -18,18 +20,17 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class MatchServiceImpl implements MatchService{
+public class MatchServiceImpl
+    implements MatchService {
 
-    private final Logger log = LoggerFactory.getLogger(MatchServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger( MatchServiceImpl.class );
 
-    private final MatchRepository matchRepository;
+    @Autowired
+    private MatchRepository matchRepository;
 
-    private final MatchMapper matchMapper;
+    @Autowired
+    private MatchMapper matchMapper;
 
-    public MatchServiceImpl(MatchRepository matchRepository, MatchMapper matchMapper) {
-        this.matchRepository = matchRepository;
-        this.matchMapper = matchMapper;
-    }
 
     /**
      * Save a match.
@@ -38,11 +39,11 @@ public class MatchServiceImpl implements MatchService{
      * @return the persisted entity
      */
     @Override
-    public MatchDTO save(MatchDTO matchDTO) {
-        log.debug("Request to save Match : {}", matchDTO);
-        Match match = matchMapper.toEntity(matchDTO);
-        match = matchRepository.save(match);
-        return matchMapper.toDto(match);
+    public MatchDTO save( MatchDTO matchDTO ) {
+        log.debug( "Request to save Match : {}", matchDTO );
+        Match match = matchMapper.toEntity( matchDTO );
+        match = matchRepository.save( match );
+        return matchMapper.toDto( match );
     }
 
     /**
@@ -53,10 +54,9 @@ public class MatchServiceImpl implements MatchService{
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<MatchDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Matches");
-        return matchRepository.findAll(pageable)
-            .map(matchMapper::toDto);
+    public Page<MatchDTO> findAll( Pageable pageable ) {
+        log.debug( "Request to get all Matches" );
+        return matchRepository.findAll( pageable ).map( matchMapper::toDto );
     }
 
     /**
@@ -67,10 +67,10 @@ public class MatchServiceImpl implements MatchService{
      */
     @Override
     @Transactional(readOnly = true)
-    public MatchDTO findOne(Long id) {
-        log.debug("Request to get Match : {}", id);
-        Match match = matchRepository.findOne(id);
-        return matchMapper.toDto(match);
+    public MatchDTO findOne( Long id ) {
+        log.debug( "Request to get Match : {}", id );
+        Match match = matchRepository.findOne( id );
+        return matchMapper.toDto( match );
     }
 
     /**
@@ -79,8 +79,8 @@ public class MatchServiceImpl implements MatchService{
      * @param id the id of the entity
      */
     @Override
-    public void delete(Long id) {
-        log.debug("Request to delete Match : {}", id);
-        matchRepository.delete(id);
+    public void delete( Long id ) {
+        log.debug( "Request to delete Match : {}", id );
+        matchRepository.delete( id );
     }
 }

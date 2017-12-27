@@ -1,28 +1,38 @@
 package com.firstfuel.fafi.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.firstfuel.fafi.service.MatchService;
-import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
-import com.firstfuel.fafi.web.rest.util.HeaderUtil;
-import com.firstfuel.fafi.web.rest.util.PaginationUtil;
-import com.firstfuel.fafi.service.dto.MatchDTO;
-import com.firstfuel.fafi.service.dto.MatchCriteria;
-import com.firstfuel.fafi.service.MatchQueryService;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import com.firstfuel.fafi.service.MatchQueryService;
+import com.firstfuel.fafi.service.MatchService;
+import com.firstfuel.fafi.service.dto.MatchCriteria;
+import com.firstfuel.fafi.service.dto.MatchDTO;
+import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
+import com.firstfuel.fafi.web.rest.util.HeaderUtil;
+import com.firstfuel.fafi.web.rest.util.PaginationUtil;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Match.
@@ -31,18 +41,15 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class MatchResource {
 
-    private final Logger log = LoggerFactory.getLogger(MatchResource.class);
+    private final Logger log = LoggerFactory.getLogger( MatchResource.class );
 
     private static final String ENTITY_NAME = "match";
 
-    private final MatchService matchService;
+    @Autowired
+    private MatchService matchService;
 
-    private final MatchQueryService matchQueryService;
-
-    public MatchResource(MatchService matchService, MatchQueryService matchQueryService) {
-        this.matchService = matchService;
-        this.matchQueryService = matchQueryService;
-    }
+    @Autowired
+    private MatchQueryService matchQueryService;
 
     /**
      * POST  /matches : Create a new match.
@@ -53,15 +60,16 @@ public class MatchResource {
      */
     @PostMapping("/matches")
     @Timed
-    public ResponseEntity<MatchDTO> createMatch(@RequestBody MatchDTO matchDTO) throws URISyntaxException {
-        log.debug("REST request to save Match : {}", matchDTO);
-        if (matchDTO.getId() != null) {
-            throw new BadRequestAlertException("A new match cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<MatchDTO> createMatch( @RequestBody MatchDTO matchDTO )
+        throws URISyntaxException {
+        log.debug( "REST request to save Match : {}", matchDTO );
+        if ( matchDTO.getId() != null ) {
+            throw new BadRequestAlertException( "A new match cannot already have an ID", ENTITY_NAME, "idexists" );
         }
-        MatchDTO result = matchService.save(matchDTO);
-        return ResponseEntity.created(new URI("/api/matches/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        MatchDTO result = matchService.save( matchDTO );
+        return ResponseEntity.created( new URI( "/api/matches/" + result.getId() ) )
+            .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
+            .body( result );
     }
 
     /**
@@ -75,15 +83,14 @@ public class MatchResource {
      */
     @PutMapping("/matches")
     @Timed
-    public ResponseEntity<MatchDTO> updateMatch(@RequestBody MatchDTO matchDTO) throws URISyntaxException {
-        log.debug("REST request to update Match : {}", matchDTO);
-        if (matchDTO.getId() == null) {
-            return createMatch(matchDTO);
+    public ResponseEntity<MatchDTO> updateMatch( @RequestBody MatchDTO matchDTO )
+        throws URISyntaxException {
+        log.debug( "REST request to update Match : {}", matchDTO );
+        if ( matchDTO.getId() == null ) {
+            return createMatch( matchDTO );
         }
-        MatchDTO result = matchService.save(matchDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, matchDTO.getId().toString()))
-            .body(result);
+        MatchDTO result = matchService.save( matchDTO );
+        return ResponseEntity.ok().headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, matchDTO.getId().toString() ) ).body( result );
     }
 
     /**
@@ -95,11 +102,11 @@ public class MatchResource {
      */
     @GetMapping("/matches")
     @Timed
-    public ResponseEntity<List<MatchDTO>> getAllMatches(MatchCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Matches by criteria: {}", criteria);
-        Page<MatchDTO> page = matchQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/matches");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<MatchDTO>> getAllMatches( MatchCriteria criteria, Pageable pageable ) {
+        log.debug( "REST request to get Matches by criteria: {}", criteria );
+        Page<MatchDTO> page = matchQueryService.findByCriteria( criteria, pageable );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders( page, "/api/matches" );
+        return new ResponseEntity<>( page.getContent(), headers, HttpStatus.OK );
     }
 
     /**
@@ -110,10 +117,10 @@ public class MatchResource {
      */
     @GetMapping("/matches/{id}")
     @Timed
-    public ResponseEntity<MatchDTO> getMatch(@PathVariable Long id) {
-        log.debug("REST request to get Match : {}", id);
-        MatchDTO matchDTO = matchService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(matchDTO));
+    public ResponseEntity<MatchDTO> getMatch( @PathVariable Long id ) {
+        log.debug( "REST request to get Match : {}", id );
+        MatchDTO matchDTO = matchService.findOne( id );
+        return ResponseUtil.wrapOrNotFound( Optional.ofNullable( matchDTO ) );
     }
 
     /**
@@ -124,9 +131,9 @@ public class MatchResource {
      */
     @DeleteMapping("/matches/{id}")
     @Timed
-    public ResponseEntity<Void> deleteMatch(@PathVariable Long id) {
-        log.debug("REST request to delete Match : {}", id);
-        matchService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    public ResponseEntity<Void> deleteMatch( @PathVariable Long id ) {
+        log.debug( "REST request to delete Match : {}", id );
+        matchService.delete( id );
+        return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) ).build();
     }
 }

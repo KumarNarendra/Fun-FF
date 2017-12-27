@@ -1,29 +1,38 @@
 package com.firstfuel.fafi.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.firstfuel.fafi.service.TieMatchService;
-import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
-import com.firstfuel.fafi.web.rest.util.HeaderUtil;
-import com.firstfuel.fafi.web.rest.util.PaginationUtil;
-import com.firstfuel.fafi.service.dto.TieMatchDTO;
-import com.firstfuel.fafi.service.dto.TieMatchCriteria;
-import com.firstfuel.fafi.service.TieMatchQueryService;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.StreamSupport;
+import com.firstfuel.fafi.service.TieMatchQueryService;
+import com.firstfuel.fafi.service.TieMatchService;
+import com.firstfuel.fafi.service.dto.TieMatchCriteria;
+import com.firstfuel.fafi.service.dto.TieMatchDTO;
+import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
+import com.firstfuel.fafi.web.rest.util.HeaderUtil;
+import com.firstfuel.fafi.web.rest.util.PaginationUtil;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing TieMatch.
@@ -32,18 +41,16 @@ import java.util.stream.StreamSupport;
 @RequestMapping("/api")
 public class TieMatchResource {
 
-    private final Logger log = LoggerFactory.getLogger(TieMatchResource.class);
+    private final Logger log = LoggerFactory.getLogger( TieMatchResource.class );
 
     private static final String ENTITY_NAME = "tieMatch";
 
-    private final TieMatchService tieMatchService;
+    @Autowired
+    private TieMatchService tieMatchService;
 
-    private final TieMatchQueryService tieMatchQueryService;
+    @Autowired
+    private TieMatchQueryService tieMatchQueryService;
 
-    public TieMatchResource(TieMatchService tieMatchService, TieMatchQueryService tieMatchQueryService) {
-        this.tieMatchService = tieMatchService;
-        this.tieMatchQueryService = tieMatchQueryService;
-    }
 
     /**
      * POST  /tie-matches : Create a new tieMatch.
@@ -54,15 +61,16 @@ public class TieMatchResource {
      */
     @PostMapping("/tie-matches")
     @Timed
-    public ResponseEntity<TieMatchDTO> createTieMatch(@RequestBody TieMatchDTO tieMatchDTO) throws URISyntaxException {
-        log.debug("REST request to save TieMatch : {}", tieMatchDTO);
-        if (tieMatchDTO.getId() != null) {
-            throw new BadRequestAlertException("A new tieMatch cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<TieMatchDTO> createTieMatch( @RequestBody TieMatchDTO tieMatchDTO )
+        throws URISyntaxException {
+        log.debug( "REST request to save TieMatch : {}", tieMatchDTO );
+        if ( tieMatchDTO.getId() != null ) {
+            throw new BadRequestAlertException( "A new tieMatch cannot already have an ID", ENTITY_NAME, "idexists" );
         }
-        TieMatchDTO result = tieMatchService.save(tieMatchDTO);
-        return ResponseEntity.created(new URI("/api/tie-matches/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        TieMatchDTO result = tieMatchService.save( tieMatchDTO );
+        return ResponseEntity.created( new URI( "/api/tie-matches/" + result.getId() ) )
+            .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
+            .body( result );
     }
 
     /**
@@ -76,15 +84,14 @@ public class TieMatchResource {
      */
     @PutMapping("/tie-matches")
     @Timed
-    public ResponseEntity<TieMatchDTO> updateTieMatch(@RequestBody TieMatchDTO tieMatchDTO) throws URISyntaxException {
-        log.debug("REST request to update TieMatch : {}", tieMatchDTO);
-        if (tieMatchDTO.getId() == null) {
-            return createTieMatch(tieMatchDTO);
+    public ResponseEntity<TieMatchDTO> updateTieMatch( @RequestBody TieMatchDTO tieMatchDTO )
+        throws URISyntaxException {
+        log.debug( "REST request to update TieMatch : {}", tieMatchDTO );
+        if ( tieMatchDTO.getId() == null ) {
+            return createTieMatch( tieMatchDTO );
         }
-        TieMatchDTO result = tieMatchService.save(tieMatchDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tieMatchDTO.getId().toString()))
-            .body(result);
+        TieMatchDTO result = tieMatchService.save( tieMatchDTO );
+        return ResponseEntity.ok().headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, tieMatchDTO.getId().toString() ) ).body( result );
     }
 
     /**
@@ -96,11 +103,11 @@ public class TieMatchResource {
      */
     @GetMapping("/tie-matches")
     @Timed
-    public ResponseEntity<List<TieMatchDTO>> getAllTieMatches(TieMatchCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get TieMatches by criteria: {}", criteria);
-        Page<TieMatchDTO> page = tieMatchQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tie-matches");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<TieMatchDTO>> getAllTieMatches( TieMatchCriteria criteria, Pageable pageable ) {
+        log.debug( "REST request to get TieMatches by criteria: {}", criteria );
+        Page<TieMatchDTO> page = tieMatchQueryService.findByCriteria( criteria, pageable );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders( page, "/api/tie-matches" );
+        return new ResponseEntity<>( page.getContent(), headers, HttpStatus.OK );
     }
 
     /**
@@ -111,10 +118,10 @@ public class TieMatchResource {
      */
     @GetMapping("/tie-matches/{id}")
     @Timed
-    public ResponseEntity<TieMatchDTO> getTieMatch(@PathVariable Long id) {
-        log.debug("REST request to get TieMatch : {}", id);
-        TieMatchDTO tieMatchDTO = tieMatchService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(tieMatchDTO));
+    public ResponseEntity<TieMatchDTO> getTieMatch( @PathVariable Long id ) {
+        log.debug( "REST request to get TieMatch : {}", id );
+        TieMatchDTO tieMatchDTO = tieMatchService.findOne( id );
+        return ResponseUtil.wrapOrNotFound( Optional.ofNullable( tieMatchDTO ) );
     }
 
     /**
@@ -125,9 +132,9 @@ public class TieMatchResource {
      */
     @DeleteMapping("/tie-matches/{id}")
     @Timed
-    public ResponseEntity<Void> deleteTieMatch(@PathVariable Long id) {
-        log.debug("REST request to delete TieMatch : {}", id);
-        tieMatchService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    public ResponseEntity<Void> deleteTieMatch( @PathVariable Long id ) {
+        log.debug( "REST request to delete TieMatch : {}", id );
+        tieMatchService.delete( id );
+        return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) ).build();
     }
 }

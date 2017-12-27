@@ -1,18 +1,11 @@
 package com.firstfuel.fafi.config.social;
 
-import com.firstfuel.fafi.repository.SocialUserConnectionRepository;
-import com.firstfuel.fafi.repository.CustomSocialUsersConnectionRepository;
-import com.firstfuel.fafi.security.jwt.TokenProvider;
-import com.firstfuel.fafi.security.social.CustomSignInAdapter;
-
-import io.github.jhipster.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.social.UserIdSource;
 import org.springframework.social.config.annotation.ConnectionFactoryConfigurer;
 import org.springframework.social.config.annotation.EnableSocial;
@@ -28,86 +21,69 @@ import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 import org.springframework.social.google.connect.GoogleConnectionFactory;
 import org.springframework.social.security.AuthenticationNameUserIdSource;
 import org.springframework.social.twitter.connect.TwitterConnectionFactory;
+
+import com.firstfuel.fafi.repository.CustomSocialUsersConnectionRepository;
+import com.firstfuel.fafi.repository.SocialUserConnectionRepository;
+import com.firstfuel.fafi.security.social.CustomSignInAdapter;
 // jhipster-needle-add-social-connection-factory-import-package
 
 /**
  * Basic Spring Social configuration.
- *
- * <p>
  * Creates the beans necessary to manage Connections to social services and
  * link accounts from those services to internal Users.
  */
 @Configuration
 @EnableSocial
-public class SocialConfiguration implements SocialConfigurer {
+public class SocialConfiguration
+    implements SocialConfigurer {
 
-    private final Logger log = LoggerFactory.getLogger(SocialConfiguration.class);
+    private final Logger log = LoggerFactory.getLogger( SocialConfiguration.class );
 
-    private final SocialUserConnectionRepository socialUserConnectionRepository;
+    @Autowired
+    private SocialUserConnectionRepository socialUserConnectionRepository;
 
-    private final Environment environment;
+    @Autowired
+    private Environment environment;
 
-    public SocialConfiguration(SocialUserConnectionRepository socialUserConnectionRepository,
-            Environment environment) {
-
-        this.socialUserConnectionRepository = socialUserConnectionRepository;
-        this.environment = environment;
-    }
 
     @Bean
-    public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator,
-            ConnectionRepository connectionRepository) {
+    public ConnectController connectController( ConnectionFactoryLocator connectionFactoryLocator, ConnectionRepository connectionRepository ) {
 
-        ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
-        controller.setApplicationUrl(environment.getProperty("spring.application.url"));
+        ConnectController controller = new ConnectController( connectionFactoryLocator, connectionRepository );
+        controller.setApplicationUrl( environment.getProperty( "spring.application.url" ) );
         return controller;
     }
 
     @Override
-    public void addConnectionFactories(ConnectionFactoryConfigurer connectionFactoryConfigurer, Environment environment) {
+    public void addConnectionFactories( ConnectionFactoryConfigurer connectionFactoryConfigurer, Environment environment ) {
         // Google configuration
-        String googleClientId = environment.getProperty("spring.social.google.client-id");
-        String googleClientSecret = environment.getProperty("spring.social.google.client-secret");
-        if (googleClientId != null && googleClientSecret != null) {
-            log.debug("Configuring GoogleConnectionFactory");
-            connectionFactoryConfigurer.addConnectionFactory(
-                new GoogleConnectionFactory(
-                    googleClientId,
-                    googleClientSecret
-                )
-            );
+        String googleClientId = environment.getProperty( "spring.social.google.client-id" );
+        String googleClientSecret = environment.getProperty( "spring.social.google.client-secret" );
+        if ( googleClientId != null && googleClientSecret != null ) {
+            log.debug( "Configuring GoogleConnectionFactory" );
+            connectionFactoryConfigurer.addConnectionFactory( new GoogleConnectionFactory( googleClientId, googleClientSecret ) );
         } else {
-            log.error("Cannot configure GoogleConnectionFactory id or secret null");
+            log.error( "Cannot configure GoogleConnectionFactory id or secret null" );
         }
 
         // Facebook configuration
-        String facebookClientId = environment.getProperty("spring.social.facebook.client-id");
-        String facebookClientSecret = environment.getProperty("spring.social.facebook.client-secret");
-        if (facebookClientId != null && facebookClientSecret != null) {
-            log.debug("Configuring FacebookConnectionFactory");
-            connectionFactoryConfigurer.addConnectionFactory(
-                new FacebookConnectionFactory(
-                    facebookClientId,
-                    facebookClientSecret
-                )
-            );
+        String facebookClientId = environment.getProperty( "spring.social.facebook.client-id" );
+        String facebookClientSecret = environment.getProperty( "spring.social.facebook.client-secret" );
+        if ( facebookClientId != null && facebookClientSecret != null ) {
+            log.debug( "Configuring FacebookConnectionFactory" );
+            connectionFactoryConfigurer.addConnectionFactory( new FacebookConnectionFactory( facebookClientId, facebookClientSecret ) );
         } else {
-            log.error("Cannot configure FacebookConnectionFactory id or secret null");
+            log.error( "Cannot configure FacebookConnectionFactory id or secret null" );
         }
 
         // Twitter configuration
-        String twitterClientId = environment.getProperty("spring.social.twitter.client-id");
-        String twitterClientSecret = environment.getProperty("spring.social.twitter.client-secret");
-        if (twitterClientId != null && twitterClientSecret != null) {
-            log.debug("Configuring TwitterConnectionFactory");
-            connectionFactoryConfigurer.addConnectionFactory(
-                new TwitterConnectionFactory(
-                    twitterClientId,
-                    twitterClientSecret
-                )
-            );
+        String twitterClientId = environment.getProperty( "spring.social.twitter.client-id" );
+        String twitterClientSecret = environment.getProperty( "spring.social.twitter.client-secret" );
+        if ( twitterClientId != null && twitterClientSecret != null ) {
+            log.debug( "Configuring TwitterConnectionFactory" );
+            connectionFactoryConfigurer.addConnectionFactory( new TwitterConnectionFactory( twitterClientId, twitterClientSecret ) );
         } else {
-            log.error("Cannot configure TwitterConnectionFactory id or secret null");
+            log.error( "Cannot configure TwitterConnectionFactory id or secret null" );
         }
 
         // jhipster-needle-add-social-connection-factory
@@ -119,27 +95,26 @@ public class SocialConfiguration implements SocialConfigurer {
     }
 
     @Override
-    public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
-        return new CustomSocialUsersConnectionRepository(socialUserConnectionRepository, connectionFactoryLocator);
+    public UsersConnectionRepository getUsersConnectionRepository( ConnectionFactoryLocator connectionFactoryLocator ) {
+        return new CustomSocialUsersConnectionRepository();
     }
 
     @Bean
-    public SignInAdapter signInAdapter(UserDetailsService userDetailsService, JHipsterProperties jHipsterProperties,
-            TokenProvider tokenProvider) {
-        return new CustomSignInAdapter(userDetailsService, jHipsterProperties,
-            tokenProvider);
+    public SignInAdapter signInAdapter() {
+        return new CustomSignInAdapter();
     }
 
     @Bean
-    public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter) {
-        ProviderSignInController providerSignInController = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
-        providerSignInController.setSignUpUrl("/social/signup");
-        providerSignInController.setApplicationUrl(environment.getProperty("spring.application.url"));
+    public ProviderSignInController providerSignInController( ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository,
+        SignInAdapter signInAdapter ) {
+        ProviderSignInController providerSignInController = new ProviderSignInController( connectionFactoryLocator, usersConnectionRepository, signInAdapter );
+        providerSignInController.setSignUpUrl( "/social/signup" );
+        providerSignInController.setApplicationUrl( environment.getProperty( "spring.application.url" ) );
         return providerSignInController;
     }
 
     @Bean
-    public ProviderSignInUtils getProviderSignInUtils(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository) {
-        return new ProviderSignInUtils(connectionFactoryLocator, usersConnectionRepository);
+    public ProviderSignInUtils getProviderSignInUtils( ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository ) {
+        return new ProviderSignInUtils( connectionFactoryLocator, usersConnectionRepository );
     }
 }

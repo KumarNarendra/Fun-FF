@@ -1,22 +1,26 @@
 package com.firstfuel.fafi.web.rest;
 
-import com.firstfuel.fafi.security.jwt.JWTConfigurer;
-import com.firstfuel.fafi.security.jwt.TokenProvider;
-import com.firstfuel.fafi.web.rest.vm.LoginVM;
+import javax.validation.Valid;
 
-import com.codahale.metrics.annotation.Timed;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import com.firstfuel.fafi.security.jwt.JWTConfigurer;
+import com.firstfuel.fafi.security.jwt.TokenProvider;
+import com.firstfuel.fafi.web.rest.vm.LoginVM;
 
 /**
  * Controller to authenticate users.
@@ -25,29 +29,26 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class UserJWTController {
 
-    private final TokenProvider tokenProvider;
+    @Autowired
+    private TokenProvider tokenProvider;
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
-        this.tokenProvider = tokenProvider;
-        this.authenticationManager = authenticationManager;
-    }
 
     @PostMapping("/authenticate")
     @Timed
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+    public ResponseEntity<JWTToken> authorize( @Valid @RequestBody LoginVM loginVM ) {
 
-        UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(loginVM.getUsername(), loginVM.getPassword());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken( loginVM.getUsername(), loginVM.getPassword() );
 
-        Authentication authentication = this.authenticationManager.authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
-        String jwt = tokenProvider.createToken(authentication, rememberMe);
+        Authentication authentication = this.authenticationManager.authenticate( authenticationToken );
+        SecurityContextHolder.getContext().setAuthentication( authentication );
+        boolean rememberMe = ( loginVM.isRememberMe() == null ) ? false : loginVM.isRememberMe();
+        String jwt = tokenProvider.createToken( authentication, rememberMe );
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+        httpHeaders.add( JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt );
+        return new ResponseEntity<>( new JWTToken( jwt ), httpHeaders, HttpStatus.OK );
     }
 
     /**
@@ -57,7 +58,7 @@ public class UserJWTController {
 
         private String idToken;
 
-        JWTToken(String idToken) {
+        JWTToken( String idToken ) {
             this.idToken = idToken;
         }
 
@@ -66,7 +67,7 @@ public class UserJWTController {
             return idToken;
         }
 
-        void setIdToken(String idToken) {
+        void setIdToken( String idToken ) {
             this.idToken = idToken;
         }
     }

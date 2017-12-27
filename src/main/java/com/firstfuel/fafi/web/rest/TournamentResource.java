@@ -1,29 +1,39 @@
 package com.firstfuel.fafi.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.firstfuel.fafi.service.TournamentService;
-import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
-import com.firstfuel.fafi.web.rest.util.HeaderUtil;
-import com.firstfuel.fafi.web.rest.util.PaginationUtil;
-import com.firstfuel.fafi.service.dto.TournamentDTO;
-import com.firstfuel.fafi.service.dto.TournamentCriteria;
-import com.firstfuel.fafi.service.TournamentQueryService;
-import io.github.jhipster.web.util.ResponseUtil;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Optional;
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
+import com.codahale.metrics.annotation.Timed;
 
-import java.util.List;
-import java.util.Optional;
+import com.firstfuel.fafi.service.TournamentQueryService;
+import com.firstfuel.fafi.service.TournamentService;
+import com.firstfuel.fafi.service.dto.TournamentCriteria;
+import com.firstfuel.fafi.service.dto.TournamentDTO;
+import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
+import com.firstfuel.fafi.web.rest.util.HeaderUtil;
+import com.firstfuel.fafi.web.rest.util.PaginationUtil;
+
+import io.github.jhipster.web.util.ResponseUtil;
 
 /**
  * REST controller for managing Tournament.
@@ -32,18 +42,15 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class TournamentResource {
 
-    private final Logger log = LoggerFactory.getLogger(TournamentResource.class);
+    private final Logger log = LoggerFactory.getLogger( TournamentResource.class );
 
     private static final String ENTITY_NAME = "tournament";
 
-    private final TournamentService tournamentService;
+    @Autowired
+    private TournamentService tournamentService;
 
-    private final TournamentQueryService tournamentQueryService;
-
-    public TournamentResource(TournamentService tournamentService, TournamentQueryService tournamentQueryService) {
-        this.tournamentService = tournamentService;
-        this.tournamentQueryService = tournamentQueryService;
-    }
+    @Autowired
+    private TournamentQueryService tournamentQueryService;
 
     /**
      * POST  /tournaments : Create a new tournament.
@@ -54,15 +61,16 @@ public class TournamentResource {
      */
     @PostMapping("/tournaments")
     @Timed
-    public ResponseEntity<TournamentDTO> createTournament(@Valid @RequestBody TournamentDTO tournamentDTO) throws URISyntaxException {
-        log.debug("REST request to save Tournament : {}", tournamentDTO);
-        if (tournamentDTO.getId() != null) {
-            throw new BadRequestAlertException("A new tournament cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<TournamentDTO> createTournament( @Valid @RequestBody TournamentDTO tournamentDTO )
+        throws URISyntaxException {
+        log.debug( "REST request to save Tournament : {}", tournamentDTO );
+        if ( tournamentDTO.getId() != null ) {
+            throw new BadRequestAlertException( "A new tournament cannot already have an ID", ENTITY_NAME, "idexists" );
         }
-        TournamentDTO result = tournamentService.save(tournamentDTO);
-        return ResponseEntity.created(new URI("/api/tournaments/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        TournamentDTO result = tournamentService.save( tournamentDTO );
+        return ResponseEntity.created( new URI( "/api/tournaments/" + result.getId() ) )
+            .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
+            .body( result );
     }
 
     /**
@@ -76,15 +84,14 @@ public class TournamentResource {
      */
     @PutMapping("/tournaments")
     @Timed
-    public ResponseEntity<TournamentDTO> updateTournament(@Valid @RequestBody TournamentDTO tournamentDTO) throws URISyntaxException {
-        log.debug("REST request to update Tournament : {}", tournamentDTO);
-        if (tournamentDTO.getId() == null) {
-            return createTournament(tournamentDTO);
+    public ResponseEntity<TournamentDTO> updateTournament( @Valid @RequestBody TournamentDTO tournamentDTO )
+        throws URISyntaxException {
+        log.debug( "REST request to update Tournament : {}", tournamentDTO );
+        if ( tournamentDTO.getId() == null ) {
+            return createTournament( tournamentDTO );
         }
-        TournamentDTO result = tournamentService.save(tournamentDTO);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tournamentDTO.getId().toString()))
-            .body(result);
+        TournamentDTO result = tournamentService.save( tournamentDTO );
+        return ResponseEntity.ok().headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, tournamentDTO.getId().toString() ) ).body( result );
     }
 
     /**
@@ -96,11 +103,11 @@ public class TournamentResource {
      */
     @GetMapping("/tournaments")
     @Timed
-    public ResponseEntity<List<TournamentDTO>> getAllTournaments(TournamentCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Tournaments by criteria: {}", criteria);
-        Page<TournamentDTO> page = tournamentQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tournaments");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public ResponseEntity<List<TournamentDTO>> getAllTournaments( TournamentCriteria criteria, Pageable pageable ) {
+        log.debug( "REST request to get Tournaments by criteria: {}", criteria );
+        Page<TournamentDTO> page = tournamentQueryService.findByCriteria( criteria, pageable );
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders( page, "/api/tournaments" );
+        return new ResponseEntity<>( page.getContent(), headers, HttpStatus.OK );
     }
 
     /**
@@ -111,10 +118,10 @@ public class TournamentResource {
      */
     @GetMapping("/tournaments/{id}")
     @Timed
-    public ResponseEntity<TournamentDTO> getTournament(@PathVariable Long id) {
-        log.debug("REST request to get Tournament : {}", id);
-        TournamentDTO tournamentDTO = tournamentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(tournamentDTO));
+    public ResponseEntity<TournamentDTO> getTournament( @PathVariable Long id ) {
+        log.debug( "REST request to get Tournament : {}", id );
+        TournamentDTO tournamentDTO = tournamentService.findOne( id );
+        return ResponseUtil.wrapOrNotFound( Optional.ofNullable( tournamentDTO ) );
     }
 
     /**
@@ -125,9 +132,9 @@ public class TournamentResource {
      */
     @DeleteMapping("/tournaments/{id}")
     @Timed
-    public ResponseEntity<Void> deleteTournament(@PathVariable Long id) {
-        log.debug("REST request to delete Tournament : {}", id);
-        tournamentService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    public ResponseEntity<Void> deleteTournament( @PathVariable Long id ) {
+        log.debug( "REST request to delete Tournament : {}", id );
+        tournamentService.delete( id );
+        return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) ).build();
     }
 }
