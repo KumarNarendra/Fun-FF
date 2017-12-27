@@ -46,7 +46,7 @@ public class SocialService {
 
     public void deleteUserSocialConnection( String login ) {
         ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository( login );
-        connectionRepository.findAllConnections().keySet().stream().forEach( providerId -> {
+        connectionRepository.findAllConnections().keySet().forEach( providerId -> {
             connectionRepository.removeConnections( providerId );
             log.debug( "Delete user social connection providerId: {}", providerId );
         } );
