@@ -15,8 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.firstfuel.fafi.domain.TieMatch;
 import com.firstfuel.fafi.repository.TieMatchRepository;
+import com.firstfuel.fafi.service.PlayerService;
 import com.firstfuel.fafi.service.TieMatchService;
+import com.firstfuel.fafi.service.TieTeamService;
 import com.firstfuel.fafi.service.dto.TieMatchDTO;
+import com.firstfuel.fafi.service.dto.TieTeamDTO;
 import com.firstfuel.fafi.service.mapper.TieMatchMapper;
 
 /**
@@ -35,6 +38,8 @@ public class TieMatchServiceImpl
     @Autowired
     private TieMatchMapper tieMatchMapper;
 
+    @Autowired
+    private TieTeamService tieTeamService;
 
     /**
      * Save a tieMatch.
@@ -47,7 +52,13 @@ public class TieMatchServiceImpl
         log.debug( "Request to save TieMatch : {}", tieMatchDTO );
         TieMatch tieMatch = tieMatchMapper.toEntity( tieMatchDTO );
         tieMatch = tieMatchRepository.save( tieMatch );
+        savePointsForTieTeamPlayers( tieMatchDTO );
         return tieMatchMapper.toDto( tieMatch );
+    }
+
+    private void savePointsForTieTeamPlayers( TieMatchDTO tieMatchDTO ) {
+        tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam1Id(), tieMatchDTO.getPointsForTieTeam1() );
+        tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam2Id(), tieMatchDTO.getPointsForTieTeam2() );
     }
 
     /**

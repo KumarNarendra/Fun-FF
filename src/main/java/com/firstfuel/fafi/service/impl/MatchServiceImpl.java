@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.firstfuel.fafi.domain.Match;
 import com.firstfuel.fafi.repository.MatchRepository;
+import com.firstfuel.fafi.service.FranchiseService;
 import com.firstfuel.fafi.service.MatchService;
 import com.firstfuel.fafi.service.dto.MatchDTO;
+import com.firstfuel.fafi.service.dto.TieMatchDTO;
 import com.firstfuel.fafi.service.mapper.MatchMapper;
 
 
@@ -31,6 +33,9 @@ public class MatchServiceImpl
     @Autowired
     private MatchMapper matchMapper;
 
+    @Autowired
+    private FranchiseService franchiseService;
+
 
     /**
      * Save a match.
@@ -43,7 +48,13 @@ public class MatchServiceImpl
         log.debug( "Request to save Match : {}", matchDTO );
         Match match = matchMapper.toEntity( matchDTO );
         match = matchRepository.save( match );
+        savePointsForFranchises( matchDTO );
         return matchMapper.toDto( match );
+    }
+
+    private void savePointsForFranchises( MatchDTO matchDTO ) {
+        franchiseService.savePointsForFranchise( matchDTO.getFranchise1Id(), matchDTO.getPointsForFranchise1() );
+        franchiseService.savePointsForFranchise( matchDTO.getFranchise2Id(), matchDTO.getPointsForFranchise2() );
     }
 
     /**

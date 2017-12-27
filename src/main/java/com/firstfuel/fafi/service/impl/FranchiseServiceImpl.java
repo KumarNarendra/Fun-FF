@@ -83,4 +83,11 @@ public class FranchiseServiceImpl
         log.debug( "Request to delete Franchise : {}", id );
         franchiseRepository.delete( id );
     }
+
+    @Override
+    public void savePointsForFranchise( Long franchiseId, Double points ) {
+        FranchiseDTO franchiseDTO = findOne( franchiseId );
+        franchiseDTO.setPoints( franchiseDTO.getPoints() + points );
+        save( franchiseDTO );
+    }
 }

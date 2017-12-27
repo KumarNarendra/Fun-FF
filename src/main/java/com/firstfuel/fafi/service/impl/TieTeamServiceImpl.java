@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.firstfuel.fafi.domain.TieTeam;
 import com.firstfuel.fafi.repository.TieTeamRepository;
+import com.firstfuel.fafi.service.PlayerService;
 import com.firstfuel.fafi.service.TieTeamService;
 import com.firstfuel.fafi.service.dto.TieTeamDTO;
 import com.firstfuel.fafi.service.mapper.TieTeamMapper;
@@ -31,6 +32,8 @@ public class TieTeamServiceImpl
     @Autowired
     private TieTeamMapper tieTeamMapper;
 
+    @Autowired
+    private PlayerService playerService;
 
     /**
      * Save a tieTeam.
@@ -82,5 +85,15 @@ public class TieTeamServiceImpl
     public void delete( Long id ) {
         log.debug( "Request to delete TieTeam : {}", id );
         tieTeamRepository.delete( id );
+    }
+
+    @Override
+    public TieTeamDTO savePointsForTieTeamPlayers( Long tieTeamId, Double points ) {
+        TieTeamDTO tieTeamDTO = findOne( tieTeamId );
+        tieTeamDTO.getTiePlayers().forEach( playerDTO -> {
+            playerDTO.setPoints( playerDTO.getPoints() + points );
+            playerService.save( playerDTO );
+        } );
+        return findOne( tieTeamId );
     }
 }
