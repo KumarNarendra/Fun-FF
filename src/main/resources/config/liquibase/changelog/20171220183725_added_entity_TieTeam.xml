@@ -22,8 +22,8 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="points" type="double">
-                <constraints nullable="true" />
+            <column name="points" type="double" defaultValue="0.0">
+                <constraints nullable="false" />
             </column>
 
             <column name="name" type="varchar(255)">
@@ -36,7 +36,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
         <createTable tableName="tie_team_tie_players">
             <column name="tie_players_id" type="bigint">
                 <constraints nullable="false"/>
@@ -47,7 +47,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="tie_teams_id, tie_players_id" tableName="tie_team_tie_players"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

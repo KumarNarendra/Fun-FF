@@ -22,12 +22,12 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="points_for_tie_team_1" type="double">
-                <constraints nullable="true" />
+            <column name="points_for_tie_team_1" type="double" defaultValue="0.0">
+                <constraints nullable="false" />
             </column>
 
-            <column name="points_for_tie_team_2" type="double">
-                <constraints nullable="true" />
+            <column name="points_for_tie_team_2" type="double" defaultValue="0.0">
+                <constraints nullable="false" />
             </column>
 
             <column name="match_id" type="bigint">

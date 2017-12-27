@@ -1,5 +1,7 @@
 package com.firstfuel.fafi.service.impl;
 
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,13 @@ public class MatchServiceImpl
     }
 
     private void savePointsForFranchises( MatchDTO matchDTO ) {
-        franchiseService.savePointsForFranchise( matchDTO.getFranchise1Id(), matchDTO.getPointsForFranchise1() );
-        franchiseService.savePointsForFranchise( matchDTO.getFranchise2Id(), matchDTO.getPointsForFranchise2() );
+        if ( Objects.nonNull( matchDTO.getPointsForFranchise1() ) ) {
+            franchiseService.savePointsForFranchise( matchDTO.getFranchise1Id(), matchDTO.getPointsForFranchise1() );
+        }
+        if ( Objects.nonNull( matchDTO.getPointsForFranchise2() ) ) {
+            franchiseService.savePointsForFranchise( matchDTO.getFranchise2Id(), matchDTO.getPointsForFranchise2() );
+        }
+
     }
 
     /**

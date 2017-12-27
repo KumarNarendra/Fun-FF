@@ -41,5 +41,12 @@ public interface FranchiseService {
      */
     void delete( Long id );
 
+    /**
+     * Save points for a franchise.
+     *
+     * @param franchiseId the id of the entity to save
+     * @param points points earned by entity
+     * @return the persisted entity
+     */
     void savePointsForFranchise( Long franchiseId, Double points );
 }

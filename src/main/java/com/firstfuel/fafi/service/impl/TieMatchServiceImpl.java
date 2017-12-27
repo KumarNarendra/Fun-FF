@@ -2,6 +2,7 @@ package com.firstfuel.fafi.service.impl;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -57,8 +58,12 @@ public class TieMatchServiceImpl
     }
 
     private void savePointsForTieTeamPlayers( TieMatchDTO tieMatchDTO ) {
-        tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam1Id(), tieMatchDTO.getPointsForTieTeam1() );
-        tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam2Id(), tieMatchDTO.getPointsForTieTeam2() );
+        if ( Objects.nonNull( tieMatchDTO.getPointsForTieTeam1() ) ) {
+            tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam1Id(), tieMatchDTO.getPointsForTieTeam1() );
+        }
+        if ( Objects.nonNull( tieMatchDTO.getPointsForTieTeam2() ) ) {
+            tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam2Id(), tieMatchDTO.getPointsForTieTeam2() );
+        }
     }
 
     /**
