@@ -43,6 +43,8 @@ public class PlayerCriteria implements Serializable {
 
     private GamesFilter optedGames;
 
+    private DoubleFilter points;
+
     private LongFilter franchiseId;
 
     public PlayerCriteria() {
@@ -88,6 +90,14 @@ public class PlayerCriteria implements Serializable {
         this.optedGames = optedGames;
     }
 
+    public DoubleFilter getPoints() {
+        return points;
+    }
+
+    public void setPoints(DoubleFilter points) {
+        this.points = points;
+    }
+
     public LongFilter getFranchiseId() {
         return franchiseId;
     }
@@ -104,6 +114,7 @@ public class PlayerCriteria implements Serializable {
                 (basePrice != null ? "basePrice=" + basePrice + ", " : "") +
                 (bidPrice != null ? "bidPrice=" + bidPrice + ", " : "") +
                 (optedGames != null ? "optedGames=" + optedGames + ", " : "") +
+                (points != null ? "points=" + points + ", " : "") +
                 (franchiseId != null ? "franchiseId=" + franchiseId + ", " : "") +
             "}";
     }

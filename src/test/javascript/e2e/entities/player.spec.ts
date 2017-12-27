@@ -38,6 +38,8 @@ describe('Player e2e test', () => {
         playerDialogPage.setBidPriceInput('5');
         expect(playerDialogPage.getBidPriceInput()).toMatch('5');
         playerDialogPage.optedGamesSelectLastOption();
+        playerDialogPage.setPointsInput('5');
+        expect(playerDialogPage.getPointsInput()).toMatch('5');
         playerDialogPage.franchiseSelectLastOption();
         playerDialogPage.save();
         expect(playerDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -69,6 +71,7 @@ export class PlayerDialogPage {
     basePriceInput = element(by.css('input#field_basePrice'));
     bidPriceInput = element(by.css('input#field_bidPrice'));
     optedGamesSelect = element(by.css('select#field_optedGames'));
+    pointsInput = element(by.css('input#field_points'));
     franchiseSelect = element(by.css('select#field_franchise'));
 
     getModalTitle() {
@@ -110,6 +113,14 @@ export class PlayerDialogPage {
     optedGamesSelectLastOption = function() {
         this.optedGamesSelect.all(by.tagName('option')).last().click();
     }
+    setPointsInput = function(points) {
+        this.pointsInput.sendKeys(points);
+    }
+
+    getPointsInput = function() {
+        return this.pointsInput.getAttribute('value');
+    }
+
     franchiseSelectLastOption = function() {
         this.franchiseSelect.all(by.tagName('option')).last().click();
     }

@@ -26,6 +26,8 @@ public class PlayerDTO
 
     private Set<Games> optedGames;
 
+    private Double points;
+
     private Long franchiseId;
 
     private String franchiseName;
@@ -70,6 +72,14 @@ public class PlayerDTO
         this.optedGames = optedGames;
     }
 
+    public Double getPoints() {
+        return points;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
+    }
+
     public Long getFranchiseId() {
         return franchiseId;
     }
@@ -109,7 +119,13 @@ public class PlayerDTO
 
     @Override
     public String toString() {
-        return "PlayerDTO{" + "id=" + getId() + ", name='" + getName() + "'" + ", basePrice=" + getBasePrice() + ", bidPrice=" + getBidPrice() + ", optedGames='" + getOptedGames()
-            + "'" + "}";
+        return "PlayerDTO{" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", basePrice=" + getBasePrice() +
+            ", bidPrice=" + getBidPrice() +
+            ", optedGames='" + getOptedGames() + "'" +
+            ", points=" + getPoints() +
+            "}";
     }
 }

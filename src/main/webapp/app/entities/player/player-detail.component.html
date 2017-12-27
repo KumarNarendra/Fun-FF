@@ -1,4 +1,4 @@
-<br>
+
 <div *ngIf="player">
     <h2><span jhiTranslate="fafiApp.player.detail.title">Player</span> {{player.id}}</h2>
     <hr>
@@ -21,6 +21,10 @@
             <div *ngFor="let game of player.optedGames">
                 <span  jhiTranslate="{{'fafiApp.Games.' + game}}">{{game}}</span>
             </div>
+        </dd>
+        <dt><span jhiTranslate="fafiApp.player.points">Points</span></dt>
+        <dd>
+            <span>{{player.points}}</span>
         </dd>
         <dt><span jhiTranslate="fafiApp.player.franchise">Franchise</span></dt>
         <dd>

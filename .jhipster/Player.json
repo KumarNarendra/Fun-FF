@@ -28,6 +28,10 @@
             "fieldName": "optedGames",
             "fieldType": "Games",
             "fieldValues": "Football,Chess,Badminton,Ludo,Table Tennis,Box Cricket"
+        },
+        {
+            "fieldName": "points",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20171218183905",

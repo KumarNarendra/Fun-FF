@@ -44,6 +44,11 @@
                 <option value="BoxCricket">{{'fafiApp.Games.BoxCricket' | translate}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="fafiApp.player.points" for="field_points">Points</label>
+            <input type="number" class="form-control" name="points" id="field_points"
+                [(ngModel)]="player.points" />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="fafiApp.player.franchise" for="field_franchise">Franchise</label>

@@ -1,4 +1,3 @@
-<br>
 <div>
     <h2>
         <span jhiTranslate="fafiApp.player.home.title">Players</span>
@@ -22,6 +21,7 @@
             <th jhiSortBy="basePrice"><span jhiTranslate="fafiApp.player.basePrice">Base Price</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="bidPrice"><span jhiTranslate="fafiApp.player.bidPrice">Bid Price</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="optedGames"><span jhiTranslate="fafiApp.player.optedGames">Opted Games</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="points"><span jhiTranslate="fafiApp.player.points">Points</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="franchiseName"><span jhiTranslate="fafiApp.player.franchise">Franchise</span> <span class="fa fa-sort"></span></th>
             <th></th>
             </tr>
@@ -37,6 +37,7 @@
                         <span  jhiTranslate="{{'fafiApp.Games.' + game}}">{{game}}</span>
                     </div>
                 </td>
+                <td>{{player.points}}</td>
                 <td>
                     <div *ngIf="player.franchiseId">
                         <a [routerLink]="['../franchise', player.franchiseId  ]" >{{player.franchiseName}}</a>

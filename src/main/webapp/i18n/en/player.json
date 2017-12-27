@@ -19,6 +19,7 @@
             "basePrice": "Base Price",
             "bidPrice": "Bid Price",
             "optedGames": "Opted Games",
+            "points": "Points",
             "franchise": "Franchise"
         }
     }

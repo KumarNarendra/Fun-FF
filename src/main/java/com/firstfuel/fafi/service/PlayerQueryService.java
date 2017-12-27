@@ -90,6 +90,9 @@ public class PlayerQueryService
             /*if (criteria.getOptedGames() != null) {
                 specification = specification.and(buildSpecification(criteria.getOptedGames(), Player_.optedGames));
             }*/
+            if (criteria.getPoints() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPoints(), Player_.points));
+            }
             if ( criteria.getFranchiseId() != null ) {
                 specification = specification.and( buildReferringEntitySpecification( criteria.getFranchiseId(), Player_.franchise, Franchise_.id ) );
             }

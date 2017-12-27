@@ -62,7 +62,8 @@ public class PlayerResourceIntTest {
 
     private static final Set<Games> DEFAULT_OPTED_GAMES = new HashSet<Games>( Arrays.asList( Games.Football ) );
     private static final Set<Games> UPDATED_OPTED_GAMES = new HashSet<Games>( Arrays.asList( Games.Chess ) );
-    ;
+    private static final Double DEFAULT_POINTS = 1D;
+    private static final Double UPDATED_POINTS = 2D;
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -110,7 +111,7 @@ public class PlayerResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Player createEntity( EntityManager em ) {
-        Player player = new Player().name( DEFAULT_NAME ).basePrice( DEFAULT_BASE_PRICE ).bidPrice( DEFAULT_BID_PRICE ).optedGames( DEFAULT_OPTED_GAMES );
+        Player player = new Player().name( DEFAULT_NAME ).basePrice( DEFAULT_BASE_PRICE ).bidPrice( DEFAULT_BID_PRICE ).optedGames( DEFAULT_OPTED_GAMES ).points( DEFAULT_POINTS );
         return player;
     }
 
@@ -138,6 +139,7 @@ public class PlayerResourceIntTest {
         assertThat( testPlayer.getBasePrice() ).isEqualTo( DEFAULT_BASE_PRICE );
         assertThat( testPlayer.getBidPrice() ).isEqualTo( DEFAULT_BID_PRICE );
         assertThat( testPlayer.getOptedGames() ).isEqualTo( DEFAULT_OPTED_GAMES );
+        assertThat( testPlayer.getPoints() ).isEqualTo( DEFAULT_POINTS );
     }
 
     @Test
@@ -192,7 +194,8 @@ public class PlayerResourceIntTest {
             .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME ) ) )
             .andExpect( jsonPath( "$.[*].basePrice" ).value( hasItem( DEFAULT_BASE_PRICE ) ) )
             .andExpect( jsonPath( "$.[*].bidPrice" ).value( hasItem( DEFAULT_BID_PRICE ) ) )
-        /*.andExpect(jsonPath("$.[*].optedGames").value(hasItem(DEFAULT_OPTED_GAMES.toString())))*/;
+            .andExpect( jsonPath( "$.[*].points" ).value( hasItem( DEFAULT_POINTS ) ) );
+        /*.andExpect(jsonPath("$.[*].optedGames").value(hasItem(DEFAULT_OPTED_GAMES.toString())));*/
     }
 
     @Test
@@ -210,6 +213,7 @@ public class PlayerResourceIntTest {
             .andExpect( jsonPath( "$.name" ).value( DEFAULT_NAME ) )
             .andExpect( jsonPath( "$.basePrice" ).value( DEFAULT_BASE_PRICE ) )
             .andExpect( jsonPath( "$.bidPrice" ).value( DEFAULT_BID_PRICE ) )
+            .andExpect( jsonPath( "$.points" ).value( DEFAULT_POINTS ) )
         /*.andExpect(jsonPath("$.optedGames").value(DEFAULT_OPTED_GAMES.toString()))*/;
     }
 
@@ -383,6 +387,48 @@ public class PlayerResourceIntTest {
 
     @Test
     @Transactional
+    public void getAllPlayersByPointsIsEqualToSomething()
+        throws Exception {
+        // Initialize the database
+        playerRepository.saveAndFlush( player );
+
+        // Get all the playerList where points equals to DEFAULT_POINTS
+        defaultPlayerShouldBeFound( "points.equals=" + DEFAULT_POINTS );
+
+        // Get all the playerList where points equals to UPDATED_POINTS
+        defaultPlayerShouldNotBeFound( "points.equals=" + UPDATED_POINTS );
+    }
+
+    @Test
+    @Transactional
+    public void getAllPlayersByPointsIsInShouldWork()
+        throws Exception {
+        // Initialize the database
+        playerRepository.saveAndFlush( player );
+
+        // Get all the playerList where points in DEFAULT_POINTS or UPDATED_POINTS
+        defaultPlayerShouldBeFound( "points.in=" + DEFAULT_POINTS + "," + UPDATED_POINTS );
+
+        // Get all the playerList where points equals to UPDATED_POINTS
+        defaultPlayerShouldNotBeFound( "points.in=" + UPDATED_POINTS );
+    }
+
+    @Test
+    @Transactional
+    public void getAllPlayersByPointsIsNullOrNotNull()
+        throws Exception {
+        // Initialize the database
+        playerRepository.saveAndFlush( player );
+
+        // Get all the playerList where points is not null
+        defaultPlayerShouldBeFound( "points.specified=true" );
+
+        // Get all the playerList where points is null
+        defaultPlayerShouldNotBeFound( "points.specified=false" );
+    }
+
+    @Test
+    @Transactional
     public void getAllPlayersByFranchiseIsEqualToSomething()
         throws Exception {
         // Initialize the database
@@ -412,7 +458,8 @@ public class PlayerResourceIntTest {
             .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME ) ) )
             .andExpect( jsonPath( "$.[*].basePrice" ).value( hasItem( DEFAULT_BASE_PRICE ) ) )
             .andExpect( jsonPath( "$.[*].bidPrice" ).value( hasItem( DEFAULT_BID_PRICE ) ) )
-            .andExpect( jsonPath( "$.[*].optedGames" ).value( hasItem( DEFAULT_OPTED_GAMES.toString() ) ) );
+            .andExpect( jsonPath( "$.[*].optedGames" ).value( hasItem( DEFAULT_OPTED_GAMES.toString() ) ) )
+            .andExpect( jsonPath( "$.[*].points" ).value( hasItem( DEFAULT_POINTS ) ) );
     }
 
     /**
@@ -448,7 +495,8 @@ public class PlayerResourceIntTest {
         Player updatedPlayer = playerRepository.findOne( player.getId() );
         // Disconnect from session so that the updates on updatedPlayer are not directly saved in db
         em.detach( updatedPlayer );
-        updatedPlayer.name( UPDATED_NAME ).basePrice( UPDATED_BASE_PRICE ).bidPrice( UPDATED_BID_PRICE ).optedGames( UPDATED_OPTED_GAMES );
+        updatedPlayer.name( UPDATED_NAME ).basePrice( UPDATED_BASE_PRICE ).bidPrice( UPDATED_BID_PRICE ).optedGames( UPDATED_OPTED_GAMES ).points( UPDATED_POINTS );
+        ;
         PlayerDTO playerDTO = playerMapper.toDto( updatedPlayer );
 
         restPlayerMockMvc.perform( put( "/api/players" ).contentType( TestUtil.APPLICATION_JSON_UTF8 ).content( TestUtil.convertObjectToJsonBytes( playerDTO ) ) )
@@ -462,6 +510,7 @@ public class PlayerResourceIntTest {
         assertThat( testPlayer.getBasePrice() ).isEqualTo( UPDATED_BASE_PRICE );
         assertThat( testPlayer.getBidPrice() ).isEqualTo( UPDATED_BID_PRICE );
         assertThat( testPlayer.getOptedGames() ).isEqualTo( UPDATED_OPTED_GAMES );
+        assertThat( testPlayer.getPoints() ).isEqualTo( UPDATED_POINTS );
     }
 
     @Test

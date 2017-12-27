@@ -1,39 +1,29 @@
 package com.firstfuel.fafi.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.Valid;
-
+import com.codahale.metrics.annotation.Timed;
+import com.firstfuel.fafi.service.PlayerService;
+import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
+import com.firstfuel.fafi.web.rest.util.HeaderUtil;
+import com.firstfuel.fafi.web.rest.util.PaginationUtil;
+import com.firstfuel.fafi.service.dto.PlayerDTO;
+import com.firstfuel.fafi.service.dto.PlayerCriteria;
+import com.firstfuel.fafi.service.PlayerQueryService;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.codahale.metrics.annotation.Timed;
+import javax.validation.Valid;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-import com.firstfuel.fafi.service.PlayerQueryService;
-import com.firstfuel.fafi.service.PlayerService;
-import com.firstfuel.fafi.service.dto.PlayerCriteria;
-import com.firstfuel.fafi.service.dto.PlayerDTO;
-import com.firstfuel.fafi.web.rest.errors.BadRequestAlertException;
-import com.firstfuel.fafi.web.rest.util.HeaderUtil;
-import com.firstfuel.fafi.web.rest.util.PaginationUtil;
-
-import io.github.jhipster.web.util.ResponseUtil;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing Player.
@@ -42,15 +32,18 @@ import io.github.jhipster.web.util.ResponseUtil;
 @RequestMapping("/api")
 public class PlayerResource {
 
-    private final Logger log = LoggerFactory.getLogger( PlayerResource.class );
+    private final Logger log = LoggerFactory.getLogger(PlayerResource.class);
 
     private static final String ENTITY_NAME = "player";
 
-    @Autowired
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
-    @Autowired
-    private PlayerQueryService playerQueryService;
+    private final PlayerQueryService playerQueryService;
+
+    public PlayerResource(PlayerService playerService, PlayerQueryService playerQueryService) {
+        this.playerService = playerService;
+        this.playerQueryService = playerQueryService;
+    }
 
     /**
      * POST  /players : Create a new player.
@@ -61,16 +54,15 @@ public class PlayerResource {
      */
     @PostMapping("/players")
     @Timed
-    public ResponseEntity<PlayerDTO> createPlayer( @Valid @RequestBody PlayerDTO playerDTO )
-        throws URISyntaxException {
-        log.debug( "REST request to save Player : {}", playerDTO );
-        if ( playerDTO.getId() != null ) {
-            throw new BadRequestAlertException( "A new player cannot already have an ID", ENTITY_NAME, "idexists" );
+    public ResponseEntity<PlayerDTO> createPlayer(@Valid @RequestBody PlayerDTO playerDTO) throws URISyntaxException {
+        log.debug("REST request to save Player : {}", playerDTO);
+        if (playerDTO.getId() != null) {
+            throw new BadRequestAlertException("A new player cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PlayerDTO result = playerService.save( playerDTO );
-        return ResponseEntity.created( new URI( "/api/players/" + result.getId() ) )
-            .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
-            .body( result );
+        PlayerDTO result = playerService.save(playerDTO);
+        return ResponseEntity.created(new URI("/api/players/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -84,14 +76,15 @@ public class PlayerResource {
      */
     @PutMapping("/players")
     @Timed
-    public ResponseEntity<PlayerDTO> updatePlayer( @Valid @RequestBody PlayerDTO playerDTO )
-        throws URISyntaxException {
-        log.debug( "REST request to update Player : {}", playerDTO );
-        if ( playerDTO.getId() == null ) {
-            return createPlayer( playerDTO );
+    public ResponseEntity<PlayerDTO> updatePlayer(@Valid @RequestBody PlayerDTO playerDTO) throws URISyntaxException {
+        log.debug("REST request to update Player : {}", playerDTO);
+        if (playerDTO.getId() == null) {
+            return createPlayer(playerDTO);
         }
-        PlayerDTO result = playerService.save( playerDTO );
-        return ResponseEntity.ok().headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, playerDTO.getId().toString() ) ).body( result );
+        PlayerDTO result = playerService.save(playerDTO);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, playerDTO.getId().toString()))
+            .body(result);
     }
 
     /**
@@ -103,11 +96,11 @@ public class PlayerResource {
      */
     @GetMapping("/players")
     @Timed
-    public ResponseEntity<List<PlayerDTO>> getAllPlayers( PlayerCriteria criteria, Pageable pageable ) {
-        log.debug( "REST request to get Players by criteria: {}", criteria );
-        Page<PlayerDTO> page = playerQueryService.findByCriteria( criteria, pageable );
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders( page, "/api/players" );
-        return new ResponseEntity<>( page.getContent(), headers, HttpStatus.OK );
+    public ResponseEntity<List<PlayerDTO>> getAllPlayers(PlayerCriteria criteria, Pageable pageable) {
+        log.debug("REST request to get Players by criteria: {}", criteria);
+        Page<PlayerDTO> page = playerQueryService.findByCriteria(criteria, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/players");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -118,10 +111,10 @@ public class PlayerResource {
      */
     @GetMapping("/players/{id}")
     @Timed
-    public ResponseEntity<PlayerDTO> getPlayer( @PathVariable Long id ) {
-        log.debug( "REST request to get Player : {}", id );
-        PlayerDTO playerDTO = playerService.findOne( id );
-        return ResponseUtil.wrapOrNotFound( Optional.ofNullable( playerDTO ) );
+    public ResponseEntity<PlayerDTO> getPlayer(@PathVariable Long id) {
+        log.debug("REST request to get Player : {}", id);
+        PlayerDTO playerDTO = playerService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(playerDTO));
     }
 
     /**
@@ -132,9 +125,9 @@ public class PlayerResource {
      */
     @DeleteMapping("/players/{id}")
     @Timed
-    public ResponseEntity<Void> deletePlayer( @PathVariable Long id ) {
-        log.debug( "REST request to delete Player : {}", id );
-        playerService.delete( id );
-        return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) ).build();
+    public ResponseEntity<Void> deletePlayer(@PathVariable Long id) {
+        log.debug("REST request to delete Player : {}", id);
+        playerService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 }

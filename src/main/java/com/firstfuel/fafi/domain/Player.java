@@ -41,6 +41,9 @@ public class Player implements Serializable {
     @Column(name = "opted_games")
     private Set<Games> optedGames;
 
+    @Column(name = "points")
+    private Double points;
+
     @ManyToOne
     private Franchise franchise;
 
@@ -105,6 +108,19 @@ public class Player implements Serializable {
         this.optedGames = optedGames;
     }
 
+    public Double getPoints() {
+        return points;
+    }
+
+    public Player points(Double points) {
+        this.points = points;
+        return this;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
+    }
+
     public Franchise getFranchise() {
         return franchise;
     }
@@ -147,6 +163,7 @@ public class Player implements Serializable {
             ", basePrice=" + getBasePrice() +
             ", bidPrice=" + getBidPrice() +
             ", optedGames='" + getOptedGames() + "'" +
+            ", points=" + getPoints() +
             "}";
     }
 }
