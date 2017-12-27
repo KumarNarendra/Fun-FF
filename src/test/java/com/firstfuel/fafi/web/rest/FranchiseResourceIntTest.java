@@ -53,6 +53,9 @@ public class FranchiseResourceIntTest {
     private static final String DEFAULT_LOGO_PATH = "AAAAAAAAAA";
     private static final String UPDATED_LOGO_PATH = "BBBBBBBBBB";
 
+    private static final Double DEFAULT_POINTS = 1D;
+    private static final Double UPDATED_POINTS = 2D;
+
     @Autowired
     private FranchiseRepository franchiseRepository;
 
@@ -101,7 +104,8 @@ public class FranchiseResourceIntTest {
     public static Franchise createEntity(EntityManager em) {
         Franchise franchise = new Franchise()
             .name(DEFAULT_NAME)
-            .logoPath(DEFAULT_LOGO_PATH);
+            .logoPath(DEFAULT_LOGO_PATH)
+            .points(DEFAULT_POINTS);
         return franchise;
     }
 
@@ -128,6 +132,7 @@ public class FranchiseResourceIntTest {
         Franchise testFranchise = franchiseList.get(franchiseList.size() - 1);
         assertThat(testFranchise.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testFranchise.getLogoPath()).isEqualTo(DEFAULT_LOGO_PATH);
+        assertThat(testFranchise.getPoints()).isEqualTo(DEFAULT_POINTS);
     }
 
     @Test
@@ -181,7 +186,8 @@ public class FranchiseResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(franchise.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH.toString())));
+            .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH.toString())))
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())));
     }
 
     @Test
@@ -196,7 +202,8 @@ public class FranchiseResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(franchise.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.logoPath").value(DEFAULT_LOGO_PATH.toString()));
+            .andExpect(jsonPath("$.logoPath").value(DEFAULT_LOGO_PATH.toString()))
+            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.doubleValue()));
     }
 
     @Test
@@ -275,6 +282,45 @@ public class FranchiseResourceIntTest {
 
         // Get all the franchiseList where logoPath is null
         defaultFranchiseShouldNotBeFound("logoPath.specified=false");
+    }
+
+    @Test
+    @Transactional
+    public void getAllFranchisesByPointsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        franchiseRepository.saveAndFlush(franchise);
+
+        // Get all the franchiseList where points equals to DEFAULT_POINTS
+        defaultFranchiseShouldBeFound("points.equals=" + DEFAULT_POINTS);
+
+        // Get all the franchiseList where points equals to UPDATED_POINTS
+        defaultFranchiseShouldNotBeFound("points.equals=" + UPDATED_POINTS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFranchisesByPointsIsInShouldWork() throws Exception {
+        // Initialize the database
+        franchiseRepository.saveAndFlush(franchise);
+
+        // Get all the franchiseList where points in DEFAULT_POINTS or UPDATED_POINTS
+        defaultFranchiseShouldBeFound("points.in=" + DEFAULT_POINTS + "," + UPDATED_POINTS);
+
+        // Get all the franchiseList where points equals to UPDATED_POINTS
+        defaultFranchiseShouldNotBeFound("points.in=" + UPDATED_POINTS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFranchisesByPointsIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        franchiseRepository.saveAndFlush(franchise);
+
+        // Get all the franchiseList where points is not null
+        defaultFranchiseShouldBeFound("points.specified=true");
+
+        // Get all the franchiseList where points is null
+        defaultFranchiseShouldNotBeFound("points.specified=false");
     }
 
     @Test
@@ -361,7 +407,8 @@ public class FranchiseResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(franchise.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH.toString())));
+            .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH.toString())))
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())));
     }
 
     /**
@@ -397,7 +444,8 @@ public class FranchiseResourceIntTest {
         em.detach(updatedFranchise);
         updatedFranchise
             .name(UPDATED_NAME)
-            .logoPath(UPDATED_LOGO_PATH);
+            .logoPath(UPDATED_LOGO_PATH)
+            .points(UPDATED_POINTS);
         FranchiseDTO franchiseDTO = franchiseMapper.toDto(updatedFranchise);
 
         restFranchiseMockMvc.perform(put("/api/franchises")
@@ -411,6 +459,7 @@ public class FranchiseResourceIntTest {
         Franchise testFranchise = franchiseList.get(franchiseList.size() - 1);
         assertThat(testFranchise.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFranchise.getLogoPath()).isEqualTo(UPDATED_LOGO_PATH);
+        assertThat(testFranchise.getPoints()).isEqualTo(UPDATED_POINTS);
     }
 
     @Test

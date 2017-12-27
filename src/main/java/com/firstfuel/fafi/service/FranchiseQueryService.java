@@ -84,8 +84,11 @@ public class FranchiseQueryService
             if ( criteria.getLogoPath() != null ) {
                 specification = specification.and( buildStringSpecification( criteria.getLogoPath(), Franchise_.logoPath ) );
             }
-            if ( criteria.getPlayersId() != null ) {
-                specification = specification.and( buildReferringEntitySpecification( criteria.getPlayersId(), Franchise_.players, Player_.id ) );
+            if (criteria.getPoints() != null) {
+                specification = specification.and(buildRangeSpecification(criteria.getPoints(), Franchise_.points));
+            }
+            if (criteria.getPlayersId() != null) {
+                specification = specification.and(buildReferringEntitySpecification(criteria.getPlayersId(), Franchise_.players, Player_.id));
             }
             if ( criteria.getSeasonId() != null ) {
                 specification = specification.and( buildReferringEntitySpecification( criteria.getSeasonId(), Franchise_.season, Season_.id ) );

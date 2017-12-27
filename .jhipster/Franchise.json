@@ -41,6 +41,10 @@
         {
             "fieldName": "logoPath",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "points",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20171218184447",

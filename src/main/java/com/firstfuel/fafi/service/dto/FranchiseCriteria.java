@@ -32,6 +32,8 @@ public class FranchiseCriteria implements Serializable {
 
     private StringFilter logoPath;
 
+    private DoubleFilter points;
+
     private LongFilter playersId;
 
     private LongFilter seasonId;
@@ -65,6 +67,14 @@ public class FranchiseCriteria implements Serializable {
 
     public void setLogoPath(StringFilter logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public DoubleFilter getPoints() {
+        return points;
+    }
+
+    public void setPoints(DoubleFilter points) {
+        this.points = points;
     }
 
     public LongFilter getPlayersId() {
@@ -105,6 +115,7 @@ public class FranchiseCriteria implements Serializable {
                 (id != null ? "id=" + id + ", " : "") +
                 (name != null ? "name=" + name + ", " : "") +
                 (logoPath != null ? "logoPath=" + logoPath + ", " : "") +
+                (points != null ? "points=" + points + ", " : "") +
                 (playersId != null ? "playersId=" + playersId + ", " : "") +
                 (seasonId != null ? "seasonId=" + seasonId + ", " : "") +
                 (ownerId != null ? "ownerId=" + ownerId + ", " : "") +

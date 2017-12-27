@@ -33,6 +33,9 @@ public class Franchise implements Serializable {
     @Column(name = "logo_path")
     private String logoPath;
 
+    @Column(name = "points")
+    private Double points;
+
     @OneToMany(mappedBy = "franchise")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -82,6 +85,19 @@ public class Franchise implements Serializable {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public Double getPoints() {
+        return points;
+    }
+
+    public Franchise points(Double points) {
+        this.points = points;
+        return this;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
     }
 
     public Set<Player> getPlayers() {
@@ -175,6 +191,7 @@ public class Franchise implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", logoPath='" + getLogoPath() + "'" +
+            ", points=" + getPoints() +
             "}";
     }
 }

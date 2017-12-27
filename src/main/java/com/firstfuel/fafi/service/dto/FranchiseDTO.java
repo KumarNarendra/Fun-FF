@@ -19,6 +19,8 @@ public class FranchiseDTO implements Serializable {
 
     private String logoPath;
 
+    private Double points;
+
     private Long seasonId;
 
     private Long ownerId;
@@ -53,6 +55,14 @@ public class FranchiseDTO implements Serializable {
 
     public void setLogoPath(String logoPath) {
         this.logoPath = logoPath;
+    }
+
+    public Double getPoints() {
+        return points;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
     }
 
     public Long getSeasonId() {
@@ -130,6 +140,7 @@ public class FranchiseDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", logoPath='" + getLogoPath() + "'" +
+            ", points=" + getPoints() +
             "}";
     }
 }
