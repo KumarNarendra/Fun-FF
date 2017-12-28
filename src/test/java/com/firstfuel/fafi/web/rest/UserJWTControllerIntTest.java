@@ -36,10 +36,7 @@ import static org.hamcrest.Matchers.not;
 public class UserJWTControllerIntTest {
 
     @Autowired
-    private TokenProvider tokenProvider;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private UserJWTController userJWTController;
 
     @Autowired
     private UserRepository userRepository;
@@ -54,7 +51,6 @@ public class UserJWTControllerIntTest {
 
     @Before
     public void setup() {
-        UserJWTController userJWTController = new UserJWTController(tokenProvider, authenticationManager);
         this.mockMvc = MockMvcBuilders.standaloneSetup(userJWTController)
             .setControllerAdvice(exceptionTranslator)
             .build();

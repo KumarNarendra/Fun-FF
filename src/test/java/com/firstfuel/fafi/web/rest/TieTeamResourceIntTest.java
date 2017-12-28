@@ -58,10 +58,7 @@ public class TieTeamResourceIntTest {
     private TieTeamMapper tieTeamMapper;
 
     @Autowired
-    private TieTeamService tieTeamService;
-
-    @Autowired
-    private TieTeamQueryService tieTeamQueryService;
+    private TieTeamResource tieTeamResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -82,7 +79,6 @@ public class TieTeamResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TieTeamResource tieTeamResource = new TieTeamResource(tieTeamService, tieTeamQueryService);
         this.restTieTeamMockMvc = MockMvcBuilders.standaloneSetup(tieTeamResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

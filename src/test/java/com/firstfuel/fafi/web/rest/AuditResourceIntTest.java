@@ -46,7 +46,7 @@ public class AuditResourceIntTest {
     private PersistenceAuditEventRepository auditEventRepository;
 
     @Autowired
-    private AuditEventConverter auditEventConverter;
+    private AuditResource auditResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -64,9 +64,6 @@ public class AuditResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AuditEventService auditEventService =
-            new AuditEventService(auditEventRepository, auditEventConverter);
-        AuditResource auditResource = new AuditResource(auditEventService);
         this.restAuditMockMvc = MockMvcBuilders.standaloneSetup(auditResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setConversionService(formattingConversionService)

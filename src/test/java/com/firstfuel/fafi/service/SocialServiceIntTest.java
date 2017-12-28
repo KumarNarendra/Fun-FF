@@ -50,6 +50,7 @@ public class SocialServiceIntTest {
     @Mock
     private ConnectionRepository mockConnectionRepository;
 
+    @Autowired
     private SocialService socialService;
 
     @Before
@@ -58,9 +59,6 @@ public class SocialServiceIntTest {
         doNothing().when(mockMailService).sendSocialRegistrationValidationEmail(anyObject(), anyString());
         doNothing().when(mockConnectionRepository).addConnection(anyObject());
         when(mockUsersConnectionRepository.createConnectionRepository(anyString())).thenReturn(mockConnectionRepository);
-
-        socialService = new SocialService(mockUsersConnectionRepository, authorityRepository,
-                passwordEncoder, userRepository, mockMailService);
     }
 
     @Test

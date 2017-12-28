@@ -63,10 +63,7 @@ public class FranchiseResourceIntTest {
     private FranchiseMapper franchiseMapper;
 
     @Autowired
-    private FranchiseService franchiseService;
-
-    @Autowired
-    private FranchiseQueryService franchiseQueryService;
+    private FranchiseResource franchiseResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -87,7 +84,6 @@ public class FranchiseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final FranchiseResource franchiseResource = new FranchiseResource(franchiseService, franchiseQueryService);
         this.restFranchiseMockMvc = MockMvcBuilders.standaloneSetup(franchiseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

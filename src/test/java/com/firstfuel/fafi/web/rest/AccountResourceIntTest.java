@@ -59,7 +59,7 @@ public class AccountResourceIntTest {
     private AuthorityRepository authorityRepository;
 
     @Autowired
-    private UserService userService;
+    private AccountResource accountResource;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -69,6 +69,9 @@ public class AccountResourceIntTest {
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
+
+    @Mock
+    private AccountResource accountUserMockResource;
 
     @Mock
     private UserService mockUserService;
@@ -84,11 +87,7 @@ public class AccountResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(mockMailService).sendActivationEmail(anyObject());
-        AccountResource accountResource =
-            new AccountResource(userRepository, userService, mockMailService);
 
-        AccountResource accountUserMockResource =
-            new AccountResource(userRepository, mockUserService, mockMailService);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
             .setMessageConverters(httpMessageConverters)
             .setControllerAdvice(exceptionTranslator)

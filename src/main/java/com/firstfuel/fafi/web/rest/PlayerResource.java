@@ -11,6 +11,7 @@ import com.firstfuel.fafi.service.PlayerQueryService;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -36,14 +37,12 @@ public class PlayerResource {
 
     private static final String ENTITY_NAME = "player";
 
-    private final PlayerService playerService;
+    @Autowired
+    private PlayerService playerService;
 
-    private final PlayerQueryService playerQueryService;
+    @Autowired
+    private PlayerQueryService playerQueryService;
 
-    public PlayerResource(PlayerService playerService, PlayerQueryService playerQueryService) {
-        this.playerService = playerService;
-        this.playerQueryService = playerQueryService;
-    }
 
     /**
      * POST  /players : Create a new player.

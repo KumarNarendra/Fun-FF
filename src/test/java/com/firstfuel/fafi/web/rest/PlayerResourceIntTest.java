@@ -72,10 +72,7 @@ public class PlayerResourceIntTest {
     private PlayerMapper playerMapper;
 
     @Autowired
-    private PlayerService playerService;
-
-    @Autowired
-    private PlayerQueryService playerQueryService;
+    private PlayerResource playerResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -96,7 +93,6 @@ public class PlayerResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        final PlayerResource playerResource = new PlayerResource( playerService, playerQueryService );
         this.restPlayerMockMvc = MockMvcBuilders.standaloneSetup( playerResource )
             .setCustomArgumentResolvers( pageableArgumentResolver )
             .setControllerAdvice( exceptionTranslator )

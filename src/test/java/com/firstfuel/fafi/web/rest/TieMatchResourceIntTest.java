@@ -60,10 +60,7 @@ public class TieMatchResourceIntTest {
     private TieMatchMapper tieMatchMapper;
 
     @Autowired
-    private TieMatchService tieMatchService;
-
-    @Autowired
-    private TieMatchQueryService tieMatchQueryService;
+    private TieMatchResource tieMatchResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -84,7 +81,6 @@ public class TieMatchResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TieMatchResource tieMatchResource = new TieMatchResource(tieMatchService, tieMatchQueryService);
         this.restTieMatchMockMvc = MockMvcBuilders.standaloneSetup(tieMatchResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

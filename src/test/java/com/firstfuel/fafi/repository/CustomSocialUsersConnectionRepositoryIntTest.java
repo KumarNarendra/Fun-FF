@@ -34,10 +34,13 @@ import static org.junit.Assert.*;
 @Transactional
 public class CustomSocialUsersConnectionRepositoryIntTest {
 
+    @Autowired
     private ConnectionFactoryRegistry connectionFactoryRegistry;
 
+    @Autowired
     private TestFacebookConnectionFactory connectionFactory;
 
+    @Autowired
     private CustomSocialUsersConnectionRepository usersConnectionRepository;
 
     private ConnectionRepository connectionRepository;
@@ -49,10 +52,7 @@ public class CustomSocialUsersConnectionRepositoryIntTest {
     public void setUp() {
 		socialUserConnectionRepository.deleteAll();
 
-        connectionFactoryRegistry = new ConnectionFactoryRegistry();
-        connectionFactory = new TestFacebookConnectionFactory();
         connectionFactoryRegistry.addConnectionFactory(connectionFactory);
-        usersConnectionRepository = new CustomSocialUsersConnectionRepository(socialUserConnectionRepository, connectionFactoryRegistry);
         connectionRepository = usersConnectionRepository.createConnectionRepository("1");
     }
 

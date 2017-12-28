@@ -33,28 +33,19 @@ import static org.mockito.Mockito.*;
 @SpringBootTest(classes = FafiApp.class)
 public class MailServiceIntTest {
 
-    @Autowired
-    private JHipsterProperties jHipsterProperties;
-
-    @Autowired
-    private MessageSource messageSource;
-
-    @Autowired
-    private SpringTemplateEngine templateEngine;
-
     @Spy
     private JavaMailSenderImpl javaMailSender;
 
     @Captor
     private ArgumentCaptor messageCaptor;
 
+    @Autowired
     private MailService mailService;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
-        mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
     }
 
     @Test

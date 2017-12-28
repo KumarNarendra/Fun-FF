@@ -75,10 +75,7 @@ public class UserResourceIntTest {
     private UserRepository userRepository;
 
     @Autowired
-    private MailService mailService;
-
-    @Autowired
-    private UserService userService;
+    private UserResource userResource;
 
     @Autowired
     private UserMapper userMapper;
@@ -102,7 +99,6 @@ public class UserResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        UserResource userResource = new UserResource(userRepository, userService, mailService);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

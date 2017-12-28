@@ -64,10 +64,7 @@ public class TournamentResourceIntTest {
     private TournamentMapper tournamentMapper;
 
     @Autowired
-    private TournamentService tournamentService;
-
-    @Autowired
-    private TournamentQueryService tournamentQueryService;
+    private TournamentResource tournamentResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -88,7 +85,6 @@ public class TournamentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final TournamentResource tournamentResource = new TournamentResource(tournamentService, tournamentQueryService);
         this.restTournamentMockMvc = MockMvcBuilders.standaloneSetup(tournamentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

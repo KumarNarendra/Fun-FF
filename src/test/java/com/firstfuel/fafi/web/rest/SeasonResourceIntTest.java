@@ -66,10 +66,7 @@ public class SeasonResourceIntTest {
     private SeasonMapper seasonMapper;
 
     @Autowired
-    private SeasonService seasonService;
-
-    @Autowired
-    private SeasonQueryService seasonQueryService;
+    private SeasonResource seasonResource;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -90,7 +87,6 @@ public class SeasonResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SeasonResource seasonResource = new SeasonResource(seasonService, seasonQueryService);
         this.restSeasonMockMvc = MockMvcBuilders.standaloneSetup(seasonResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
