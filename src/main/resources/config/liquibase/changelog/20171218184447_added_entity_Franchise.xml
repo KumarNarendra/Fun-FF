@@ -31,7 +31,7 @@
             </column>
 
             <column name="points" type="double" defaultValue="0.0">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="season_id" type="bigint">

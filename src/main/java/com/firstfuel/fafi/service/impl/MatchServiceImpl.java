@@ -1,6 +1,12 @@
 package com.firstfuel.fafi.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +16,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.firstfuel.fafi.domain.Franchise;
 import com.firstfuel.fafi.domain.Match;
 import com.firstfuel.fafi.repository.MatchRepository;
 import com.firstfuel.fafi.service.FranchiseService;
 import com.firstfuel.fafi.service.MatchService;
+import com.firstfuel.fafi.service.dto.FranchiseDTO;
 import com.firstfuel.fafi.service.dto.MatchDTO;
 import com.firstfuel.fafi.service.dto.TieMatchDTO;
+import com.firstfuel.fafi.service.mapper.FranchiseMapper;
 import com.firstfuel.fafi.service.mapper.MatchMapper;
 
 
@@ -37,6 +46,9 @@ public class MatchServiceImpl
 
     @Autowired
     private FranchiseService franchiseService;
+
+    @Autowired
+    private FranchiseMapper franchiseMapper;
 
 
     /**
@@ -100,5 +112,21 @@ public class MatchServiceImpl
     public void delete( Long id ) {
         log.debug( "Request to delete Match : {}", id );
         matchRepository.delete( id );
+    }
+
+    @Override
+    public Map<Long, List<MatchDTO>> getAllMatchesByFranchises( List<FranchiseDTO> franchiseDTOList ) {
+        List<Franchise> franchises = franchiseMapper.toEntity( franchiseDTOList );
+        List<Match> matches = matchRepository.getMatchesByFranchise1InOrFranchise2In( franchises, franchises );
+        Map<Franchise, List<Match>> franchise1Matches = matches.stream().collect( Collectors.groupingBy( Match::getFranchise1 ) );
+        Map<Franchise, List<Match>> franchise2Matches = matches.stream().collect( Collectors.groupingBy( Match::getFranchise2 ) );
+        Map<Long, List<MatchDTO>> allMatchesByFranchise = Stream.concat( franchise1Matches.entrySet().stream(), franchise2Matches.entrySet().stream() )
+            .collect( Collectors.toMap( o -> o.getKey().getId(), o -> matchMapper.toDto( o.getValue() ), this::mergeFunction ) );
+        log.debug( "allMatchesByFranchise : {}", allMatchesByFranchise );
+        return allMatchesByFranchise;
+    }
+
+    private List<MatchDTO> mergeFunction( List<MatchDTO> v1, List<MatchDTO> v2 ) {
+        return Stream.concat( v1.stream(), v2.stream() ).distinct().collect( Collectors.toList() );
     }
 }

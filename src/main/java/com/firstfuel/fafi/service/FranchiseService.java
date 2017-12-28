@@ -1,5 +1,7 @@
 package com.firstfuel.fafi.service;
 
+import java.util.List;
+
 import com.firstfuel.fafi.service.dto.FranchiseDTO;
 
 import org.springframework.data.domain.Page;
@@ -45,8 +47,15 @@ public interface FranchiseService {
      * Save points for a franchise.
      *
      * @param franchiseId the id of the entity to save
-     * @param points points earned by entity
+     * @param points      points earned by entity
      * @return the persisted entity
      */
     void savePointsForFranchise( Long franchiseId, Double points );
+
+    /**
+     * Get all the franchises without pageable.
+     *
+     * @return the list of entities
+     */
+    List<FranchiseDTO> getAllFranchiseBySeason(Long seasonId);
 }

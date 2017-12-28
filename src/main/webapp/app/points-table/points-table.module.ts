@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { FafiSharedModule } from '../shared';
 
-import { POINTS_TABLE_ROUTE, PointsTableComponent } from './';
+import { POINTS_TABLE_ROUTE, PointsTableComponent, StatisticsService } from './';
 
 @NgModule({
     imports: [
@@ -16,6 +16,7 @@ import { POINTS_TABLE_ROUTE, PointsTableComponent } from './';
     entryComponents: [
     ],
     providers: [
+        StatisticsService,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

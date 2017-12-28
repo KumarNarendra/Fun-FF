@@ -1,6 +1,10 @@
 package com.firstfuel.fafi.repository;
 
+import java.util.List;
+
 import com.firstfuel.fafi.domain.Franchise;
+import com.firstfuel.fafi.domain.Season;
+
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -11,6 +15,8 @@ import org.springframework.data.jpa.repository.*;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FranchiseRepository extends JpaRepository<Franchise, Long>, JpaSpecificationExecutor<Franchise> {
+public interface FranchiseRepository
+    extends JpaRepository<Franchise, Long>, JpaSpecificationExecutor<Franchise> {
+    List<Franchise> getAllBySeason( Season season );
 
 }

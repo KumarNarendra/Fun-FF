@@ -1,6 +1,12 @@
 package com.firstfuel.fafi.service;
 
+import java.util.List;
+import java.util.Map;
+
+import com.firstfuel.fafi.domain.Match;
+import com.firstfuel.fafi.service.dto.FranchiseDTO;
 import com.firstfuel.fafi.service.dto.MatchDTO;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +21,7 @@ public interface MatchService {
      * @param matchDTO the entity to save
      * @return the persisted entity
      */
-    MatchDTO save(MatchDTO matchDTO);
+    MatchDTO save( MatchDTO matchDTO );
 
     /**
      * Get all the matches.
@@ -23,7 +29,7 @@ public interface MatchService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<MatchDTO> findAll(Pageable pageable);
+    Page<MatchDTO> findAll( Pageable pageable );
 
     /**
      * Get the "id" match.
@@ -31,12 +37,14 @@ public interface MatchService {
      * @param id the id of the entity
      * @return the entity
      */
-    MatchDTO findOne(Long id);
+    MatchDTO findOne( Long id );
 
     /**
      * Delete the "id" match.
      *
      * @param id the id of the entity
      */
-    void delete(Long id);
+    void delete( Long id );
+
+    Map<Long, List<MatchDTO>> getAllMatchesByFranchises( List<FranchiseDTO> franchiseDTOList );
 }

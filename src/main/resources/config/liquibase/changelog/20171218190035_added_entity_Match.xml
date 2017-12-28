@@ -31,11 +31,11 @@
             </column>
 
             <column name="points_for_franchise_1" type="double" defaultValue="0.0">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="points_for_franchise_2" type="double" defaultValue="0.0">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="tournament_id" type="bigint">

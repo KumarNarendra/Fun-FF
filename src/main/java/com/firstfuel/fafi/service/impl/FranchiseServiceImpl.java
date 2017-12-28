@@ -1,5 +1,10 @@
 package com.firstfuel.fafi.service.impl;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +16,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.firstfuel.fafi.domain.Franchise;
 import com.firstfuel.fafi.repository.FranchiseRepository;
 import com.firstfuel.fafi.service.FranchiseService;
+import com.firstfuel.fafi.service.SeasonService;
 import com.firstfuel.fafi.service.dto.FranchiseDTO;
+import com.firstfuel.fafi.service.dto.SeasonDTO;
 import com.firstfuel.fafi.service.mapper.FranchiseMapper;
+import com.firstfuel.fafi.service.mapper.SeasonMapper;
 
 
 /**
@@ -30,6 +38,12 @@ public class FranchiseServiceImpl
 
     @Autowired
     private FranchiseMapper franchiseMapper;
+
+    @Autowired
+    private SeasonService seasonService;
+
+    @Autowired
+    private SeasonMapper seasonMapper;
 
 
     /**
@@ -89,5 +103,16 @@ public class FranchiseServiceImpl
         FranchiseDTO franchiseDTO = findOne( franchiseId );
         franchiseDTO.setPoints( franchiseDTO.getPoints() + points );
         save( franchiseDTO );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<FranchiseDTO> getAllFranchiseBySeason( final Long seasonId ) {
+        SeasonDTO seasonDTO = seasonService.findOne( seasonId );
+        if ( Objects.nonNull( seasonDTO ) ) {
+            return franchiseRepository.getAllBySeason( seasonMapper.toEntity( seasonDTO ) ).stream().map( franchiseMapper::toDto ).collect( Collectors.toList() );
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

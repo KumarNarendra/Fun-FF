@@ -27,11 +27,11 @@
             </column>
 
             <column name="base_price" type="double" defaultValue="0.0">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="bid_price" type="double" defaultValue="0.0">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="opted_games" type="varchar(255)">
@@ -39,7 +39,7 @@
             </column>
 
             <column name="points" type="double" defaultValue="0.0">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
 
             <column name="franchise_id" type="bigint">

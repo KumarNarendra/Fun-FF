@@ -18,9 +18,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let franchise of franchises">
-                        <td><a [routerLink]="['../franchise', franchise.id ]">{{franchise.id}}</a></td>
-                        <td>{{franchise.name}}</td>
+                    <tr *ngFor="let franchiseStandingOption of franchiseStandings">
+                        <td>{{franchiseStandingOption.rank}}</td>
+                        <!--<td><a [routerLink]="['../franchise', franchise.id ]">{{franchise.id}}</a></td>-->
+                        <td>{{franchiseStandingOption.franchise.name}}</td>
+                        <td>{{franchiseStandingOption.matchesPlayed}}</td>
+                        <td>{{franchiseStandingOption.points}}</td>
+                        <td>{{franchiseStandingOption.currentForm}}</td>
                     </tr>
                     </tbody>
                 </table>
