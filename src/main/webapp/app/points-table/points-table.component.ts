@@ -3,7 +3,7 @@ import { StatisticsService } from './statistics.service';
 import { ResponseWrapper } from '../shared';
 import { FranchiseStandingsModel } from './statistics.model';
 import { JhiAlertService } from 'ng-jhipster';
-import * as d3 from 'd3';
+import { COLORS } from '../app.constants';
 
 @Component({
     selector: 'fafi-points-table',
@@ -83,6 +83,7 @@ export class PointsTableComponent implements OnInit {
             }
         };
         const dataArray = [];
+        let j = 0;
         franchiseStandingsData.forEach((franchiseStanding) => {
             const dataCoordinates = [];
             dataCoordinates.push({x: 0, y: 0});
@@ -95,10 +96,12 @@ export class PointsTableComponent implements OnInit {
             const lineData = {
                 values: dataCoordinates,
                 key: franchiseStanding.franchise.name,
+                color: COLORS[j],
             };
+            j = j + 1;
             dataArray.push(lineData);
         });
         this.lineChartData = dataArray;
-        console.log(this.lineChartData);
     }
+
 }

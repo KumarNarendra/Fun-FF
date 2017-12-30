@@ -15,7 +15,7 @@
                                         <h1 class="text-capitalize text-center" jhiTranslate="points-table.franchise-standings.title">Title</h1>
                                     </div>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th><span jhiTranslate="points-table.franchise-standings.rank">Rank</span></th>
@@ -35,14 +35,10 @@
                                                 <td>{{franchiseStandingOption.totalPoints}}</td>
                                                 <!--<td>{{franchiseStandingOption.currentForm}}</td>-->
                                                 <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td *ngFor="let currentForm of franchiseStandingOption.currentForm">
-                                                                <span class="fa fa-circle" style="color: forestgreen" *ngIf="currentForm"></span>
-                                                                <span class="fa fa-circle" style="color: darkred" *ngIf="!currentForm"></span>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                                    <span *ngFor="let currentForm of franchiseStandingOption.currentForm">
+                                                        <span class="fa fa-check-circle-o" style="color: forestgreen; font-size: larger" *ngIf="currentForm"></span>
+                                                        <span class="fa fa-times-circle-o" style="color: darkred;font-size: larger" *ngIf="!currentForm"></span>
+                                                    </span>
                                                 </td>
                                             </tr>
                                             </tbody>
@@ -74,7 +70,7 @@
                                         <h1 class="text-capitalize text-center" jhiTranslate="points-table.player-standings.title">Title</h1>
                                     </div>
                                     <div class="table-responsive">
-                                        <table class="table">
+                                        <table class="table table-striped">
                                             <thead>
                                             <tr>
                                                 <th><span jhiTranslate="points-table.player-standings.rank">Rank</span></th>
@@ -94,14 +90,10 @@
                                                 <td>{{franchiseStandingOption.totalPoints}}</td>
                                                 <!--<td>{{franchiseStandingOption.currentForm}}</td>-->
                                                 <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td *ngFor="let currentForm of franchiseStandingOption.currentForm">
-                                                                <span class="fa fa-circle" style="color: forestgreen" *ngIf="currentForm"></span>
-                                                                <span class="fa fa-circle" style="color: darkred" *ngIf="!currentForm"></span>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
+                                                    <span *ngFor="let currentForm of franchiseStandingOption.currentForm">
+                                                        <span class="fa fa-check-circle-o" style="color: forestgreen; font-size: larger" *ngIf="currentForm"></span>
+                                                        <span class="fa fa-times-circle-o" style="color: darkred;font-size: larger" *ngIf="!currentForm"></span>
+                                                    </span>
                                                 </td>
                                             </tr>
                                             </tbody>

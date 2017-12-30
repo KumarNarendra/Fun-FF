@@ -38,7 +38,7 @@ import com.firstfuel.fafi.service.dto.MatchDTO;
 @RestController
 @RequestMapping("/api/statistics")
 public class StatisticsResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger( TieMatchResource.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger( StatisticsResource.class );
 
     @Autowired
     private FranchiseService franchiseService;
@@ -47,7 +47,7 @@ public class StatisticsResource {
     private MatchService matchService;
 
     /**
-     * GET  /tie-matches : get all the tieMatches.
+     * GET  //seasons/{seasonId}/franchise-standings : get franchise standings for a given season.
      *
      * @param seasonId the id of the season
      * @return the ResponseEntity with status 200 (OK) and the list of Franchise standings in body
@@ -72,11 +72,9 @@ public class StatisticsResource {
 
         AtomicInteger rank = new AtomicInteger( 0 );
         List<FranchiseStandingsDTO> franchiseStandingsDTOList = franchiseDTOList.stream()
-            .sorted( Comparator.comparing( FranchiseDTO::getPoints, Comparator.reverseOrder() ) )
             .map( franchiseDTO -> {
                 List<MatchDTO> matches = franchiseIdToMatches.get( franchiseDTO.getId() );
                 FranchiseStandingsDTO franchiseStandingsDTO = new FranchiseStandingsDTO();
-                franchiseStandingsDTO.setRank( rank.incrementAndGet() );
                 franchiseStandingsDTO.setFranchise( franchiseDTO );
                 franchiseStandingsDTO.setTotalMatchesPlayed( Objects.nonNull( matches ) ? matches.size() : 0 );
                 franchiseStandingsDTO.setTotalPoints( franchiseIdToPoints.get( franchiseDTO.getId() ) );
@@ -88,8 +86,10 @@ public class StatisticsResource {
                 }
                 return franchiseStandingsDTO;
             } )
+            .sorted( Comparator.comparingDouble( FranchiseStandingsDTO::getTotalPoints ).thenComparing( FranchiseStandingsDTO::getTotalMatchesPlayed ).reversed() )
+            .peek( franchiseStandingsDTO -> franchiseStandingsDTO.setRank( rank.incrementAndGet() ) )
             .collect( Collectors.toList() );
-
+        LOGGER.debug( "franchiseStandingsDTOList : {}", franchiseStandingsDTOList );
         return new ResponseEntity<>( franchiseStandingsDTOList, HttpStatus.OK );
     }
 

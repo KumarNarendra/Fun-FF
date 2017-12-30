@@ -10,3 +10,4 @@ let _SERVER_API_URL = ''; // This value will be overwritten by Webpack
 export const VERSION = _VERSION;
 export const DEBUG_INFO_ENABLED = _DEBUG_INFO_ENABLED;
 export const SERVER_API_URL = _SERVER_API_URL;
+export const COLORS = ['green', 'blue', 'goldenrod', 'brown', 'red'];
