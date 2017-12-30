@@ -3,12 +3,11 @@ package com.firstfuel.fafi.service;
 import java.util.List;
 import java.util.Map;
 
-import com.firstfuel.fafi.domain.Match;
-import com.firstfuel.fafi.service.dto.FranchiseDTO;
-import com.firstfuel.fafi.service.dto.MatchDTO;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import com.firstfuel.fafi.service.dto.FranchiseDTO;
+import com.firstfuel.fafi.service.dto.MatchDTO;
 
 /**
  * Service Interface for managing Match.

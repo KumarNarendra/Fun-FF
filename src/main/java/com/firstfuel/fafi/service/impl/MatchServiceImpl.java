@@ -1,10 +1,7 @@
 package com.firstfuel.fafi.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,7 +20,6 @@ import com.firstfuel.fafi.service.FranchiseService;
 import com.firstfuel.fafi.service.MatchService;
 import com.firstfuel.fafi.service.dto.FranchiseDTO;
 import com.firstfuel.fafi.service.dto.MatchDTO;
-import com.firstfuel.fafi.service.dto.TieMatchDTO;
 import com.firstfuel.fafi.service.mapper.FranchiseMapper;
 import com.firstfuel.fafi.service.mapper.MatchMapper;
 
@@ -62,18 +58,7 @@ public class MatchServiceImpl
         log.debug( "Request to save Match : {}", matchDTO );
         Match match = matchMapper.toEntity( matchDTO );
         match = matchRepository.save( match );
-        savePointsForFranchises( matchDTO );
         return matchMapper.toDto( match );
-    }
-
-    private void savePointsForFranchises( MatchDTO matchDTO ) {
-        if ( Objects.nonNull( matchDTO.getPointsForFranchise1() ) ) {
-            franchiseService.savePointsForFranchise( matchDTO.getFranchise1Id(), matchDTO.getPointsForFranchise1() );
-        }
-        if ( Objects.nonNull( matchDTO.getPointsForFranchise2() ) ) {
-            franchiseService.savePointsForFranchise( matchDTO.getFranchise2Id(), matchDTO.getPointsForFranchise2() );
-        }
-
     }
 
     /**

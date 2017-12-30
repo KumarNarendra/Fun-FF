@@ -10,26 +10,20 @@
         {
             "relationshipName": "franchise1",
             "otherEntityName": "franchise",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "match"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         },
         {
             "relationshipName": "franchise2",
             "otherEntityName": "franchise",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "match"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         },
         {
             "relationshipName": "winner",
             "otherEntityName": "franchise",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "match"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         }
     ],
     "fields": [

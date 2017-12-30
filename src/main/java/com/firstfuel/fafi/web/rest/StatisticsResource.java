@@ -1,5 +1,6 @@
 package com.firstfuel.fafi.web.rest;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -79,7 +81,11 @@ public class StatisticsResource {
                 franchiseStandingsDTO.setTotalMatchesPlayed( Objects.nonNull( matches ) ? matches.size() : 0 );
                 franchiseStandingsDTO.setTotalPoints( franchiseIdToPoints.get( franchiseDTO.getId() ) );
                 franchiseStandingsDTO.setCurrentForm( franchiseIdToForm.get( franchiseDTO.getId() ) );
-                populateMatchWiseDetails( franchiseDTO, franchiseStandingsDTO, matches );
+                if ( CollectionUtils.isEmpty( matches ) ) {
+                    franchiseStandingsDTO.setMatchWiseDetails( Collections.emptyList() );
+                } else {
+                    populateMatchWiseDetails( franchiseDTO, franchiseStandingsDTO, matches );
+                }
                 return franchiseStandingsDTO;
             } )
             .collect( Collectors.toList() );
@@ -116,9 +122,9 @@ public class StatisticsResource {
             } else {
                 result = Boolean.FALSE;
             }
-            if ( Objects.equals( franchiseDTO.getId(), match.getFranchise1Id() ) ){
+            if ( Objects.equals( franchiseDTO.getId(), match.getFranchise1Id() ) ) {
                 points = match.getPointsForFranchise1();
-            } else if ( Objects.equals( franchiseDTO.getId(), match.getFranchise2Id() ) ){
+            } else if ( Objects.equals( franchiseDTO.getId(), match.getFranchise2Id() ) ) {
                 points = match.getPointsForFranchise2();
             }
             franchiseStandingsDTO.addMatchWiseDetails( match.getId(), result, points );

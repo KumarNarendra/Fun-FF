@@ -30,31 +30,35 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="points_for_franchise_1" type="double" defaultValue="0.0">
+            <column name="points_for_franchise_1" type="double">
                 <constraints nullable="true" />
             </column>
 
-            <column name="points_for_franchise_2" type="double" defaultValue="0.0">
+            <column name="points_for_franchise_2" type="double">
                 <constraints nullable="true" />
             </column>
 
             <column name="tournament_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+
             <column name="franchise1_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints nullable="true" />
             </column>
+
             <column name="franchise2_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints nullable="true" />
             </column>
+
             <column name="winner_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints nullable="true" />
             </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="fafi_match" columnName="start_date_time" columnDataType="datetime"/>
         <dropDefaultValue tableName="fafi_match" columnName="end_date_time" columnDataType="datetime"/>
-
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -67,7 +67,6 @@ export class PointsTableComponent implements OnInit {
                     axisLabel: 'Points',
                 },
                 callback(chart) {
-                    console.log('!!! lineChart callback !!!');
                 }
             },
             title: {

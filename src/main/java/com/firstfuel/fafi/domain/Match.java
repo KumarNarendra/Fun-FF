@@ -38,16 +38,13 @@ public class Match implements Serializable {
     @ManyToOne
     private Tournament tournament;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Franchise franchise1;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Franchise franchise2;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private Franchise winner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
