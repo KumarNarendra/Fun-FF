@@ -1,8 +1,8 @@
 package com.firstfuel.fafi.service.dto;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.firstfuel.fafi.domain.Franchise;
+import java.util.Objects;
 
 /**
  * <p>
@@ -15,9 +15,11 @@ import com.firstfuel.fafi.domain.Franchise;
 public class FranchiseStandingsDTO {
     private Integer rank;
     private FranchiseDTO franchise;
-    private Integer matchesPlayed;
-    private Double points;
+    private Integer totalMatchesPlayed;
+    private Double totalPoints;
     private List<Boolean> currentForm;
+    private List<MatchWiseDetails> matchWiseDetails;
+
 
     public Integer getRank() {
         return rank;
@@ -35,20 +37,20 @@ public class FranchiseStandingsDTO {
         this.franchise = franchise;
     }
 
-    public Integer getMatchesPlayed() {
-        return matchesPlayed;
+    public Integer getTotalMatchesPlayed() {
+        return totalMatchesPlayed;
     }
 
-    public void setMatchesPlayed( Integer matchesPlayed ) {
-        this.matchesPlayed = matchesPlayed;
+    public void setTotalMatchesPlayed( Integer totalMatchesPlayed ) {
+        this.totalMatchesPlayed = totalMatchesPlayed;
     }
 
-    public Double getPoints() {
-        return points;
+    public Double getTotalPoints() {
+        return totalPoints;
     }
 
-    public void setPoints( Double points ) {
-        this.points = points;
+    public void setTotalPoints( Double totalPoints ) {
+        this.totalPoints = totalPoints;
     }
 
     public List<Boolean> getCurrentForm() {
@@ -59,8 +61,60 @@ public class FranchiseStandingsDTO {
         this.currentForm = currentForm;
     }
 
+    public List<MatchWiseDetails> getMatchWiseDetails() {
+        return matchWiseDetails;
+    }
+
+    public void setMatchWiseDetails( List<MatchWiseDetails> matchWiseDetails ) {
+        this.matchWiseDetails = matchWiseDetails;
+    }
+
+    public void addMatchWiseDetails( Long matchId, boolean matchResult, Double matchPoints ) {
+        if ( Objects.isNull( this.matchWiseDetails ) ) {
+            this.matchWiseDetails = new ArrayList<>();
+        }
+        this.matchWiseDetails.add( new MatchWiseDetails( matchId, matchResult, matchPoints ) );
+    }
+
     @Override
     public String toString() {
-        return "FranchiseStandingsDTO{" + "rank=" + rank + ", franchise=" + franchise + ", matchesPlayed=" + matchesPlayed + ", points=" + points + ", currentForm=" + currentForm + '}';
+        return "FranchiseStandingsDTO{" + "rank=" + rank + ", franchise=" + franchise + ", totalMatchesPlayed=" + totalMatchesPlayed + ", totalPoints=" + totalPoints
+            + ", currentForm=" + currentForm + ", matchWiseDetails=" + matchWiseDetails + '}';
+    }
+
+    class MatchWiseDetails {
+        private Long matchId;
+        private boolean matchResult;
+        private Double matchPoints;
+
+        public MatchWiseDetails( Long matchId, boolean matchResult, Double matchPoints ) {
+            this.matchId = matchId;
+            this.matchResult = matchResult;
+            this.matchPoints = matchPoints;
+        }
+
+        public Long getMatchId() {
+            return matchId;
+        }
+
+        public void setMatchId( Long matchId ) {
+            this.matchId = matchId;
+        }
+
+        public boolean isMatchResult() {
+            return matchResult;
+        }
+
+        public void setMatchResult( boolean matchResult ) {
+            this.matchResult = matchResult;
+        }
+
+        public Double getMatchPoints() {
+            return matchPoints;
+        }
+
+        public void setMatchPoints( Double matchPoints ) {
+            this.matchPoints = matchPoints;
+        }
     }
 }

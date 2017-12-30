@@ -1,12 +1,33 @@
-import {Franchise} from '../entities/franchise';
+import { Franchise } from '../entities/franchise';
+import { Player } from '../entities/player';
 
 export class FranchiseStandingsModel {
     constructor(
         public rank?: number,
         public franchise?: Franchise,
-        public matchesPlayed?: number,
+        public totalMatchesPlayed?: number,
         public currentForm?: boolean[],
-        public points?: number,
+        public totalPoints?: number,
+        public matchWiseDetails?: MatchWiseDetails[],
+    ) {
+    }
+}
+class MatchWiseDetails {
+    constructor(
+        public matchId?: number,
+        public matchResult?: boolean[],
+        public matchPoints?: number,
+    ) {
+    }
+}
+
+export class PlayerStandingsModel {
+    constructor(
+        public rank?: number,
+        public player?: Player,
+        public totalMatchesPlayed?: number,
+        public currentForm?: boolean[],
+        public totalPoints?: number,
     ) {
     }
 }

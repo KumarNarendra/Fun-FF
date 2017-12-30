@@ -72,25 +72,27 @@ public class StatisticsResource {
         List<FranchiseStandingsDTO> franchiseStandingsDTOList = franchiseDTOList.stream()
             .sorted( Comparator.comparing( FranchiseDTO::getPoints, Comparator.reverseOrder() ) )
             .map( franchiseDTO -> {
+                List<MatchDTO> matches = franchiseIdToMatches.get( franchiseDTO.getId() );
                 FranchiseStandingsDTO franchiseStandingsDTO = new FranchiseStandingsDTO();
                 franchiseStandingsDTO.setRank( rank.incrementAndGet() );
                 franchiseStandingsDTO.setFranchise( franchiseDTO );
-                franchiseStandingsDTO.setMatchesPlayed(
-                    Objects.nonNull( franchiseIdToMatches.get( franchiseDTO.getId() ) ) ? franchiseIdToMatches.get( franchiseDTO.getId() ).size() : 0 );
-                franchiseStandingsDTO.setPoints( franchiseIdToPoints.get( franchiseDTO.getId() ) );
+                franchiseStandingsDTO.setTotalMatchesPlayed( Objects.nonNull( matches ) ? matches.size() : 0 );
+                franchiseStandingsDTO.setTotalPoints( franchiseIdToPoints.get( franchiseDTO.getId() ) );
                 franchiseStandingsDTO.setCurrentForm( franchiseIdToForm.get( franchiseDTO.getId() ) );
+                populateMatchWiseDetails( franchiseDTO, franchiseStandingsDTO, matches );
                 return franchiseStandingsDTO;
             } )
             .collect( Collectors.toList() );
+
         return new ResponseEntity<>( franchiseStandingsDTOList, HttpStatus.OK );
     }
 
     private Double calculatePoints( Long franchiseId, List<MatchDTO> matches ) {
         return matches.stream().mapToDouble( match -> {
             if ( Objects.equals( franchiseId, match.getFranchise1Id() ) ) {
-                return match.getPointsForFranchise1();
+                return Objects.nonNull( match.getPointsForFranchise1() ) ? match.getPointsForFranchise1() : 0;
             } else {
-                return match.getPointsForFranchise2();
+                return Objects.nonNull( match.getPointsForFranchise2() ) ? match.getPointsForFranchise2() : 0;
             }
         } ).sum();
     }
@@ -103,5 +105,23 @@ public class StatisticsResource {
                 return Boolean.FALSE;
             }
         } ).collect( Collectors.toList() );
+    }
+
+    private void populateMatchWiseDetails( FranchiseDTO franchiseDTO, FranchiseStandingsDTO franchiseStandingsDTO, final List<MatchDTO> matches ) {
+        matches.stream().filter( matchDTO -> Objects.nonNull( matchDTO.getWinnerId() ) ).forEach( match -> {
+            boolean result;
+            Double points = 0d;
+            if ( Objects.equals( franchiseDTO.getId(), match.getWinnerId() ) ) {
+                result = Boolean.TRUE;
+            } else {
+                result = Boolean.FALSE;
+            }
+            if ( Objects.equals( franchiseDTO.getId(), match.getFranchise1Id() ) ){
+                points = match.getPointsForFranchise1();
+            } else if ( Objects.equals( franchiseDTO.getId(), match.getFranchise2Id() ) ){
+                points = match.getPointsForFranchise2();
+            }
+            franchiseStandingsDTO.addMatchWiseDetails( match.getId(), result, points );
+        } );
     }
 }

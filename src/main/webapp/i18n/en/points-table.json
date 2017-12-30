@@ -1,5 +1,21 @@
 {
-  "points-table": {
-    "title": "Statistics"
-  }
+    "points-table": {
+        "title": "Statistics",
+        "franchise-standings": {
+            "title": "Franchise Standings",
+            "rank": "Rank",
+            "franchiseName": "Franchise",
+            "matches": "Matches Played",
+            "points": "Points",
+            "form": "Current Form"
+        },
+        "player-standings": {
+            "title": "Player Standings",
+            "rank": "Rank",
+            "franchiseName": "Franchise",
+            "matches": "Matches Played",
+            "points": "Points",
+            "form": "Current Form"
+        }
+    }
 }
