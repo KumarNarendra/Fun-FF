@@ -16,6 +16,7 @@
             "about-us": "About Us",
             "contact-us": "Contact Us",
             "points-table": "Statistics",
+            "fixtures": "Fixtures",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",

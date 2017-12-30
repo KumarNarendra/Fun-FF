@@ -1,0 +1,54 @@
+<br>
+<div class="row">
+    <div class="container">
+        <div class="about-para">
+            <h1 class="text-capitalize text-center" jhiTranslate="fixtures.title">Title</h1>
+            <h5 class="text-center" jhiTranslate="fixtures.subtitle">Subtitle</h5>
+            <hr/>
+            <p class="text-justify" jhiTranslate="fixtures.content">Content</p>
+        </div>
+    </div>
+</div>
+<div>
+    <div class="table-responsive" *ngIf="matches">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="fafiApp.match.startDateTime">Start Date Time</span></th>
+                <th><span jhiTranslate="fafiApp.match.endDateTime">End Date Time</span></th>
+                <th><span jhiTranslate="fafiApp.match.tournament">Tournament</span></th>
+                <th><span jhiTranslate="fafiApp.match.franchise1">Franchise 1</span></th>
+                <th><span jhiTranslate="fafiApp.match.franchise2">Franchise 2</span></th>
+                <th><span jhiTranslate="fafiApp.match.winner">Winner</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let match of matches ;trackBy: trackId">
+                <td>{{match.startDateTime | date:'medium'}}</td>
+                <td>{{match.endDateTime | date:'medium'}}</td>
+                <td>
+                    <div *ngIf="match.tournamentId">
+                        <a [routerLink]="['../tournament', match.tournamentId  ]">{{match.tournamentName}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="match.franchise1Id">
+                        <a [routerLink]="['../franchise', match.franchise1Id  ]" >{{match.franchise1Name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="match.franchise2Id">
+                        <a [routerLink]="['../franchise', match.franchise2Id  ]" >{{match.franchise2Name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="match.winnerId">
+                        <a [routerLink]="['../franchise', match.winnerId  ]" >{{match.winnerName}}</a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
