@@ -83,9 +83,10 @@ public class StatisticsResource {
 
         final Map<Long, List<MatchDTO>> franchiseIdToMatches = matchService.getAllMatchesByFranchises( franchiseDTOList );
 
-        final Map<Long, Double> franchiseIdToPoints = franchiseIdToMatches.entrySet()
+        final Map<Long, Double> franchiseIdToPoints = franchiseDTOList
             .stream()
-            .collect( Collectors.toMap( Map.Entry::getKey, o -> calculatePoints( o.getKey(), o.getValue() ) ) );
+            .collect( Collectors.toMap( FranchiseDTO::getId, o -> calculatePoints( o.getId(), franchiseIdToMatches.get( o.getId() ) ) ) );
+        LOGGER.debug( "franchiseIdToPoints : {}", franchiseIdToPoints );
 
         final Map<Long, List<Boolean>> franchiseIdToForm = franchiseIdToMatches.entrySet()
             .stream()
@@ -107,7 +108,7 @@ public class StatisticsResource {
                 }
                 return franchiseStandingsDTO;
             } )
-            .sorted( Comparator.comparingDouble( FranchiseStandingsDTO::getTotalPoints ).thenComparing( FranchiseStandingsDTO::getTotalMatchesPlayed ).reversed() )
+            .sorted( Comparator.comparingDouble( FranchiseStandingsDTO::getTotalPoints ).thenComparingInt( FranchiseStandingsDTO::getTotalMatchesPlayed ).reversed() )
             .peek( franchiseStandingsDTO -> franchiseStandingsDTO.setRank( rank.incrementAndGet() ) )
             .collect( Collectors.toList() );
         LOGGER.debug( "franchiseStandingsDTOList : {}", franchiseStandingsDTOList );
@@ -115,6 +116,9 @@ public class StatisticsResource {
     }
 
     private Double calculatePoints( Long franchiseId, List<MatchDTO> matches ) {
+        if ( CollectionUtils.isEmpty( matches ) ) {
+            return 0d;
+        }
         return matches.stream().mapToDouble( match -> {
             if ( Objects.equals( franchiseId, match.getFranchise1Id() ) ) {
                 return Objects.nonNull( match.getPointsForFranchise1() ) ? match.getPointsForFranchise1() : 0;
@@ -196,7 +200,7 @@ public class StatisticsResource {
                 playerStandingsDTO.setTotalPoints( totalPoints );
                 return playerStandingsDTO;
             } )
-            .sorted( Comparator.comparingDouble( PlayerStandingsDTO::getTotalPoints ).thenComparing( PlayerStandingsDTO::getTotalMatchesPlayed ).reversed() )
+            .sorted( Comparator.comparingDouble( PlayerStandingsDTO::getTotalPoints ).thenComparingInt( PlayerStandingsDTO::getTotalMatchesPlayed ).reversed() )
             .peek( franchiseStandingsDTO -> franchiseStandingsDTO.setRank( rank.incrementAndGet() ) )
             .collect( Collectors.toList() );
         LOGGER.debug( "playerStandingsDTOList : {}", playerStandingsDTOList );

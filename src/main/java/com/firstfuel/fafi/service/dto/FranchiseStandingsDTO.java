@@ -20,6 +20,10 @@ public class FranchiseStandingsDTO {
     private List<Boolean> currentForm;
     private List<MatchWiseDetails> matchWiseDetails;
 
+    public FranchiseStandingsDTO() {
+        this.totalMatchesPlayed = 0;
+        this.totalPoints = 0d;
+    }
 
     public Integer getRank() {
         return rank;

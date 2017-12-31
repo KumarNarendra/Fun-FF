@@ -21,6 +21,10 @@ public class PlayerStandingsDTO {
     private List<Boolean> currentForm;
     private List<MatchWiseDetails> matchWiseDetails;
 
+    public PlayerStandingsDTO() {
+        this.totalMatchesPlayed = 0;
+        this.totalPoints = 0d;
+    }
 
     public Integer getRank() {
         return rank;
