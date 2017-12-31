@@ -1,9 +1,12 @@
 package com.firstfuel.fafi.service.impl;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
@@ -14,13 +17,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.firstfuel.fafi.domain.Player;
 import com.firstfuel.fafi.domain.TieMatch;
+import com.firstfuel.fafi.domain.TieTeam;
 import com.firstfuel.fafi.repository.TieMatchRepository;
 import com.firstfuel.fafi.service.PlayerService;
 import com.firstfuel.fafi.service.TieMatchService;
 import com.firstfuel.fafi.service.TieTeamService;
+import com.firstfuel.fafi.service.dto.PlayerDTO;
 import com.firstfuel.fafi.service.dto.TieMatchDTO;
 import com.firstfuel.fafi.service.dto.TieTeamDTO;
+import com.firstfuel.fafi.service.mapper.PlayerMapper;
 import com.firstfuel.fafi.service.mapper.TieMatchMapper;
 
 /**
@@ -40,7 +47,7 @@ public class TieMatchServiceImpl
     private TieMatchMapper tieMatchMapper;
 
     @Autowired
-    private TieTeamService tieTeamService;
+    private PlayerMapper playerMapper;
 
     /**
      * Save a tieMatch.
@@ -53,17 +60,7 @@ public class TieMatchServiceImpl
         log.debug( "Request to save TieMatch : {}", tieMatchDTO );
         TieMatch tieMatch = tieMatchMapper.toEntity( tieMatchDTO );
         tieMatch = tieMatchRepository.save( tieMatch );
-        savePointsForTieTeamPlayers( tieMatchDTO );
         return tieMatchMapper.toDto( tieMatch );
-    }
-
-    private void savePointsForTieTeamPlayers( TieMatchDTO tieMatchDTO ) {
-        if ( Objects.nonNull( tieMatchDTO.getPointsForTieTeam1() ) ) {
-            tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam1Id(), tieMatchDTO.getPointsForTieTeam1() );
-        }
-        if ( Objects.nonNull( tieMatchDTO.getPointsForTieTeam2() ) ) {
-            tieTeamService.savePointsForTieTeamPlayers( tieMatchDTO.getTeam2Id(), tieMatchDTO.getPointsForTieTeam2() );
-        }
     }
 
     /**
@@ -117,5 +114,22 @@ public class TieMatchServiceImpl
     public void delete( Long id ) {
         log.debug( "Request to delete TieMatch : {}", id );
         tieMatchRepository.delete( id );
+    }
+
+    @Override
+    public Map<Long, List<TieMatchDTO>> getAllTieMatchesByPlayers( List<PlayerDTO> playerDTOList ) {
+        List<Player> players = playerMapper.toEntity( playerDTOList );
+        List<TieMatch> matches = tieMatchRepository.getTieMatchesByTeam1_TiePlayersInOrTeam2_TiePlayersIn( players, players );
+        Map<TieTeam, List<TieMatch>> team1TieMatches = matches.stream().collect( Collectors.groupingBy( TieMatch::getTeam1 ) );
+        Map<TieTeam, List<TieMatch>> team2TieMatches = matches.stream().collect( Collectors.groupingBy( TieMatch::getTeam2 ) );
+        Map<Long, List<TieMatchDTO>> allMatchesByFranchise = Stream.concat( team1TieMatches.entrySet().stream(), team2TieMatches.entrySet().stream() )
+            .flatMap( entry -> entry.getKey().getTiePlayers().stream().collect( Collectors.toMap( o -> o, o -> entry.getValue() ) ).entrySet().stream() )
+            .collect( Collectors.toMap( o -> o.getKey().getId(), o -> tieMatchMapper.toDto( o.getValue() ), this::mergeFunction ) );
+        log.debug( "allTieMatchesByPlayer : {}", allMatchesByFranchise );
+        return allMatchesByFranchise;
+    }
+
+    private List<TieMatchDTO> mergeFunction( List<TieMatchDTO> v1, List<TieMatchDTO> v2 ) {
+        return Stream.concat( v1.stream(), v2.stream() ).distinct().collect( Collectors.toList() );
     }
 }

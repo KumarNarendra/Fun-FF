@@ -1,9 +1,11 @@
 package com.firstfuel.fafi.service;
 
+import com.firstfuel.fafi.service.dto.PlayerDTO;
 import com.firstfuel.fafi.service.dto.TieMatchDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service Interface for managing TieMatch.
@@ -46,4 +48,6 @@ public interface TieMatchService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    Map<Long,List<TieMatchDTO>> getAllTieMatchesByPlayers( List<PlayerDTO> playerDTOList );
 }

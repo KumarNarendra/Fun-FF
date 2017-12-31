@@ -159,6 +159,7 @@ dependencies {
     compile "org.hibernate:hibernate-core"
     compile "com.zaxxer:HikariCP"
     compile "org.apache.commons:commons-lang3"
+    compile "commons-collections:commons-collections"
     compile "commons-io:commons-io"
     compile "javax.transaction:javax.transaction-api"
     compile "org.ehcache:ehcache"

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { StatisticsService } from './statistics.service';
 import { ResponseWrapper } from '../shared';
-import { FranchiseStandingsModel } from './statistics.model';
+import { FranchiseStandingsModel, PlayerStandingsModel } from './statistics.model';
 import { JhiAlertService } from 'ng-jhipster';
 import { COLORS } from '../app.constants';
 
@@ -18,6 +18,10 @@ export class PointsTableComponent implements OnInit {
     lineChartOptions: any;
     lineChartData: any;
 
+    playerStandings: PlayerStandingsModel[];
+    playerLineChartOptions: any;
+    playerLineChartData: any;
+
     constructor(
         private statisticsService: StatisticsService,
         private jhiAlertService: JhiAlertService,
@@ -26,6 +30,7 @@ export class PointsTableComponent implements OnInit {
 
     ngOnInit() {
         this.loadFranchiseStandings();
+        this.loadPlayerStandings();
     }
 
     private loadFranchiseStandings() {
@@ -33,6 +38,16 @@ export class PointsTableComponent implements OnInit {
             (res: ResponseWrapper) => {
                 this.franchiseStandings = res.json;
                 this.loadLineChartData(this.franchiseStandings);
+            },
+            (res: ResponseWrapper) => this.onError(res.json)
+        );
+    }
+
+    private loadPlayerStandings() {
+        this.statisticsService.getPlayerStandings(1).subscribe(
+            (res: ResponseWrapper) => {
+                this.playerStandings = res.json;
+                this.loadPlayerLineChartData(this.playerStandings);
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
@@ -102,6 +117,68 @@ export class PointsTableComponent implements OnInit {
             dataArray.push(lineData);
         });
         this.lineChartData = dataArray;
+    }
+
+    private loadPlayerLineChartData(franchiseStandingsData) {
+        this.playerLineChartOptions = {
+            chart: {
+                type: 'lineChart',
+                height: 450,
+                margin: {
+                    top: 20,
+                    right: 20,
+                    bottom: 40,
+                    left: 75
+                },
+                x(d) {
+                    return d.x;
+                },
+                y(d) {
+                    return d.y;
+                },
+                useInteractiveGuideline: true,
+                xAxis: {
+                    axisLabel: 'Matches',
+                },
+                yAxis: {
+                    axisLabel: 'Points',
+                },
+                callback(chart) {
+                }
+            },
+            title: {
+                enable: true,
+                text: 'Franchise points growth'
+            },
+            caption: {
+                enable: true,
+                html: '',
+                css: {
+                    'text-align': 'justify',
+                    'margin': '10px 13px 0px 7px'
+                }
+            }
+        };
+        const dataArray = [];
+        let j = 0;
+        franchiseStandingsData.forEach((franchiseStanding) => {
+            const dataCoordinates = [];
+            dataCoordinates.push({x: 0, y: 0});
+            let i = 0;
+            let totalPoints = 0;
+            franchiseStanding.matchWiseDetails.forEach((matchDetails) => {
+                totalPoints = totalPoints + matchDetails.matchPoints;
+                dataCoordinates.push({x: ++i, y: totalPoints});
+            });
+            const lineData = {
+                values: dataCoordinates,
+                key: franchiseStanding.franchise.name,
+                color: COLORS[j],
+            };
+            j = j + 1;
+            dataArray.push(lineData);
+        });
+        this.playerLineChartData = dataArray;
     }
 
 }

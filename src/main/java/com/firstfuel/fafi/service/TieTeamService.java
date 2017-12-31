@@ -41,5 +41,4 @@ public interface TieTeamService {
      */
     void delete( Long id );
 
-    TieTeamDTO savePointsForTieTeamPlayers( Long tieTeamId, Double points );
 }

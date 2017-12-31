@@ -1,6 +1,9 @@
 package com.firstfuel.fafi.service;
 
+import java.util.List;
+
 import com.firstfuel.fafi.service.dto.PlayerDTO;
+import com.firstfuel.fafi.service.dto.SeasonDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -39,4 +42,6 @@ public interface PlayerService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    List<PlayerDTO> getAllPlayerBySeason( SeasonDTO seasonDTO );
 }

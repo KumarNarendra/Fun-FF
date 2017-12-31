@@ -13,6 +13,7 @@
             "title": "Player Standings",
             "rank": "Rank",
             "franchiseName": "Franchise",
+            "playerName": "Player",
             "matches": "Matches Played",
             "points": "Points",
             "form": "Current Form"

@@ -1,5 +1,10 @@
 package com.firstfuel.fafi.service.impl;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +17,9 @@ import com.firstfuel.fafi.domain.Player;
 import com.firstfuel.fafi.repository.PlayerRepository;
 import com.firstfuel.fafi.service.PlayerService;
 import com.firstfuel.fafi.service.dto.PlayerDTO;
+import com.firstfuel.fafi.service.dto.SeasonDTO;
 import com.firstfuel.fafi.service.mapper.PlayerMapper;
+import com.firstfuel.fafi.service.mapper.SeasonMapper;
 
 
 /**
@@ -30,6 +37,9 @@ public class PlayerServiceImpl
 
     @Autowired
     private PlayerMapper playerMapper;
+
+    @Autowired
+    private SeasonMapper seasonMapper;
 
 
     /**
@@ -82,5 +92,15 @@ public class PlayerServiceImpl
     public void delete( Long id ) {
         log.debug( "Request to delete Player : {}", id );
         playerRepository.delete( id );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PlayerDTO> getAllPlayerBySeason( SeasonDTO seasonDTO ) {
+        if ( Objects.nonNull( seasonDTO ) ) {
+            return playerRepository.getAllByFranchise_Season( seasonMapper.toEntity( seasonDTO ) ).stream().map( playerMapper::toDto ).collect( Collectors.toList() );
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

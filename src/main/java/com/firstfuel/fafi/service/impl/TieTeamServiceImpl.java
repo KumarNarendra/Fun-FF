@@ -87,13 +87,4 @@ public class TieTeamServiceImpl
         tieTeamRepository.delete( id );
     }
 
-    @Override
-    public TieTeamDTO savePointsForTieTeamPlayers( Long tieTeamId, Double points ) {
-        TieTeamDTO tieTeamDTO = findOne( tieTeamId );
-        tieTeamDTO.getTiePlayers().forEach( playerDTO -> {
-            playerDTO.setPoints( playerDTO.getPoints() + points );
-            playerService.save( playerDTO );
-        } );
-        return findOne( tieTeamId );
-    }
 }
