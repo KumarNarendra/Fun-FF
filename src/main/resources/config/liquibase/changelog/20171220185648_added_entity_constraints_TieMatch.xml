@@ -26,5 +26,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="tie_team"/>
 
+        <addForeignKeyConstraint baseColumnNames="winner_id"
+                                 baseTableName="tie_match"
+                                 constraintName="fk_tie_match_winner_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tie_team"/>
+
     </changeSet>
 </databaseChangeLog>

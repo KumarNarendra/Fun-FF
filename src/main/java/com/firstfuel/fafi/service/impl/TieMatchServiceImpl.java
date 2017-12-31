@@ -1,13 +1,9 @@
 package com.firstfuel.fafi.service.impl;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +17,9 @@ import com.firstfuel.fafi.domain.Player;
 import com.firstfuel.fafi.domain.TieMatch;
 import com.firstfuel.fafi.domain.TieTeam;
 import com.firstfuel.fafi.repository.TieMatchRepository;
-import com.firstfuel.fafi.service.PlayerService;
 import com.firstfuel.fafi.service.TieMatchService;
-import com.firstfuel.fafi.service.TieTeamService;
 import com.firstfuel.fafi.service.dto.PlayerDTO;
 import com.firstfuel.fafi.service.dto.TieMatchDTO;
-import com.firstfuel.fafi.service.dto.TieTeamDTO;
 import com.firstfuel.fafi.service.mapper.PlayerMapper;
 import com.firstfuel.fafi.service.mapper.TieMatchMapper;
 
@@ -74,21 +67,6 @@ public class TieMatchServiceImpl
     public Page<TieMatchDTO> findAll( Pageable pageable ) {
         log.debug( "Request to get all TieMatches" );
         return tieMatchRepository.findAll( pageable ).map( tieMatchMapper::toDto );
-    }
-
-
-    /**
-     * get all the tieMatches where Winner is null.
-     *
-     * @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<TieMatchDTO> findAllWhereWinnerIsNull() {
-        log.debug( "Request to get all tieMatches where Winner is null" );
-        return StreamSupport.stream( tieMatchRepository.findAll().spliterator(), false )
-            .filter( tieMatch -> tieMatch.getWinner() == null )
-            .map( tieMatchMapper::toDto )
-            .collect( Collectors.toCollection( LinkedList::new ) );
     }
 
     /**

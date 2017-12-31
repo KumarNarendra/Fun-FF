@@ -24,13 +24,7 @@ export class TieMatchDialogComponent implements OnInit {
 
     matches: Match[];
 
-    team1s: TieTeam[];
-
-    team2s: TieTeam[];
-
     tieteams: TieTeam[];
-
-    winners: TieTeam[] = [];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -46,42 +40,8 @@ export class TieMatchDialogComponent implements OnInit {
         this.isSaving = false;
         this.matchService.query()
             .subscribe((res: ResponseWrapper) => { this.matches = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.tieTeamService
-            .query({filter: 'tiematch-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.tieMatch.team1Id) {
-                    this.team1s = res.json;
-                } else {
-                    this.tieTeamService
-                        .find(this.tieMatch.team1Id)
-                        .subscribe((subRes: TieTeam) => {
-                            this.team1s = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
-        this.tieTeamService
-            .query({filter: 'tiematch-is-null'})
-            .subscribe((res: ResponseWrapper) => {
-                if (!this.tieMatch.team2Id) {
-                    this.team2s = res.json;
-                } else {
-                    this.tieTeamService
-                        .find(this.tieMatch.team2Id)
-                        .subscribe((subRes: TieTeam) => {
-                            this.team2s = [subRes].concat(res.json);
-                        }, (subRes: ResponseWrapper) => this.onError(subRes.json));
-                }
-            }, (res: ResponseWrapper) => this.onError(res.json));
         this.tieTeamService.query()
             .subscribe((res: ResponseWrapper) => { this.tieteams = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
-        this.addTieTeamToWinners(this.tieMatch.team1Id);
-        this.addTieTeamToWinners(this.tieMatch.team2Id);
-    }
-
-    addTieTeamToWinners(id: number)  {
-        if (id !== undefined) {
-            return this.tieTeamService.find(id).subscribe((tieTeam) => this.winners.push(tieTeam));
-        }
     }
 
     clear() {

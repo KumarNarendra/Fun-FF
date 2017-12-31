@@ -1,6 +1,5 @@
 package com.firstfuel.fafi.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -32,16 +31,13 @@ public class TieMatch implements Serializable {
     @ManyToOne
     private Match match;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private TieTeam team1;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private TieTeam team2;
 
-    @OneToOne
-    @JsonIgnore
+    @ManyToOne
     private TieTeam winner;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

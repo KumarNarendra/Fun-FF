@@ -10,25 +10,20 @@
         {
             "relationshipName": "team1",
             "otherEntityName": "tieTeam",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "tieMatch"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         },
         {
             "relationshipName": "team2",
             "otherEntityName": "tieTeam",
-            "relationshipType": "one-to-one",
-            "otherEntityField": "id",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "tieMatch"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         },
         {
             "relationshipName": "winner",
             "otherEntityName": "tieTeam",
-            "relationshipType": "one-to-one",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "tieMatch"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         }
     ],
     "fields": [

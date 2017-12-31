@@ -21,9 +21,9 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="fafiApp.tieMatch.team1" for="field_team1">Team 1</label>
-            <select class="form-control" id="field_team1" name="team1" [(ngModel)]="tieMatch.team1Id">
+            <select class="form-control" id="field_team1" name="team1" [(ngModel)]="tieMatch.team1Id" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="tieTeamOption.id" *ngFor="let tieTeamOption of team1s; trackBy: trackTieTeamById">{{tieTeamOption.name}}</option>
+                <option [ngValue]="tieTeamOption.id" *ngFor="let tieTeamOption of tieteams; trackBy: trackTieTeamById">{{tieTeamOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
@@ -33,9 +33,9 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="fafiApp.tieMatch.team2" for="field_team2">Team 2</label>
-            <select class="form-control" id="field_team2" name="team2" [(ngModel)]="tieMatch.team2Id">
+            <select class="form-control" id="field_team2" name="team2" [(ngModel)]="tieMatch.team2Id" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="tieTeamOption.id" *ngFor="let tieTeamOption of team2s; trackBy: trackTieTeamById">{{tieTeamOption.name}}</option>
+                <option [ngValue]="tieTeamOption.id" *ngFor="let tieTeamOption of tieteams; trackBy: trackTieTeamById">{{tieTeamOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
@@ -45,9 +45,9 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="fafiApp.tieMatch.winner" for="field_winner">Winner</label>
-            <select class="form-control" id="field_winner" name="winner" [(ngModel)]="tieMatch.winnerId">
+            <select class="form-control" id="field_winner" name="winner" [(ngModel)]="tieMatch.winnerId" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="tieTeamOption.id" *ngFor="let tieTeamOption of winners; trackBy: trackTieTeamById">{{tieTeamOption.name}}</option>
+                <option [ngValue]="tieTeamOption.id" *ngFor="let tieTeamOption of tieteams; trackBy: trackTieTeamById">{{tieTeamOption.name}}</option>
             </select>
         </div>
     </div>

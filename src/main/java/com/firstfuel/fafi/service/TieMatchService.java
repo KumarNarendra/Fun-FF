@@ -27,12 +27,6 @@ public interface TieMatchService {
      * @return the list of entities
      */
     Page<TieMatchDTO> findAll(Pageable pageable);
-    /**
-     * Get all the TieMatchDTO where Winner is null.
-     *
-     * @return the list of entities
-     */
-    List<TieMatchDTO> findAllWhereWinnerIsNull();
 
     /**
      * Get the "id" tieMatch.

@@ -13,17 +13,17 @@ public interface TieMatchMapper extends EntityMapper<TieMatchDTO, TieMatch> {
 
     @Mapping(source = "match.id", target = "matchId")
     @Mapping(source = "team1.id", target = "team1Id")
-    @Mapping(source = "team2.id", target = "team2Id")
-    @Mapping(source = "winner.id", target = "winnerId")
     @Mapping(source = "team1.name", target = "team1Name")
+    @Mapping(source = "team2.id", target = "team2Id")
     @Mapping(source = "team2.name", target = "team2Name")
+    @Mapping(source = "winner.id", target = "winnerId")
     @Mapping(source = "winner.name", target = "winnerName")
-    TieMatchDTO toDto(TieMatch tieMatch);
+    TieMatchDTO toDto(TieMatch tieMatch); 
 
     @Mapping(source = "matchId", target = "match")
     @Mapping(source = "team1Id", target = "team1")
     @Mapping(source = "team2Id", target = "team2")
-    @Mapping(target = "winner", ignore = true)
+    @Mapping(source = "winnerId", target = "winner")
     TieMatch toEntity(TieMatchDTO tieMatchDTO);
 
     default TieMatch fromId(Long id) {

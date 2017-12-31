@@ -38,6 +38,7 @@ describe('TieMatch e2e test', () => {
         tieMatchDialogPage.matchSelectLastOption();
         tieMatchDialogPage.team1SelectLastOption();
         tieMatchDialogPage.team2SelectLastOption();
+        tieMatchDialogPage.winnerSelectLastOption();
         tieMatchDialogPage.save();
         expect(tieMatchDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -69,6 +70,7 @@ export class TieMatchDialogPage {
     matchSelect = element(by.css('select#field_match'));
     team1Select = element(by.css('select#field_team1'));
     team2Select = element(by.css('select#field_team2'));
+    winnerSelect = element(by.css('select#field_winner'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -136,6 +138,22 @@ export class TieMatchDialogPage {
 
     getTeam2SelectedOption = function() {
         return this.team2Select.element(by.css('option:checked')).getText();
+    }
+
+    winnerSelectLastOption = function() {
+        this.winnerSelect.all(by.tagName('option')).last().click();
+    }
+
+    winnerSelectOption = function(option) {
+        this.winnerSelect.sendKeys(option);
+    }
+
+    getWinnerSelect = function() {
+        return this.winnerSelect;
+    }
+
+    getWinnerSelectedOption = function() {
+        return this.winnerSelect.element(by.css('option:checked')).getText();
     }
 
     save() {
