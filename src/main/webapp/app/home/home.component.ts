@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 
-import {Account, ITEMS_PER_PAGE, LoginModalService, Principal, ResponseWrapper} from '../shared';
-import {Franchise, FranchiseService} from '../entities/franchise';
+import { ITEMS_PER_PAGE, ResponseWrapper } from '../shared';
+import { Franchise, FranchiseService } from '../entities/franchise';
+import { SeasonService, Season } from '../entities/season';
+import { ActiveEntityData } from '../shared/active-entity/active-entity.model';
+import { ActiveEntityDataService } from '../shared/active-entity/active-entity.service';
 
 @Component({
     selector: 'fafi-home',
@@ -15,94 +17,46 @@ import {Franchise, FranchiseService} from '../entities/franchise';
 
 })
 export class HomeComponent implements OnInit {
-    account: Account;
-    modalRef: NgbModalRef;
     franchises: Franchise[];
-    totalItems: any;
-    queryCount: any;
-    links: any;
-    error: any;
-    success: any;
-    routeData: any;
-    itemsPerPage: any;
-    page: any;
-    predicate: any;
-    previousPage: any;
-    reverse: any;
+    seasons: Season[];
 
     constructor(
-        private principal: Principal,
-        private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
-        private router: Router,
-        private franchiseService: FranchiseService
+        private seasonService: SeasonService,
+        private franchiseService: FranchiseService,
+        private activeEntityDataService: ActiveEntityDataService
     ) {
-        this.page = 0;
-        this.itemsPerPage = ITEMS_PER_PAGE;
-        /*this.routeData = this.activatedRoute.data.subscribe((data) => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.reverse = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-        });*/
     }
 
     ngOnInit() {
-        this.principal.identity().then((account) => {
-            this.account = account;
-        });
-        this.registerAuthenticationSuccess();
         this.loadAll();
     }
 
-    registerAuthenticationSuccess() {
-        this.eventManager.subscribe('authenticationSuccess', (message) => {
-            this.principal.identity().then((account) => {
-                this.account = account;
-            });
-        });
-    }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
-    }
-
-    login() {
-        this.modalRef = this.loginModalService.open();
-    }
-
     loadAll() {
-        this.page = 0;
-        this.franchiseService.query({
-            page: this.page - 1,
-            size: this.itemsPerPage,
-            sort: this.sort()}).subscribe(
-            (res: ResponseWrapper) => this.onSuccess(res.json, res.headers),
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+        this.franchiseService.query().subscribe(
+            (res: ResponseWrapper) => this.franchises = res.json,
+            (res: ResponseWrapper) => this.onError(res.json));
+
+        this.seasonService.query()
+            .subscribe(
+            (res: ResponseWrapper) => {
+                this.seasons = res.json;
+                this.loadActiveEntity(this.seasons);
+            },
+            (res: ResponseWrapper) => this.onError(res.json));
     }
 
-    sort() {
-        const result = [];
-        if (this.predicate !== 'id') {
-            result.push('id');
-        }
-        return result;
-    }
     trackId(index: number, item: Franchise) {
         return item.id;
     }
-    private onSuccess(data, headers) {
-        this.links = this.parseLinks.parse(headers.get('link'));
-        this.totalItems = headers.get('X-Total-Count');
-        this.queryCount = this.totalItems;
-        // this.page = pagingParams.page;
-        this.franchises = data;
-    }
+
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    private loadActiveEntity(seasons: Season[]) {
+        const activeEntity: ActiveEntityData = new ActiveEntityData(0, 0);
+        activeEntity.activeSeasonId = seasons[0].id;
+        this.activeEntityDataService.changeActiveEntityData(activeEntity);
     }
 }

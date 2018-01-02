@@ -1,6 +1,15 @@
 <br>
 <div class="row">
     <div class="container cen fltt">
+        <div>
+            <div>
+                <label jhiTranslate="fafiApp.franchise.season" for="field_season">Season</label>
+                <select class="form-control" id="field_season" name="season" [(ngModel)]="seasonId" required (ngModelChange)="loadAllStandings()">
+                    <option *ngFor="let seasonOption of seasons; trackBy: trackSeasonById" [ngValue]="seasonOption.id">{{seasonOption.name}}</option>
+                </select>
+            </div>
+            <br>
+        </div>
         <ngb-tabset type="pills" justify="left" class="resp-tabs-list">
             <ngb-tab>
                 <ng-template ngbTabTitle>
@@ -17,30 +26,40 @@
                                     <div class="table-responsive">
                                         <table class="table table-striped">
                                             <thead>
-                                            <tr>
-                                                <th><span jhiTranslate="points-table.franchise-standings.rank">Rank</span></th>
-                                                <th><span jhiTranslate="points-table.franchise-standings.franchiseName">Franchise</span></th>
-                                                <th><span jhiTranslate="points-table.franchise-standings.matches">Matches Played</span></th>
-                                                <th><span jhiTranslate="points-table.franchise-standings.points">Points</span></th>
-                                                <th><span jhiTranslate="points-table.franchise-standings.form">Form</span></th>
-                                                <th></th>
-                                            </tr>
+                                                <tr>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.franchise-standings.rank">Rank</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.franchise-standings.franchiseName">Franchise</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.franchise-standings.matches">Matches Played</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.franchise-standings.points">Points</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.franchise-standings.form">Form</span>
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <tr *ngFor="let franchiseStandingOption of franchiseStandings">
-                                                <td>{{franchiseStandingOption.rank}}</td>
-                                                <!--<td><a [routerLink]="['../franchise', franchise.id ]">{{franchise.id}}</a></td>-->
-                                                <td>{{franchiseStandingOption.franchise.name}}</td>
-                                                <td>{{franchiseStandingOption.totalMatchesPlayed}}</td>
-                                                <td>{{franchiseStandingOption.totalPoints}}</td>
-                                                <!--<td>{{franchiseStandingOption.currentForm}}</td>-->
-                                                <td>
-                                                    <span *ngFor="let currentForm of franchiseStandingOption.currentForm">
-                                                        <span class="fa fa-check-circle-o" style="color: forestgreen; font-size: larger" *ngIf="currentForm"></span>
-                                                        <span class="fa fa-times-circle-o" style="color: darkred;font-size: larger" *ngIf="!currentForm"></span>
-                                                    </span>
-                                                </td>
-                                            </tr>
+                                                <tr *ngFor="let franchiseStandingOption of franchiseStandings">
+                                                    <td>{{franchiseStandingOption.rank}}</td>
+                                                    <!--<td><a [routerLink]="['../franchise', franchise.id ]">{{franchise.id}}</a></td>-->
+                                                    <td>{{franchiseStandingOption.franchise.name}}</td>
+                                                    <td>{{franchiseStandingOption.totalMatchesPlayed}}</td>
+                                                    <td>{{franchiseStandingOption.totalPoints}}</td>
+                                                    <!--<td>{{franchiseStandingOption.currentForm}}</td>-->
+                                                    <td>
+                                                        <span *ngFor="let currentForm of franchiseStandingOption.currentForm">
+                                                            <span class="fa fa-check-circle-o" style="color: forestgreen; font-size: larger" *ngIf="currentForm"></span>
+                                                            <span class="fa fa-times-circle-o" style="color: darkred;font-size: larger" *ngIf="!currentForm"></span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -72,30 +91,42 @@
                                     <div class="table-responsive">
                                         <table class="table table-striped">
                                             <thead>
-                                            <tr>
-                                                <th><span jhiTranslate="points-table.player-standings.rank">Rank</span></th>
-                                                <th><span jhiTranslate="points-table.player-standings.franchiseName">Franchise</span></th>
-                                                <th><span jhiTranslate="points-table.player-standings.playerName">Player</span></th>
-                                                <th><span jhiTranslate="points-table.player-standings.matches">Matches Played</span></th>
-                                                <th><span jhiTranslate="points-table.player-standings.points">Points</span></th>
-                                                <th><span jhiTranslate="points-table.player-standings.form">Form</span></th>
-                                                <th></th>
-                                            </tr>
+                                                <tr>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.player-standings.rank">Rank</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.player-standings.franchiseName">Franchise</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.player-standings.playerName">Player</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.player-standings.matches">Matches Played</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.player-standings.points">Points</span>
+                                                    </th>
+                                                    <th>
+                                                        <span jhiTranslate="points-table.player-standings.form">Form</span>
+                                                    </th>
+                                                    <th></th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <tr *ngFor="let playerStandingOption of playerStandings">
-                                                <td>{{playerStandingOption.rank}}</td>
-                                                <td>{{playerStandingOption.franchise.name}}</td>
-                                                <td>{{playerStandingOption.player.name}}</td>
-                                                <td>{{playerStandingOption.totalMatchesPlayed}}</td>
-                                                <td>{{playerStandingOption.totalPoints}}</td>
-                                                <td>
-                                                    <span *ngFor="let currentForm of playerStandingOption.currentForm">
-                                                        <span class="fa fa-check-circle-o" style="color: forestgreen; font-size: larger" *ngIf="currentForm"></span>
-                                                        <span class="fa fa-times-circle-o" style="color: darkred;font-size: larger" *ngIf="!currentForm"></span>
-                                                    </span>
-                                                </td>
-                                            </tr>
+                                                <tr *ngFor="let playerStandingOption of playerStandings">
+                                                    <td>{{playerStandingOption.rank}}</td>
+                                                    <td>{{playerStandingOption.franchise.name}}</td>
+                                                    <td>{{playerStandingOption.player.name}}</td>
+                                                    <td>{{playerStandingOption.totalMatchesPlayed}}</td>
+                                                    <td>{{playerStandingOption.totalPoints}}</td>
+                                                    <td>
+                                                        <span *ngFor="let currentForm of playerStandingOption.currentForm">
+                                                            <span class="fa fa-check-circle-o" style="color: forestgreen; font-size: larger" *ngIf="currentForm"></span>
+                                                            <span class="fa fa-times-circle-o" style="color: darkred;font-size: larger" *ngIf="!currentForm"></span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

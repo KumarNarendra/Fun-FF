@@ -4,6 +4,8 @@ import { ResponseWrapper } from '../shared';
 import { FranchiseStandingsModel, PlayerStandingsModel } from './statistics.model';
 import { JhiAlertService } from 'ng-jhipster';
 import { COLORS } from '../app.constants';
+import { Season, SeasonService } from '../entities/season';
+import { ActiveEntityDataService } from '../shared/active-entity/active-entity.service';
 
 @Component({
     selector: 'fafi-points-table',
@@ -13,6 +15,9 @@ import { COLORS } from '../app.constants';
     ]
 })
 export class PointsTableComponent implements OnInit {
+
+    seasons: Season[];
+    seasonId: number;
 
     franchiseStandings: FranchiseStandingsModel[];
     lineChartOptions: any;
@@ -24,17 +29,27 @@ export class PointsTableComponent implements OnInit {
 
     constructor(
         private statisticsService: StatisticsService,
+        private seasonService: SeasonService,
         private jhiAlertService: JhiAlertService,
+        private activeEntityDataService: ActiveEntityDataService
     ) {
     }
 
     ngOnInit() {
+        this.seasonService.query()
+            .subscribe((res: ResponseWrapper) => { this.seasons = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+
+        this.activeEntityDataService.currentActiveEntityData.subscribe((activeEntityData) => this.seasonId = activeEntityData.activeSeasonId);
+        this.loadAllStandings();
+    }
+
+    loadAllStandings() {
         this.loadFranchiseStandings();
         this.loadPlayerStandings();
     }
 
     private loadFranchiseStandings() {
-        this.statisticsService.getFranchiseStandings(1).subscribe(
+        this.statisticsService.getFranchiseStandings(this.seasonId).subscribe(
             (res: ResponseWrapper) => {
                 this.franchiseStandings = res.json;
                 this.loadLineChartData(this.franchiseStandings);
@@ -44,13 +59,17 @@ export class PointsTableComponent implements OnInit {
     }
 
     private loadPlayerStandings() {
-        this.statisticsService.getPlayerStandings(1).subscribe(
+        this.statisticsService.getPlayerStandings(this.seasonId).subscribe(
             (res: ResponseWrapper) => {
                 this.playerStandings = res.json;
                 this.loadPlayerLineChartData(this.playerStandings);
             },
             (res: ResponseWrapper) => this.onError(res.json)
         );
+    }
+
+    trackSeasonById(index: number, item: Season) {
+        return item.id;
     }
 
     private onError(error) {
@@ -101,12 +120,12 @@ export class PointsTableComponent implements OnInit {
         let j = 0;
         franchiseStandingsData.forEach((franchiseStanding) => {
             const dataCoordinates = [];
-            dataCoordinates.push({x: 0, y: 0});
+            dataCoordinates.push({ x: 0, y: 0 });
             let i = 0;
             let totalPoints = 0;
             franchiseStanding.matchWiseDetails.forEach((matchDetails) => {
                 totalPoints = totalPoints + matchDetails.matchPoints;
-                dataCoordinates.push({x: ++i, y: totalPoints});
+                dataCoordinates.push({ x: ++i, y: totalPoints });
             });
             const lineData = {
                 values: dataCoordinates,
@@ -163,12 +182,12 @@ export class PointsTableComponent implements OnInit {
         for (let index = 0; index < playerStandingsData.length && index < 10; index++) {
             const playerStanding = playerStandingsData[index];
             const dataCoordinates = [];
-            dataCoordinates.push({x: 0, y: 0});
+            dataCoordinates.push({ x: 0, y: 0 });
             let i = 0;
             let totalPoints = 0;
             playerStanding.matchWiseDetails.forEach((matchDetails) => {
                 totalPoints = totalPoints + matchDetails.matchPoints;
-                dataCoordinates.push({x: ++i, y: totalPoints});
+                dataCoordinates.push({ x: ++i, y: totalPoints });
             });
             const lineData = {
                 values: dataCoordinates,

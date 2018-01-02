@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FafiSharedModule } from '../shared';
 
 import { HOME_ROUTE, HomeComponent } from './';
+import { ActiveEntityDataService } from '../shared/active-entity/active-entity.service';
 
 @NgModule({
     imports: [
@@ -16,6 +17,7 @@ import { HOME_ROUTE, HomeComponent } from './';
     entryComponents: [
     ],
     providers: [
+        ActiveEntityDataService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
