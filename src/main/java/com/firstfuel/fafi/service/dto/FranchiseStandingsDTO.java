@@ -23,6 +23,7 @@ public class FranchiseStandingsDTO {
     public FranchiseStandingsDTO() {
         this.totalMatchesPlayed = 0;
         this.totalPoints = 0d;
+        this.matchWiseDetails = new ArrayList<>();
     }
 
     public Integer getRank() {
@@ -74,9 +75,6 @@ public class FranchiseStandingsDTO {
     }
 
     public void addMatchWiseDetails( Long matchId, boolean matchResult, Double matchPoints ) {
-        if ( Objects.isNull( this.matchWiseDetails ) ) {
-            this.matchWiseDetails = new ArrayList<>();
-        }
         this.matchWiseDetails.add( new MatchWiseDetails( matchId, matchResult, matchPoints ) );
     }
 

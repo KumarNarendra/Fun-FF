@@ -24,6 +24,7 @@ class MatchWiseDetails {
 export class PlayerStandingsModel {
     constructor(
         public rank?: number,
+        public franchise?: Franchise,
         public player?: Player,
         public totalMatchesPlayed?: number,
         public currentForm?: boolean[],

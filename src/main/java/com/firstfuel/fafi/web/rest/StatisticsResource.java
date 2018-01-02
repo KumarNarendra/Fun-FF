@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import com.google.common.util.concurrent.AtomicDouble;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +48,7 @@ import com.firstfuel.fafi.service.dto.TieTeamDTO;
 @RestController
 @RequestMapping("/api/statistics")
 public class StatisticsResource {
-    private static final Logger LOGGER = LoggerFactory.getLogger( StatisticsResource.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsResource.class);
 
     @Autowired
     private FranchiseService franchiseService;
@@ -75,85 +76,85 @@ public class StatisticsResource {
      */
     @GetMapping("/seasons/{seasonId}/franchise-standings")
     @Timed
-    public ResponseEntity<List<FranchiseStandingsDTO>> getFranchiseStandings( @PathVariable Long seasonId ) {
-        LOGGER.debug( "REST request to get Franchise standings for seasonId : {}", seasonId );
+    public ResponseEntity<List<FranchiseStandingsDTO>> getFranchiseStandings(@PathVariable Long seasonId) {
+        LOGGER.debug("REST request to get Franchise standings for seasonId : {}", seasonId);
 
-        final List<FranchiseDTO> franchiseDTOList = franchiseService.getAllFranchiseBySeason( seasonId );
-        LOGGER.debug( "franchiseDTOList : {}", franchiseDTOList );
+        final List<FranchiseDTO> franchiseDTOList = franchiseService.getAllFranchiseBySeason(seasonId);
+        LOGGER.debug("franchiseDTOList : {}", franchiseDTOList);
 
-        final Map<Long, List<MatchDTO>> franchiseIdToMatches = matchService.getAllMatchesByFranchises( franchiseDTOList );
+        final Map<Long, List<MatchDTO>> franchiseIdToMatches = matchService.getAllMatchesByFranchises(franchiseDTOList);
 
         final Map<Long, Double> franchiseIdToPoints = franchiseDTOList
             .stream()
-            .collect( Collectors.toMap( FranchiseDTO::getId, o -> calculatePoints( o.getId(), franchiseIdToMatches.get( o.getId() ) ) ) );
-        LOGGER.debug( "franchiseIdToPoints : {}", franchiseIdToPoints );
+            .collect(Collectors.toMap(FranchiseDTO::getId, o -> calculatePoints(o.getId(), franchiseIdToMatches.get(o.getId()))));
+        LOGGER.debug("franchiseIdToPoints : {}", franchiseIdToPoints);
 
         final Map<Long, List<Boolean>> franchiseIdToForm = franchiseIdToMatches.entrySet()
             .stream()
-            .collect( Collectors.toMap( Map.Entry::getKey, o -> evaluateCurrentForm( o.getKey(), o.getValue() ) ) );
+            .collect(Collectors.toMap(Map.Entry::getKey, o -> evaluateCurrentForm(o.getKey(), o.getValue())));
 
-        AtomicInteger rank = new AtomicInteger( 0 );
+        AtomicInteger rank = new AtomicInteger(0);
         List<FranchiseStandingsDTO> franchiseStandingsDTOList = franchiseDTOList.stream()
-            .map( franchiseDTO -> {
-                List<MatchDTO> matches = franchiseIdToMatches.get( franchiseDTO.getId() );
+            .map(franchiseDTO -> {
+                List<MatchDTO> matches = franchiseIdToMatches.get(franchiseDTO.getId());
                 FranchiseStandingsDTO franchiseStandingsDTO = new FranchiseStandingsDTO();
-                franchiseStandingsDTO.setFranchise( franchiseDTO );
-                franchiseStandingsDTO.setTotalMatchesPlayed( Objects.nonNull( matches ) ? matches.size() : 0 );
-                franchiseStandingsDTO.setTotalPoints( franchiseIdToPoints.get( franchiseDTO.getId() ) );
-                franchiseStandingsDTO.setCurrentForm( franchiseIdToForm.get( franchiseDTO.getId() ) );
-                if ( CollectionUtils.isEmpty( matches ) ) {
-                    franchiseStandingsDTO.setMatchWiseDetails( Collections.emptyList() );
+                franchiseStandingsDTO.setFranchise(franchiseDTO);
+                franchiseStandingsDTO.setTotalMatchesPlayed(Objects.nonNull(matches) ? matches.size() : 0);
+                franchiseStandingsDTO.setTotalPoints(franchiseIdToPoints.get(franchiseDTO.getId()));
+                franchiseStandingsDTO.setCurrentForm(franchiseIdToForm.get(franchiseDTO.getId()));
+                if (CollectionUtils.isEmpty(matches)) {
+                    franchiseStandingsDTO.setMatchWiseDetails(Collections.emptyList());
                 } else {
-                    populateMatchWiseDetails( franchiseDTO, franchiseStandingsDTO, matches );
+                    populateMatchWiseDetails(franchiseDTO, franchiseStandingsDTO, matches);
                 }
                 return franchiseStandingsDTO;
-            } )
-            .sorted( Comparator.comparingDouble( FranchiseStandingsDTO::getTotalPoints ).thenComparingInt( FranchiseStandingsDTO::getTotalMatchesPlayed ).reversed() )
-            .peek( franchiseStandingsDTO -> franchiseStandingsDTO.setRank( rank.incrementAndGet() ) )
-            .collect( Collectors.toList() );
-        LOGGER.debug( "franchiseStandingsDTOList : {}", franchiseStandingsDTOList );
-        return new ResponseEntity<>( franchiseStandingsDTOList, HttpStatus.OK );
+            })
+            .sorted(Comparator.comparingDouble(FranchiseStandingsDTO::getTotalPoints).thenComparingInt(FranchiseStandingsDTO::getTotalMatchesPlayed).reversed())
+            .peek(franchiseStandingsDTO -> franchiseStandingsDTO.setRank(rank.incrementAndGet()))
+            .collect(Collectors.toList());
+        LOGGER.debug("franchiseStandingsDTOList : {}", franchiseStandingsDTOList);
+        return new ResponseEntity<>(franchiseStandingsDTOList, HttpStatus.OK);
     }
 
-    private Double calculatePoints( Long franchiseId, List<MatchDTO> matches ) {
-        if ( CollectionUtils.isEmpty( matches ) ) {
+    private Double calculatePoints(Long franchiseId, List<MatchDTO> matches) {
+        if (CollectionUtils.isEmpty(matches)) {
             return 0d;
         }
-        return matches.stream().mapToDouble( match -> {
-            if ( Objects.equals( franchiseId, match.getFranchise1Id() ) ) {
-                return Objects.nonNull( match.getPointsForFranchise1() ) ? match.getPointsForFranchise1() : 0;
+        return matches.stream().mapToDouble(match -> {
+            if (Objects.equals(franchiseId, match.getFranchise1Id())) {
+                return Objects.nonNull(match.getPointsForFranchise1()) ? match.getPointsForFranchise1() : 0;
             } else {
-                return Objects.nonNull( match.getPointsForFranchise2() ) ? match.getPointsForFranchise2() : 0;
+                return Objects.nonNull(match.getPointsForFranchise2()) ? match.getPointsForFranchise2() : 0;
             }
-        } ).sum();
+        }).sum();
     }
 
-    private List<Boolean> evaluateCurrentForm( Long franchiseId, List<MatchDTO> matches ) {
-        return matches.stream().filter( matchDTO -> Objects.nonNull( matchDTO.getWinnerId() ) ).map( match -> {
-            if ( Objects.equals( franchiseId, match.getWinnerId() ) ) {
+    private List<Boolean> evaluateCurrentForm(Long franchiseId, List<MatchDTO> matches) {
+        return matches.stream().filter(matchDTO -> Objects.nonNull(matchDTO.getWinnerId())).map(match -> {
+            if (Objects.equals(franchiseId, match.getWinnerId())) {
                 return Boolean.TRUE;
             } else {
                 return Boolean.FALSE;
             }
-        } ).collect( Collectors.toList() );
+        }).collect(Collectors.toList());
     }
 
-    private void populateMatchWiseDetails( FranchiseDTO franchiseDTO, FranchiseStandingsDTO franchiseStandingsDTO, final List<MatchDTO> matches ) {
-        matches.stream().filter( matchDTO -> Objects.nonNull( matchDTO.getWinnerId() ) ).forEach( match -> {
+    private void populateMatchWiseDetails(FranchiseDTO franchiseDTO, FranchiseStandingsDTO franchiseStandingsDTO, final List<MatchDTO> matches) {
+        matches.stream().filter(matchDTO -> Objects.nonNull(matchDTO.getWinnerId())).forEach(match -> {
             boolean result;
             Double points = 0d;
-            if ( Objects.equals( franchiseDTO.getId(), match.getWinnerId() ) ) {
+            if (Objects.equals(franchiseDTO.getId(), match.getWinnerId())) {
                 result = Boolean.TRUE;
             } else {
                 result = Boolean.FALSE;
             }
-            if ( Objects.equals( franchiseDTO.getId(), match.getFranchise1Id() ) ) {
+            if (Objects.equals(franchiseDTO.getId(), match.getFranchise1Id())) {
                 points = match.getPointsForFranchise1();
-            } else if ( Objects.equals( franchiseDTO.getId(), match.getFranchise2Id() ) ) {
+            } else if (Objects.equals(franchiseDTO.getId(), match.getFranchise2Id())) {
                 points = match.getPointsForFranchise2();
             }
-            franchiseStandingsDTO.addMatchWiseDetails( match.getId(), result, points );
-        } );
+            franchiseStandingsDTO.addMatchWiseDetails(match.getId(), result, points);
+        });
     }
 
     /**
@@ -164,80 +165,81 @@ public class StatisticsResource {
      */
     @GetMapping("/seasons/{seasonId}/player-standings")
     @Timed
-    public ResponseEntity<List<PlayerStandingsDTO>> getPlayerStandings( @PathVariable Long seasonId ) {
-        LOGGER.debug( "REST request to get Franchise standings for seasonId : {}", seasonId );
+    public ResponseEntity<List<PlayerStandingsDTO>> getPlayerStandings(@PathVariable Long seasonId) {
+        LOGGER.debug("REST request to get Player standings for seasonId : {}", seasonId);
 
-        final SeasonDTO seasonDTO = seasonService.findOne( seasonId );
+        final SeasonDTO seasonDTO = seasonService.findOne(seasonId);
 
-        final List<PlayerDTO> playerDTOList = playerService.getAllPlayerBySeason( seasonDTO );
-        LOGGER.debug( "playerDTOList : {}", playerDTOList );
+        final List<PlayerDTO> playerDTOList = playerService.getAllPlayerBySeason(seasonDTO);
+        LOGGER.debug("playerDTOList : {}", playerDTOList);
 
-        final Map<Long, List<TieMatchDTO>> playerIdToTieMatches = tieMatchService.getAllTieMatchesByPlayers( playerDTOList );
+        final Map<Long, List<TieMatchDTO>> playerIdToTieMatches = tieMatchService.getAllTieMatchesByPlayers(playerDTOList);
 
         final Map<Long, List<Boolean>> playerIdToForm = playerIdToTieMatches.entrySet()
             .stream()
-            .collect( Collectors.toMap( Map.Entry::getKey, o -> evaluatePlayerCurrentForm( o.getKey(), o.getValue() ) ) );
+            .collect(Collectors.toMap(Map.Entry::getKey, o -> evaluatePlayerCurrentForm(o.getKey(), o.getValue())));
 
-        AtomicInteger rank = new AtomicInteger( 0 );
+        AtomicInteger rank = new AtomicInteger(0);
         List<PlayerStandingsDTO> playerStandingsDTOList = playerDTOList.stream()
-            .map( playerDTO -> {
-                List<TieMatchDTO> matches = playerIdToTieMatches.get( playerDTO.getId() );
+            .map(playerDTO -> {
+                List<TieMatchDTO> matches = playerIdToTieMatches.get(playerDTO.getId());
                 PlayerStandingsDTO playerStandingsDTO = new PlayerStandingsDTO();
                 FranchiseDTO franchiseDTO = new FranchiseDTO();
-                franchiseDTO.setId( playerDTO.getFranchiseId() );
-                franchiseDTO.setName( playerDTO.getFranchiseName() );
-                playerStandingsDTO.setFranchise( franchiseDTO );
-                playerStandingsDTO.setPlayer( playerDTO );
-                playerStandingsDTO.setTotalMatchesPlayed( Objects.nonNull( matches ) ? matches.size() : 0 );
+                franchiseDTO.setId(playerDTO.getFranchiseId());
+                franchiseDTO.setName(playerDTO.getFranchiseName());
+                playerStandingsDTO.setFranchise(franchiseDTO);
+                playerStandingsDTO.setPlayer(playerDTO);
+                playerStandingsDTO.setTotalMatchesPlayed(Objects.nonNull(matches) ? matches.size() : 0);
 
-                playerStandingsDTO.setCurrentForm( playerIdToForm.get( playerDTO.getId() ) );
+                playerStandingsDTO.setCurrentForm(playerIdToForm.get(playerDTO.getId()));
                 Double totalPoints = 0d;
-                if ( CollectionUtils.isEmpty( matches ) ) {
-                    playerStandingsDTO.setMatchWiseDetails( Collections.emptyList() );
+                if (CollectionUtils.isEmpty(matches)) {
+                    playerStandingsDTO.setMatchWiseDetails(Collections.emptyList());
                 } else {
-                    totalPoints = populatePlayerTieMatchWiseDetailsAndCalculateToatlPoints( playerDTO, playerStandingsDTO, matches );
+                    totalPoints = populatePlayerTieMatchWiseDetailsAndCalculateTotalPoints(playerDTO, playerStandingsDTO, matches);
                 }
-                playerStandingsDTO.setTotalPoints( totalPoints );
+                playerStandingsDTO.setTotalPoints(totalPoints);
                 return playerStandingsDTO;
-            } )
-            .sorted( Comparator.comparingDouble( PlayerStandingsDTO::getTotalPoints ).thenComparingInt( PlayerStandingsDTO::getTotalMatchesPlayed ).reversed() )
-            .peek( franchiseStandingsDTO -> franchiseStandingsDTO.setRank( rank.incrementAndGet() ) )
-            .collect( Collectors.toList() );
-        LOGGER.debug( "playerStandingsDTOList : {}", playerStandingsDTOList );
-        return new ResponseEntity<>( playerStandingsDTOList, HttpStatus.OK );
+            })
+            .sorted(Comparator.comparingDouble(PlayerStandingsDTO::getTotalPoints).thenComparingInt(PlayerStandingsDTO::getTotalMatchesPlayed).reversed())
+            .peek(playerStandingsDTO -> playerStandingsDTO.setRank(rank.incrementAndGet()))
+            .collect(Collectors.toList());
+        LOGGER.debug("playerStandingsDTOList : {}", playerStandingsDTOList);
+        return new ResponseEntity<>(playerStandingsDTOList, HttpStatus.OK);
     }
 
-    private List<Boolean> evaluatePlayerCurrentForm( Long playerId, List<TieMatchDTO> tieMatches ) {
-        PlayerDTO playerDTO = playerService.findOne( playerId );
-        return tieMatches.stream().filter( matchDTO -> Objects.nonNull( matchDTO.getWinnerId() ) ).map( tieMatch -> {
-            TieTeamDTO winnerTieTeam = tieTeamService.findOne( tieMatch.getWinnerId() );
-            if ( CollectionUtils.isNotEmpty( winnerTieTeam.getTiePlayers() ) && winnerTieTeam.getTiePlayers().contains( playerDTO ) ) {
+    private List<Boolean> evaluatePlayerCurrentForm(Long playerId, List<TieMatchDTO> tieMatches) {
+        PlayerDTO playerDTO = playerService.findOne(playerId);
+        return tieMatches.stream().filter(matchDTO -> Objects.nonNull(matchDTO.getWinnerId())).map(tieMatch -> {
+            TieTeamDTO winnerTieTeam = tieTeamService.findOne(tieMatch.getWinnerId());
+            if (CollectionUtils.isNotEmpty(winnerTieTeam.getTiePlayers()) && winnerTieTeam.getTiePlayers().contains(playerDTO)) {
                 return Boolean.TRUE;
             } else {
                 return Boolean.FALSE;
             }
-        } ).collect( Collectors.toList() );
+        }).collect(Collectors.toList());
     }
 
-    private Double populatePlayerTieMatchWiseDetailsAndCalculateToatlPoints( PlayerDTO playerDTO, PlayerStandingsDTO playerStandingsDTO, final List<TieMatchDTO> tieMatches ) {
-        Double totalPoints = 0d;
-        tieMatches.stream().filter( matchDTO -> Objects.nonNull( matchDTO.getWinnerId() ) ).forEach( tieMatch -> {
+    private Double populatePlayerTieMatchWiseDetailsAndCalculateTotalPoints(PlayerDTO playerDTO, PlayerStandingsDTO playerStandingsDTO, final List<TieMatchDTO> tieMatches) {
+        AtomicDouble totalPoints = new AtomicDouble(0d);
+        tieMatches.stream().filter(matchDTO -> Objects.nonNull(matchDTO.getWinnerId())).forEach(tieMatch -> {
             boolean result;
             Double points = 0d;
-            if ( Objects.equals( playerDTO.getId(), tieMatch.getWinnerId() ) ) {
+            if (Objects.equals(playerDTO.getId(), tieMatch.getWinnerId())) {
                 result = Boolean.TRUE;
             } else {
                 result = Boolean.FALSE;
             }
-            TieTeamDTO tieTeam1 = tieTeamService.findOne( tieMatch.getTeam1Id() );
-            TieTeamDTO tieTeam2 = tieTeamService.findOne( tieMatch.getTeam2Id() );
-            if ( CollectionUtils.isNotEmpty( tieTeam1.getTiePlayers() ) && tieTeam1.getTiePlayers().contains( playerDTO ) ) {
+            TieTeamDTO tieTeam1 = tieTeamService.findOne(tieMatch.getTeam1Id());
+            TieTeamDTO tieTeam2 = tieTeamService.findOne(tieMatch.getTeam2Id());
+            if (CollectionUtils.isNotEmpty(tieTeam1.getTiePlayers()) && tieTeam1.getTiePlayers().contains(playerDTO)) {
                 points = tieMatch.getPointsForTieTeam1();
-            } else if ( CollectionUtils.isNotEmpty( tieTeam2.getTiePlayers() ) && tieTeam2.getTiePlayers().contains( playerDTO ) ) {
+            } else if (CollectionUtils.isNotEmpty(tieTeam2.getTiePlayers()) && tieTeam2.getTiePlayers().contains(playerDTO)) {
                 points = tieMatch.getPointsForTieTeam2();
             }
-            playerStandingsDTO.addMatchWiseDetails( tieMatch.getId(), result, points );
-        } );
-        return totalPoints;
+            totalPoints.addAndGet(points);
+            playerStandingsDTO.addMatchWiseDetails(tieMatch.getId(), result, points);
+        });
+        return totalPoints.get();
     }
 }

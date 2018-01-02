@@ -119,7 +119,7 @@ export class PointsTableComponent implements OnInit {
         this.lineChartData = dataArray;
     }
 
-    private loadPlayerLineChartData(franchiseStandingsData) {
+    private loadPlayerLineChartData(playerStandingsData) {
         this.playerLineChartOptions = {
             chart: {
                 type: 'lineChart',
@@ -160,24 +160,22 @@ export class PointsTableComponent implements OnInit {
             }
         };
         const dataArray = [];
-        let j = 0;
-        franchiseStandingsData.forEach((franchiseStanding) => {
+        for (let index = 0; index < playerStandingsData.length && index < 10; index++) {
+            const playerStanding = playerStandingsData[index];
             const dataCoordinates = [];
             dataCoordinates.push({x: 0, y: 0});
             let i = 0;
             let totalPoints = 0;
-            franchiseStanding.matchWiseDetails.forEach((matchDetails) => {
+            playerStanding.matchWiseDetails.forEach((matchDetails) => {
                 totalPoints = totalPoints + matchDetails.matchPoints;
                 dataCoordinates.push({x: ++i, y: totalPoints});
             });
             const lineData = {
                 values: dataCoordinates,
-                key: franchiseStanding.franchise.name,
-                color: COLORS[j],
+                key: playerStanding.player.name,
             };
-            j = j + 1;
             dataArray.push(lineData);
-        });
+        }
         this.playerLineChartData = dataArray;
     }
 

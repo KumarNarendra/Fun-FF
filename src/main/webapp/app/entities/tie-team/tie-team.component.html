@@ -35,15 +35,11 @@
                     </div>
                 </td>
                 <td>
-                    <table>
-                        <tbody>
-                        <tr *ngFor="let player of tieTeam.tiePlayers">
-                            <td>
-                                <a [routerLink]="['../player', player.id  ]" >{{player.name}}</a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <span *ngFor="let player of tieTeam.tiePlayers">
+                        <span>
+                            <a [routerLink]="['../player', player.id  ]" >{{player.name}} ,</a>
+                        </span>
+                    </span>
                 </td>
                 <td>{{tieTeam.points}}</td>
                 <td class="text-right">

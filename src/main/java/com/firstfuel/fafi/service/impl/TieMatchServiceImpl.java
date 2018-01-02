@@ -31,7 +31,7 @@ import com.firstfuel.fafi.service.mapper.TieMatchMapper;
 public class TieMatchServiceImpl
     implements TieMatchService {
 
-    private final Logger log = LoggerFactory.getLogger( TieMatchServiceImpl.class );
+    private final Logger log = LoggerFactory.getLogger(TieMatchServiceImpl.class);
 
     @Autowired
     private TieMatchRepository tieMatchRepository;
@@ -49,11 +49,11 @@ public class TieMatchServiceImpl
      * @return the persisted entity
      */
     @Override
-    public TieMatchDTO save( TieMatchDTO tieMatchDTO ) {
-        log.debug( "Request to save TieMatch : {}", tieMatchDTO );
-        TieMatch tieMatch = tieMatchMapper.toEntity( tieMatchDTO );
-        tieMatch = tieMatchRepository.save( tieMatch );
-        return tieMatchMapper.toDto( tieMatch );
+    public TieMatchDTO save(TieMatchDTO tieMatchDTO) {
+        log.debug("Request to save TieMatch : {}", tieMatchDTO);
+        TieMatch tieMatch = tieMatchMapper.toEntity(tieMatchDTO);
+        tieMatch = tieMatchRepository.save(tieMatch);
+        return tieMatchMapper.toDto(tieMatch);
     }
 
     /**
@@ -64,9 +64,9 @@ public class TieMatchServiceImpl
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<TieMatchDTO> findAll( Pageable pageable ) {
-        log.debug( "Request to get all TieMatches" );
-        return tieMatchRepository.findAll( pageable ).map( tieMatchMapper::toDto );
+    public Page<TieMatchDTO> findAll(Pageable pageable) {
+        log.debug("Request to get all TieMatches");
+        return tieMatchRepository.findAll(pageable).map(tieMatchMapper::toDto);
     }
 
     /**
@@ -77,10 +77,10 @@ public class TieMatchServiceImpl
      */
     @Override
     @Transactional(readOnly = true)
-    public TieMatchDTO findOne( Long id ) {
-        log.debug( "Request to get TieMatch : {}", id );
-        TieMatch tieMatch = tieMatchRepository.findOne( id );
-        return tieMatchMapper.toDto( tieMatch );
+    public TieMatchDTO findOne(Long id) {
+        log.debug("Request to get TieMatch : {}", id);
+        TieMatch tieMatch = tieMatchRepository.findOne(id);
+        return tieMatchMapper.toDto(tieMatch);
     }
 
     /**
@@ -89,25 +89,28 @@ public class TieMatchServiceImpl
      * @param id the id of the entity
      */
     @Override
-    public void delete( Long id ) {
-        log.debug( "Request to delete TieMatch : {}", id );
-        tieMatchRepository.delete( id );
+    public void delete(Long id) {
+        log.debug("Request to delete TieMatch : {}", id);
+        tieMatchRepository.delete(id);
     }
 
     @Override
-    public Map<Long, List<TieMatchDTO>> getAllTieMatchesByPlayers( List<PlayerDTO> playerDTOList ) {
-        List<Player> players = playerMapper.toEntity( playerDTOList );
-        List<TieMatch> matches = tieMatchRepository.getTieMatchesByTeam1_TiePlayersInOrTeam2_TiePlayersIn( players, players );
-        Map<TieTeam, List<TieMatch>> team1TieMatches = matches.stream().collect( Collectors.groupingBy( TieMatch::getTeam1 ) );
-        Map<TieTeam, List<TieMatch>> team2TieMatches = matches.stream().collect( Collectors.groupingBy( TieMatch::getTeam2 ) );
-        Map<Long, List<TieMatchDTO>> allMatchesByFranchise = Stream.concat( team1TieMatches.entrySet().stream(), team2TieMatches.entrySet().stream() )
-            .flatMap( entry -> entry.getKey().getTiePlayers().stream().collect( Collectors.toMap( o -> o, o -> entry.getValue() ) ).entrySet().stream() )
-            .collect( Collectors.toMap( o -> o.getKey().getId(), o -> tieMatchMapper.toDto( o.getValue() ), this::mergeFunction ) );
-        log.debug( "allTieMatchesByPlayer : {}", allMatchesByFranchise );
-        return allMatchesByFranchise;
+    public Map<Long, List<TieMatchDTO>> getAllTieMatchesByPlayers(List<PlayerDTO> playerDTOList) {
+        List<Player> players = playerMapper.toEntity(playerDTOList);
+        List<TieMatch> tieMatches = tieMatchRepository.getDistinctByTeam1_TiePlayersInOrTeam2_TiePlayersIn(players, players);
+        log.debug("Tie Matches : {}", tieMatches);
+        Map<TieTeam, List<TieMatch>> team1TieMatches = tieMatches.stream().collect(Collectors.groupingBy(TieMatch::getTeam1));
+        log.debug("team1TieMatches : {}", team1TieMatches);
+        Map<TieTeam, List<TieMatch>> team2TieMatches = tieMatches.stream().collect(Collectors.groupingBy(TieMatch::getTeam2));
+        log.debug("team2TieMatches : {}", team2TieMatches);
+        Map<Long, List<TieMatchDTO>> allMatchesByPlayer = Stream.concat(team1TieMatches.entrySet().stream(), team2TieMatches.entrySet().stream())
+            .flatMap(entry -> entry.getKey().getTiePlayers().stream().collect(Collectors.toMap(o -> o, o -> entry.getValue())).entrySet().stream())
+            .collect(Collectors.toMap(o -> o.getKey().getId(), o -> tieMatchMapper.toDto(o.getValue()), this::mergeFunction));
+        log.debug("allTieMatchesByPlayer : {}", allMatchesByPlayer);
+        return allMatchesByPlayer;
     }
 
-    private List<TieMatchDTO> mergeFunction( List<TieMatchDTO> v1, List<TieMatchDTO> v2 ) {
-        return Stream.concat( v1.stream(), v2.stream() ).distinct().collect( Collectors.toList() );
+    private List<TieMatchDTO> mergeFunction(List<TieMatchDTO> v1, List<TieMatchDTO> v2) {
+        return Stream.concat(v1.stream(), v2.stream()).distinct().collect(Collectors.toList());
     }
 }

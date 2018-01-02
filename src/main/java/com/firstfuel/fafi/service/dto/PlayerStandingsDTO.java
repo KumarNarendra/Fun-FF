@@ -24,6 +24,7 @@ public class PlayerStandingsDTO {
     public PlayerStandingsDTO() {
         this.totalMatchesPlayed = 0;
         this.totalPoints = 0d;
+        this.matchWiseDetails = new ArrayList<>();
     }
 
     public Integer getRank() {
@@ -83,16 +84,20 @@ public class PlayerStandingsDTO {
     }
 
     public void addMatchWiseDetails( Long matchId, boolean matchResult, Double matchPoints ) {
-        if ( Objects.isNull( this.matchWiseDetails ) ) {
-            this.matchWiseDetails = new ArrayList<>();
-        }
         this.matchWiseDetails.add( new MatchWiseDetails( matchId, matchResult, matchPoints ) );
     }
 
     @Override
     public String toString() {
-        return "FranchiseStandingsDTO{" + "rank=" + rank + ", franchise=" + franchise + ", totalMatchesPlayed=" + totalMatchesPlayed + ", totalPoints=" + totalPoints
-            + ", currentForm=" + currentForm + ", matchWiseDetails=" + matchWiseDetails + '}';
+        return "PlayerStandingsDTO{" +
+            "rank=" + rank +
+            ", franchise=" + franchise +
+            ", player=" + player +
+            ", totalMatchesPlayed=" + totalMatchesPlayed +
+            ", totalPoints=" + totalPoints +
+            ", currentForm=" + currentForm +
+            ", matchWiseDetails=" + matchWiseDetails +
+            '}';
     }
 
     class MatchWiseDetails {

@@ -16,5 +16,5 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface TieMatchRepository extends JpaRepository<TieMatch, Long>, JpaSpecificationExecutor<TieMatch> {
 
-    List<TieMatch> getTieMatchesByTeam1_TiePlayersInOrTeam2_TiePlayersIn( List<Player> players1, List<Player> players2 );
+    List<TieMatch> getDistinctByTeam1_TiePlayersInOrTeam2_TiePlayersIn( List<Player> players1, List<Player> players2 );
 }
