@@ -12,6 +12,20 @@
             <dd>
                 <span>{{franchise.logoPath}}</span>
             </dd>
+            <dt><span jhiTranslate="fafiApp.franchise.points">Points</span></dt>
+            <dd>
+                <span>{{franchise.points}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.franchise.logo">Logo</span></dt>
+            <dd>
+                <div *ngIf="franchise.logo">
+                    <a (click)="openFile(franchise.logoContentType, franchise.logo)">
+                        <img [src]="'data:' + franchise.logoContentType + ';base64,' + franchise.logo"
+                             style="max-width: 100%;" alt="franchise image"/>
+                    </a>
+                    {{franchise.logoContentType}}, {{byteSize(franchise.logo)}}
+                </div>
+            </dd>
             <dt><span jhiTranslate="fafiApp.franchise.season">Season</span></dt>
             <dd>
                 <div *ngIf="franchise.seasonId">

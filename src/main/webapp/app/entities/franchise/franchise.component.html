@@ -24,6 +24,10 @@
                         class="fa fa-sort"></span></th>
                     <th jhiSortBy="logoPath"><span jhiTranslate="fafiApp.franchise.logoPath">Logo Path</span> <span
                         class="fa fa-sort"></span></th>
+                    <th jhiSortBy="points"><span jhiTranslate="fafiApp.franchise.points">Points</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th jhiSortBy="logo"><span jhiTranslate="fafiApp.franchise.logo">Logo</span> <span
+                        class="fa fa-sort"></span></th>
                     <th jhiSortBy="seasonId"><span jhiTranslate="fafiApp.franchise.season">Season</span> <span
                         class="fa fa-sort"></span></th>
                     <th jhiSortBy="ownerId"><span jhiTranslate="fafiApp.franchise.owner">Owner</span> <span
@@ -38,6 +42,14 @@
                     <td><a [routerLink]="['../franchise', franchise.id ]">{{franchise.id}}</a></td>
                     <td>{{franchise.name}}</td>
                     <td>{{franchise.logoPath}}</td>
+                    <td>{{franchise.points}}</td>
+                    <td>
+                        <a *ngIf="franchise.logo" (click)="openFile(franchise.logoContentType, franchise.logo)">
+                            <img [src]="'data:' + franchise.logoContentType + ';base64,' + franchise.logo"
+                                 style="max-height: 30px;" alt="franchise image"/>
+                        </a>
+                        <span *ngIf="franchise.logo">{{franchise.logoContentType}}, {{byteSize(franchise.logo)}}</span>
+                    </td>
                     <td>
                         <div *ngIf="franchise.seasonId">
                             <a [routerLink]="['../season', franchise.seasonId  ]">{{franchise.seasonName}}</a>

@@ -17,6 +17,8 @@
             },
             "name": "Name",
             "logoPath": "Logo Path",
+            "points": "Points",
+            "logo": "Logo",
             "players": "Players",
             "season": "Season",
             "owner": "Owner",

@@ -28,6 +28,28 @@
             <input type="text" class="form-control" name="logoPath" id="field_logoPath"
                 [(ngModel)]="franchise.logoPath" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="fafiApp.franchise.points" for="field_points">Points</label>
+            <input type="number" class="form-control" name="points" id="field_points"
+                [(ngModel)]="franchise.points" disabled/>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="fafiApp.franchise.logo" for="field_logo">Logo</label>
+            <div>
+                <img [src]="'data:' + franchise.logoContentType + ';base64,' + franchise.logo" style="max-height: 100px;" *ngIf="franchise.logo" alt="franchise image"/>
+                <div *ngIf="franchise.logo" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{franchise.logoContentType}}, {{byteSize(franchise.logo)}}</span>
+                    <button type="button" (click)="clearInputImage('logo', 'logoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_logo" (change)="setFileData($event, franchise, 'logo', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="logo" id="field_logo"
+                [(ngModel)]="franchise.logo" />
+            <input type="hidden" class="form-control" name="logoContentType" id="field_logoContentType"
+                [(ngModel)]="franchise.logoContentType" />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="fafiApp.franchise.season" for="field_season">Season</label>

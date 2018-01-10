@@ -36,6 +36,13 @@ public class Franchise implements Serializable {
     @Column(name = "points")
     private Double points;
 
+    @Lob
+    @Column(name = "logo")
+    private byte[] logo;
+
+    @Column(name = "logo_content_type")
+    private String logoContentType;
+
     @OneToMany(mappedBy = "franchise")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -98,6 +105,32 @@ public class Franchise implements Serializable {
 
     public void setPoints(Double points) {
         this.points = points;
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public Franchise logo(byte[] logo) {
+        this.logo = logo;
+        return this;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
+    public String getLogoContentType() {
+        return logoContentType;
+    }
+
+    public Franchise logoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
+        return this;
+    }
+
+    public void setLogoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
     }
 
     public Set<Player> getPlayers() {
@@ -192,6 +225,8 @@ public class Franchise implements Serializable {
             ", name='" + getName() + "'" +
             ", logoPath='" + getLogoPath() + "'" +
             ", points=" + getPoints() +
+            ", logo='" + getLogo() + "'" +
+            ", logoContentType='" + getLogoContentType() + "'" +
             "}";
     }
 }

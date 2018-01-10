@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Rx';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { Franchise } from './franchise.model';
 import { FranchiseService } from './franchise.service';
@@ -18,6 +18,7 @@ export class FranchiseDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         private eventManager: JhiEventManager,
+        private dataUtils: JhiDataUtils,
         private franchiseService: FranchiseService,
         private route: ActivatedRoute
     ) {
@@ -34,6 +35,13 @@ export class FranchiseDetailComponent implements OnInit, OnDestroy {
         this.franchiseService.find(id).subscribe((franchise) => {
             this.franchise = franchise;
         });
+    }
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     previousState() {
         window.history.back();

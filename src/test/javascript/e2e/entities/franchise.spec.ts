@@ -1,11 +1,13 @@
 import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-
+import * as path from 'path';
 describe('Franchise e2e test', () => {
 
     let navBarPage: NavBarPage;
     let franchiseDialogPage: FranchiseDialogPage;
     let franchiseComponentsPage: FranchiseComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
 
     beforeAll(() => {
         browser.get('/');
@@ -35,6 +37,9 @@ describe('Franchise e2e test', () => {
         expect(franchiseDialogPage.getNameInput()).toMatch('name');
         franchiseDialogPage.setLogoPathInput('logoPath');
         expect(franchiseDialogPage.getLogoPathInput()).toMatch('logoPath');
+        franchiseDialogPage.setPointsInput('5');
+        expect(franchiseDialogPage.getPointsInput()).toMatch('5');
+        franchiseDialogPage.setLogoInput(absolutePath);
         franchiseDialogPage.seasonSelectLastOption();
         franchiseDialogPage.ownerSelectLastOption();
         franchiseDialogPage.iconPlayerSelectLastOption();
@@ -66,6 +71,8 @@ export class FranchiseDialogPage {
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
     logoPathInput = element(by.css('input#field_logoPath'));
+    pointsInput = element(by.css('input#field_points'));
+    logoInput = element(by.css('input#file_logo'));
     seasonSelect = element(by.css('select#field_season'));
     ownerSelect = element(by.css('select#field_owner'));
     iconPlayerSelect = element(by.css('select#field_iconPlayer'));
@@ -88,6 +95,22 @@ export class FranchiseDialogPage {
 
     getLogoPathInput = function() {
         return this.logoPathInput.getAttribute('value');
+    }
+
+    setPointsInput = function(points) {
+        this.pointsInput.sendKeys(points);
+    }
+
+    getPointsInput = function() {
+        return this.pointsInput.getAttribute('value');
+    }
+
+    setLogoInput = function(logo) {
+        this.logoInput.sendKeys(logo);
+    }
+
+    getLogoInput = function() {
+        return this.logoInput.getAttribute('value');
     }
 
     seasonSelectLastOption = function() {

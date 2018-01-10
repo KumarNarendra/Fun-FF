@@ -8,9 +8,8 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Franchise and its DTO FranchiseDTO.
  */
-@Mapper(componentModel = "spring", uses = { SeasonMapper.class, PlayerMapper.class })
-public interface FranchiseMapper
-    extends EntityMapper<FranchiseDTO, Franchise> {
+@Mapper(componentModel = "spring", uses = {SeasonMapper.class, PlayerMapper.class})
+public interface FranchiseMapper extends EntityMapper<FranchiseDTO, Franchise> {
 
     @Mapping(source = "season.id", target = "seasonId")
     @Mapping(source = "owner.id", target = "ownerId")
@@ -25,14 +24,14 @@ public interface FranchiseMapper
     @Mapping(source = "seasonId", target = "season")
     @Mapping(source = "ownerId", target = "owner")
     @Mapping(source = "iconPlayerId", target = "iconPlayer")
-    Franchise toEntity( FranchiseDTO franchiseDTO );
+    Franchise toEntity(FranchiseDTO franchiseDTO);
 
-    default Franchise fromId( Long id ) {
-        if ( id == null ) {
+    default Franchise fromId(Long id) {
+        if (id == null) {
             return null;
         }
         Franchise franchise = new Franchise();
-        franchise.setId( id );
+        franchise.setId(id);
         return franchise;
     }
 }

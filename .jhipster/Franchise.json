@@ -45,6 +45,11 @@
         {
             "fieldName": "points",
             "fieldType": "Double"
+        },
+        {
+            "fieldName": "logo",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
         }
     ],
     "changelogDate": "20171218184447",

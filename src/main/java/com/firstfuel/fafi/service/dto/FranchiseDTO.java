@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+import javax.persistence.Lob;
 
 /**
  * A DTO for the Franchise entity.
@@ -20,6 +21,10 @@ public class FranchiseDTO implements Serializable {
     private String logoPath;
 
     private Double points;
+
+    @Lob
+    private byte[] logo;
+    private String logoContentType;
 
     private Long seasonId;
 
@@ -63,6 +68,22 @@ public class FranchiseDTO implements Serializable {
 
     public void setPoints(Double points) {
         this.points = points;
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
+    public String getLogoContentType() {
+        return logoContentType;
+    }
+
+    public void setLogoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
     }
 
     public Long getSeasonId() {
@@ -141,6 +162,7 @@ public class FranchiseDTO implements Serializable {
             ", name='" + getName() + "'" +
             ", logoPath='" + getLogoPath() + "'" +
             ", points=" + getPoints() +
+            ", logo='" + getLogo() + "'" +
             "}";
     }
 }

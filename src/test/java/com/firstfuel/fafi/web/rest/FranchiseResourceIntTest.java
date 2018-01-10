@@ -28,6 +28,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -55,6 +56,11 @@ public class FranchiseResourceIntTest {
 
     private static final Double DEFAULT_POINTS = 1D;
     private static final Double UPDATED_POINTS = 2D;
+
+    private static final byte[] DEFAULT_LOGO = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_LOGO = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_LOGO_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_LOGO_CONTENT_TYPE = "image/png";
 
     @Autowired
     private FranchiseRepository franchiseRepository;
@@ -101,7 +107,9 @@ public class FranchiseResourceIntTest {
         Franchise franchise = new Franchise()
             .name(DEFAULT_NAME)
             .logoPath(DEFAULT_LOGO_PATH)
-            .points(DEFAULT_POINTS);
+            .points(DEFAULT_POINTS)
+            .logo(DEFAULT_LOGO)
+            .logoContentType(DEFAULT_LOGO_CONTENT_TYPE);
         return franchise;
     }
 
@@ -129,6 +137,8 @@ public class FranchiseResourceIntTest {
         assertThat(testFranchise.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testFranchise.getLogoPath()).isEqualTo(DEFAULT_LOGO_PATH);
         assertThat(testFranchise.getPoints()).isEqualTo(DEFAULT_POINTS);
+        assertThat(testFranchise.getLogo()).isEqualTo(DEFAULT_LOGO);
+        assertThat(testFranchise.getLogoContentType()).isEqualTo(DEFAULT_LOGO_CONTENT_TYPE);
     }
 
     @Test
@@ -183,7 +193,9 @@ public class FranchiseResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(franchise.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH.toString())))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())));
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())))
+            .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))));
     }
 
     @Test
@@ -199,7 +211,9 @@ public class FranchiseResourceIntTest {
             .andExpect(jsonPath("$.id").value(franchise.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.logoPath").value(DEFAULT_LOGO_PATH.toString()))
-            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.doubleValue()));
+            .andExpect(jsonPath("$.points").value(DEFAULT_POINTS.doubleValue()))
+            .andExpect(jsonPath("$.logoContentType").value(DEFAULT_LOGO_CONTENT_TYPE))
+            .andExpect(jsonPath("$.logo").value(Base64Utils.encodeToString(DEFAULT_LOGO)));
     }
 
     @Test
@@ -404,7 +418,9 @@ public class FranchiseResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(franchise.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].logoPath").value(hasItem(DEFAULT_LOGO_PATH.toString())))
-            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())));
+            .andExpect(jsonPath("$.[*].points").value(hasItem(DEFAULT_POINTS.doubleValue())))
+            .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))));
     }
 
     /**
@@ -441,7 +457,9 @@ public class FranchiseResourceIntTest {
         updatedFranchise
             .name(UPDATED_NAME)
             .logoPath(UPDATED_LOGO_PATH)
-            .points(UPDATED_POINTS);
+            .points(UPDATED_POINTS)
+            .logo(UPDATED_LOGO)
+            .logoContentType(UPDATED_LOGO_CONTENT_TYPE);
         FranchiseDTO franchiseDTO = franchiseMapper.toDto(updatedFranchise);
 
         restFranchiseMockMvc.perform(put("/api/franchises")
@@ -456,6 +474,8 @@ public class FranchiseResourceIntTest {
         assertThat(testFranchise.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testFranchise.getLogoPath()).isEqualTo(UPDATED_LOGO_PATH);
         assertThat(testFranchise.getPoints()).isEqualTo(UPDATED_POINTS);
+        assertThat(testFranchise.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testFranchise.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
     }
 
     @Test
