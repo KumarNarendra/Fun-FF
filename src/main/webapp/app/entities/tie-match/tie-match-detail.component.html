@@ -1,54 +1,55 @@
-<br>
-<div *ngIf="tieMatch">
-    <h2><span jhiTranslate="fafiApp.tieMatch.detail.title">Tie Match</span> {{tieMatch.id}}</h2>
-    <hr>
-    <fafi-alert-error></fafi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="fafiApp.tieMatch.match">Match</span></dt>
-        <dd>
-            <div *ngIf="tieMatch.matchId">
-                <a [routerLink]="['/match', tieMatch.matchId]">{{tieMatch.matchId}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieMatch.team1">Team 1</span></dt>
-        <dd>
-            <div *ngIf="tieMatch.team1Id">
-                <a [routerLink]="['/tie-team', tieMatch.team1Id]">{{tieMatch.team1Name}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieMatch.pointsForTieTeam1">Points For Tie Team 1</span></dt>
-        <dd>
-            <span>{{tieMatch.pointsForTieTeam1}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieMatch.team2">Team 2</span></dt>
-        <dd>
-            <div *ngIf="tieMatch.team2Id">
-                <a [routerLink]="['/tie-team', tieMatch.team2Id]">{{tieMatch.team2Name}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieMatch.pointsForTieTeam2">Points For Tie Team 2</span></dt>
-        <dd>
-            <span>{{tieMatch.pointsForTieTeam2}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieMatch.winner">Winner</span></dt>
-        <dd>
-            <div *ngIf="tieMatch.winnerId">
-                <a [routerLink]="['/tie-team', tieMatch.winnerId]">{{tieMatch.winnerName}}</a>
-            </div>
-        </dd>
-    </dl>
+<div class="card jh-card">
+    <div *ngIf="tieMatch">
+        <h2><span jhiTranslate="fafiApp.tieMatch.detail.title">Tie Match</span> {{tieMatch.id}}</h2>
+        <hr>
+        <fafi-alert-error></fafi-alert-error>
+        <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="fafiApp.tieMatch.match">Match</span></dt>
+            <dd>
+                <div *ngIf="tieMatch.matchId">
+                    <a [routerLink]="['/match', tieMatch.matchId]">{{tieMatch.matchId}}</a>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieMatch.team1">Team 1</span></dt>
+            <dd>
+                <div *ngIf="tieMatch.team1Id">
+                    <a [routerLink]="['/tie-team', tieMatch.team1Id]">{{tieMatch.team1Name}}</a>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieMatch.pointsForTieTeam1">Points For Tie Team 1</span></dt>
+            <dd>
+                <span>{{tieMatch.pointsForTieTeam1}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieMatch.team2">Team 2</span></dt>
+            <dd>
+                <div *ngIf="tieMatch.team2Id">
+                    <a [routerLink]="['/tie-team', tieMatch.team2Id]">{{tieMatch.team2Name}}</a>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieMatch.pointsForTieTeam2">Points For Tie Team 2</span></dt>
+            <dd>
+                <span>{{tieMatch.pointsForTieTeam2}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieMatch.winner">Winner</span></dt>
+            <dd>
+                <div *ngIf="tieMatch.winnerId">
+                    <a [routerLink]="['/tie-team', tieMatch.winnerId]">{{tieMatch.winnerName}}</a>
+                </div>
+            </dd>
+        </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'tie-match/'+ tieMatch.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+        <button type="button"
+                [routerLink]="['/', { outlets: { popup: 'tie-match/'+ tieMatch.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </div>
 </div>

@@ -1,46 +1,47 @@
-<br>
-<div *ngIf="tournament">
-    <h2><span jhiTranslate="fafiApp.tournament.detail.title">Tournament</span> {{tournament.id}}</h2>
-    <hr>
-    <fafi-alert-error></fafi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="fafiApp.tournament.name">Name</span></dt>
-        <dd>
-            <span>{{tournament.name}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tournament.startDate">Start Date</span></dt>
-        <dd>
-            <span>{{tournament.startDate | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tournament.endDate">End Date</span></dt>
-        <dd>
-            <span>{{tournament.endDate | date:'mediumDate'}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tournament.season">Season</span></dt>
-        <dd>
-            <div *ngIf="tournament.seasonId">
-                <a [routerLink]="['/season', tournament.seasonId]">{{tournament.seasonName}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tournament.winner">Winner</span></dt>
-        <dd>
-            <div *ngIf="tournament.winnerId">
-                <a [routerLink]="['/franchise', tournament.winnerId]">{{tournament.winnerName}}</a>
-            </div>
-        </dd>
-    </dl>
+<div class="card jh-card">
+    <div *ngIf="tournament">
+        <h2><span jhiTranslate="fafiApp.tournament.detail.title">Tournament</span> {{tournament.id}}</h2>
+        <hr>
+        <fafi-alert-error></fafi-alert-error>
+        <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="fafiApp.tournament.name">Name</span></dt>
+            <dd>
+                <span>{{tournament.name}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tournament.startDate">Start Date</span></dt>
+            <dd>
+                <span>{{tournament.startDate | date:'mediumDate'}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tournament.endDate">End Date</span></dt>
+            <dd>
+                <span>{{tournament.endDate | date:'mediumDate'}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tournament.season">Season</span></dt>
+            <dd>
+                <div *ngIf="tournament.seasonId">
+                    <a [routerLink]="['/season', tournament.seasonId]">{{tournament.seasonName}}</a>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tournament.winner">Winner</span></dt>
+            <dd>
+                <div *ngIf="tournament.winnerId">
+                    <a [routerLink]="['/franchise', tournament.winnerId]">{{tournament.winnerName}}</a>
+                </div>
+            </dd>
+        </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'tournament/'+ tournament.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+        <button type="button"
+                [routerLink]="['/', { outlets: { popup: 'tournament/'+ tournament.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </div>
 </div>

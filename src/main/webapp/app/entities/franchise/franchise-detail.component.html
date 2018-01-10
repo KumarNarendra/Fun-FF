@@ -1,48 +1,49 @@
-<br>
-<div *ngIf="franchise">
-    <h2><span jhiTranslate="fafiApp.franchise.detail.title">Franchise</span> {{franchise.id}}</h2>
-    <hr>
-    <fafi-alert-error></fafi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="fafiApp.franchise.name">Name</span></dt>
-        <dd>
-            <span>{{franchise.name}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.franchise.logoPath">Logo Path</span></dt>
-        <dd>
-            <span>{{franchise.logoPath}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.franchise.season">Season</span></dt>
-        <dd>
-            <div *ngIf="franchise.seasonId">
-                <a [routerLink]="['/season', franchise.seasonId]">{{franchise.seasonName}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.franchise.owner">Owner</span></dt>
-        <dd>
-            <div *ngIf="franchise.ownerId">
-                <a [routerLink]="['/player', franchise.ownerId]">{{franchise.ownerName}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.franchise.iconPlayer">Icon Player</span></dt>
-        <dd>
-            <div *ngIf="franchise.iconPlayerId">
-                <a [routerLink]="['/player', franchise.iconPlayerId]">{{franchise.iconPlayerName}}</a>
-            </div>
-        </dd>
-    </dl>
+<div class="card jh-card">
+    <div *ngIf="franchise">
+        <h2><span jhiTranslate="fafiApp.franchise.detail.title">Franchise</span> {{franchise.id}}</h2>
+        <hr>
+        <fafi-alert-error></fafi-alert-error>
+        <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="fafiApp.franchise.name">Name</span></dt>
+            <dd>
+                <span>{{franchise.name}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.franchise.logoPath">Logo Path</span></dt>
+            <dd>
+                <span>{{franchise.logoPath}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.franchise.season">Season</span></dt>
+            <dd>
+                <div *ngIf="franchise.seasonId">
+                    <a [routerLink]="['/season', franchise.seasonId]">{{franchise.seasonName}}</a>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.franchise.owner">Owner</span></dt>
+            <dd>
+                <div *ngIf="franchise.ownerId">
+                    <a [routerLink]="['/player', franchise.ownerId]">{{franchise.ownerName}}</a>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.franchise.iconPlayer">Icon Player</span></dt>
+            <dd>
+                <div *ngIf="franchise.iconPlayerId">
+                    <a [routerLink]="['/player', franchise.iconPlayerId]">{{franchise.iconPlayerName}}</a>
+                </div>
+            </dd>
+        </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'franchise/'+ franchise.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+        <button type="button"
+                [routerLink]="['/', { outlets: { popup: 'franchise/'+ franchise.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </div>
 </div>

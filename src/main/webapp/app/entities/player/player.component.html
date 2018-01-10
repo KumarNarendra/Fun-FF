@@ -1,85 +1,96 @@
-<br>
-<div>
-    <h2>
-        <span jhiTranslate="fafiApp.player.home.title">Players</span>
-        <button class="btn btn-primary float-right jh-create-entity create-player" [routerLink]="['/', { outlets: { popup: ['player-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span  jhiTranslate="fafiApp.player.home.createLabel">
+<div class="card jh-card">
+    <div>
+        <h2>
+            <span jhiTranslate="fafiApp.player.home.title">Players</span>
+            <button class="btn btn-primary float-right jh-create-entity create-player"
+                    [routerLink]="['/', { outlets: { popup: ['player-new'] } }]">
+                <span class="fa fa-plus"></span>
+                <span jhiTranslate="fafiApp.player.home.createLabel">
             Create new Player
             </span>
-        </button>
-    </h2>
-    <fafi-alert></fafi-alert>
-    <div class="row">
-    </div>
-    <br/>
-    <div class="table-responsive" *ngIf="players">
-        <table class="table table-striped">
-            <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span jhiTranslate="fafiApp.player.name">Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="basePrice"><span jhiTranslate="fafiApp.player.basePrice">Base Price</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="bidPrice"><span jhiTranslate="fafiApp.player.bidPrice">Bid Price</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="optedGames"><span jhiTranslate="fafiApp.player.optedGames">Opted Games</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="points"><span jhiTranslate="fafiApp.player.points">Points</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="franchiseName"><span jhiTranslate="fafiApp.player.franchise">Franchise</span> <span class="fa fa-sort"></span></th>
-            <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let player of players ;trackBy: trackId">
-                <td><a [routerLink]="['../player', player.id ]">{{player.id}}</a></td>
-                <td>{{player.name}}</td>
-                <td>{{player.basePrice}}</td>
-                <td>{{player.bidPrice}}</td>
-                <td>
-                    <div *ngFor="let game of player.optedGames">
-                        <span  jhiTranslate="{{'fafiApp.Games.' + game}}">{{game}}</span>
-                    </div>
-                </td>
-                <td>{{player.points}}</td>
-                <td>
-                    <div *ngIf="player.franchiseId">
-                        <a [routerLink]="['../franchise', player.franchiseId  ]" >{{player.franchiseName}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../player', player.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'player/'+ player.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'player/'+ player.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+            </button>
+        </h2>
+        <fafi-alert></fafi-alert>
+        <div class="row">
+        </div>
+        <br/>
+        <div class="table-responsive" *ngIf="players">
+            <table class="table table-striped">
+                <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                    <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span>
+                    </th>
+                    <th jhiSortBy="name"><span jhiTranslate="fafiApp.player.name">Name</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th jhiSortBy="basePrice"><span jhiTranslate="fafiApp.player.basePrice">Base Price</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th jhiSortBy="bidPrice"><span jhiTranslate="fafiApp.player.bidPrice">Bid Price</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th jhiSortBy="optedGames"><span jhiTranslate="fafiApp.player.optedGames">Opted Games</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th jhiSortBy="points"><span jhiTranslate="fafiApp.player.points">Points</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th jhiSortBy="franchiseName"><span jhiTranslate="fafiApp.player.franchise">Franchise</span> <span
+                        class="fa fa-sort"></span></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let player of players ;trackBy: trackId">
+                    <td><a [routerLink]="['../player', player.id ]">{{player.id}}</a></td>
+                    <td>{{player.name}}</td>
+                    <td>{{player.basePrice}}</td>
+                    <td>{{player.bidPrice}}</td>
+                    <td>
+                        <div *ngFor="let game of player.optedGames">
+                            <span jhiTranslate="{{'fafiApp.Games.' + game}}">{{game}}</span>
+                        </div>
+                    </td>
+                    <td>{{player.points}}</td>
+                    <td>
+                        <div *ngIf="player.franchiseId">
+                            <a [routerLink]="['../franchise', player.franchiseId  ]">{{player.franchiseName}}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    [routerLink]="['../player', player.id ]"
+                                    class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/', { outlets: { popup: 'player/'+ player.id + '/edit'} }]"
+                                    replaceUrl="true"
+                                    queryParamsHandling="merge"
+                                    class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit"
+                                    [routerLink]="['/', { outlets: { popup: 'player/'+ player.id + '/delete'} }]"
+                                    replaceUrl="true"
+                                    queryParamsHandling="merge"
+                                    class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div *ngIf="players && players.length">
             <div class="row justify-content-center">
-                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+                <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5"
+                                [itemsPerPage]="itemsPerPage"></jhi-item-count>
             </div>
             <div class="row justify-content-center">
-                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5"
+                                [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
             </div>
         </div>
+    </div>
 </div>

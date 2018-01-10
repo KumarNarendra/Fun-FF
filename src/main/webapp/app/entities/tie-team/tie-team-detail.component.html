@@ -1,42 +1,43 @@
-<br>
-<div *ngIf="tieTeam">
-    <h2><span jhiTranslate="fafiApp.tieTeam.detail.title">Tie Team</span> {{tieTeam.id}}</h2>
-    <hr>
-    <fafi-alert-error></fafi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="fafiApp.tieTeam.name">Name</span></dt>
-        <dd>
-            <span>{{tieTeam.name}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieTeam.points">Points</span></dt>
-        <dd>
-            <span>{{tieTeam.points}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieTeam.tiePlayers">Tie Players</span></dt>
-        <dd>
+<div class="card jh-card">
+    <div *ngIf="tieTeam">
+        <h2><span jhiTranslate="fafiApp.tieTeam.detail.title">Tie Team</span> {{tieTeam.id}}</h2>
+        <hr>
+        <fafi-alert-error></fafi-alert-error>
+        <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="fafiApp.tieTeam.name">Name</span></dt>
+            <dd>
+                <span>{{tieTeam.name}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieTeam.points">Points</span></dt>
+            <dd>
+                <span>{{tieTeam.points}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieTeam.tiePlayers">Tie Players</span></dt>
+            <dd>
             <span *ngFor="let tiePlayers of tieTeam.tiePlayers; let last = last">
                 <a [routerLink]="['/player', tiePlayers?.id ]">{{tiePlayers.name}}</a>{{last ? '' : ', '}}
             </span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.tieTeam.franchise">Franchise</span></dt>
-        <dd>
-            <div *ngIf="tieTeam.franchiseId">
-                <a [routerLink]="['/franchise', tieTeam.franchiseId]">{{tieTeam.franchiseName}}</a>
-            </div>
-        </dd>
-    </dl>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.tieTeam.franchise">Franchise</span></dt>
+            <dd>
+                <div *ngIf="tieTeam.franchiseId">
+                    <a [routerLink]="['/franchise', tieTeam.franchiseId]">{{tieTeam.franchiseName}}</a>
+                </div>
+            </dd>
+        </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'tie-team/'+ tieTeam.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+        <button type="button"
+                [routerLink]="['/', { outlets: { popup: 'tie-team/'+ tieTeam.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </div>
 </div>

@@ -1,50 +1,51 @@
+<div class="card jh-card">
+    <div *ngIf="player">
+        <h2><span jhiTranslate="fafiApp.player.detail.title">Player</span> {{player.id}}</h2>
+        <hr>
+        <fafi-alert-error></fafi-alert-error>
+        <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="fafiApp.player.name">Name</span></dt>
+            <dd>
+                <span>{{player.name}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.player.basePrice">Base Price</span></dt>
+            <dd>
+                <span>{{player.basePrice}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.player.bidPrice">Bid Price</span></dt>
+            <dd>
+                <span>{{player.bidPrice}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.player.optedGames">Opted Games</span></dt>
+            <dd>
+                <div *ngFor="let game of player.optedGames">
+                    <span jhiTranslate="{{'fafiApp.Games.' + game}}">{{game}}</span>
+                </div>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.player.points">Points</span></dt>
+            <dd>
+                <span>{{player.points}}</span>
+            </dd>
+            <dt><span jhiTranslate="fafiApp.player.franchise">Franchise</span></dt>
+            <dd>
+                <div *ngIf="player.franchiseId">
+                    <a [routerLink]="['/franchise', player.franchiseId]">{{player.franchiseName}}</a>
+                </div>
+            </dd>
+        </dl>
 
-<div *ngIf="player">
-    <h2><span jhiTranslate="fafiApp.player.detail.title">Player</span> {{player.id}}</h2>
-    <hr>
-    <fafi-alert-error></fafi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="fafiApp.player.name">Name</span></dt>
-        <dd>
-            <span>{{player.name}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.player.basePrice">Base Price</span></dt>
-        <dd>
-            <span>{{player.basePrice}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.player.bidPrice">Bid Price</span></dt>
-        <dd>
-            <span>{{player.bidPrice}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.player.optedGames">Opted Games</span></dt>
-        <dd>
-            <div *ngFor="let game of player.optedGames">
-                <span  jhiTranslate="{{'fafiApp.Games.' + game}}">{{game}}</span>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.player.points">Points</span></dt>
-        <dd>
-            <span>{{player.points}}</span>
-        </dd>
-        <dt><span jhiTranslate="fafiApp.player.franchise">Franchise</span></dt>
-        <dd>
-            <div *ngIf="player.franchiseId">
-                <a [routerLink]="['/franchise', player.franchiseId]">{{player.franchiseName}}</a>
-            </div>
-        </dd>
-    </dl>
+        <button type="submit"
+                (click)="previousState()"
+                class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'player/'+ player.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+        <button type="button"
+                [routerLink]="['/', { outlets: { popup: 'player/'+ player.id + '/edit'} }]"
+                replaceUrl="true"
+                queryParamsHandling="merge"
+                class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </div>
 </div>

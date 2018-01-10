@@ -40,69 +40,76 @@
     </div>
     <div class="clear-fix"></div>
 </div>
-
-<div class="row" *ngIf="franchises">
-    <div class="container">
-        <h2>
-            <span jhiTranslate="home.teams.title">Teams</span>
-        </h2>
-        <hr>
-        <div class="row cen">
-            <div class="col-md-3 flt" style="border-right: 1px dashed #FFF" *ngFor="let franchise of franchises">
-                <h4>{{franchise.name}}</h4><h5>{{franchise.owner}}</h5>
-                <img [(src)]=franchise.logoPath alt="" class="img-responsive img-team-logo"/>
-            </div>
-        </div>
-
-        <div class="row cen">
-            <div class="col-md-3 flt">
-                <!--<h4>Lai Bhaari Gladiators</h4>-->
-                <img src="../../content/images/team_logo/LaiBhaariGladiators.png" alt="" class="img-responsive img-team-logo"/>
-                <hr>
-            </div>
-            <div class="col-md-3 flt">
-                <!--<h4>Invincibles</h4>-->
-                <img src="../../content/images/team_logo/invincible_logo.png" alt="" class="img-responsive img-team-logo"/>
-                <hr>
-            </div>
-            <div class="col-md-3 flt">
-                <!--<h4>Targaryens</h4>-->
-                <img src="../../content/images/team_logo/targaryens.jpg" alt="" class="img-responsive img-team-logo"/>
-                <hr>
-            </div>
-            <div class="col-md-3 flt">
-                <!--<h4>Innocent Killers</h4>-->
-                <img src="../../content/images/team_logo/Sneha_Avinash Team logo.png" alt="" class="img-responsive img-team-logo"/>
-                <hr>
-            </div>
-        </div>
-    </div>
-    <div class="clear-fix"></div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="about-ff-council" id="about">
-            <div class="container">
-                <div class="about-para">
-                    <h1>About FF-Sports Council</h1>
-                    <p>The Sports Council organizes FF events, which are evenly spaced throughout the year. The main objective of the Sports committee is to develop an all-round
-                        personality of the team as well as inculcate values like teamwork, co-ordination and leadership while exploring talents. We have events for various sports
-                        like football, ludo, badminton, carom, chess etc.</p>
+<div class="card jh-card">
+    <div class="row" *ngIf="franchises">
+        <div class="container">
+            <h2>
+                <span jhiTranslate="home.teams.title">Teams</span>
+            </h2>
+            <hr>
+            <div class="row cen">
+                <div class="col-md-3 flt" style="border-right: 1px dashed #FFF" *ngFor="let franchise of franchises">
+                    <h4>{{franchise.name}}</h4><h5>{{franchise.owner}}</h5>
+                    <img [(src)]=franchise.logoPath alt="" class="img-responsive img-team-logo"/>
                 </div>
-                <div class="row">
-                    <div class="col-md-4 grid lft">
-                        <h4>Mission Statement</h4>
-                        <p>You Don't Have To Be Great To Start, But You Have To Start To Be Great.</p>
+            </div>
+
+            <div class="row cen">
+                <div class="col-md-3 flt">
+                    <!--<h4>Lai Bhaari Gladiators</h4>-->
+                    <img src="../../content/images/team_logo/LaiBhaariGladiators.png" alt=""
+                         class="img-responsive img-team-logo"/>
+                    <hr>
+                </div>
+                <div class="col-md-3 flt">
+                    <!--<h4>Invincibles</h4>-->
+                    <img src="../../content/images/team_logo/invincible_logo.png" alt=""
+                         class="img-responsive img-team-logo"/>
+                    <hr>
+                </div>
+                <div class="col-md-3 flt">
+                    <!--<h4>Targaryens</h4>-->
+                    <img src="../../content/images/team_logo/targaryens.jpg" alt=""
+                         class="img-responsive img-team-logo"/>
+                    <hr>
+                </div>
+                <div class="col-md-3 flt">
+                    <!--<h4>Innocent Killers</h4>-->
+                    <img src="../../content/images/team_logo/Sneha_Avinash Team logo.png" alt=""
+                         class="img-responsive img-team-logo"/>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="clear-fix"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="about-ff-council" id="about">
+                <div class="container">
+                    <div class="about-para">
+                        <h1>About FF-Sports Council</h1>
+                        <p>The Sports Council organizes FF events, which are evenly spaced throughout the year. The main
+                            objective of the Sports committee is to develop an all-round
+                            personality of the team as well as inculcate values like teamwork, co-ordination and
+                            leadership while exploring talents. We have events for various sports
+                            like football, ludo, badminton, carom, chess etc.</p>
                     </div>
-                    <div class="col-md-4 grid cen">
-                        <h4>Sport Solutions</h4>
-                        <p>Sports do not build character. <br>They reveal it.</p>
+                    <div class="row">
+                        <div class="col-md-4 grid lft">
+                            <h4>Mission Statement</h4>
+                            <p>You Don't Have To Be Great To Start, But You Have To Start To Be Great.</p>
+                        </div>
+                        <div class="col-md-4 grid cen">
+                            <h4>Sport Solutions</h4>
+                            <p>Sports do not build character. <br>They reveal it.</p>
+                        </div>
+                        <div class="col-md-4 grid rgt">
+                            <h4>Committee Members</h4>
+                            <p>Rohan D, Ameeth P, Swati J, Neerav K, Chandrashekhar B.</p>
+                        </div>
+                        <div class="clear-fix"></div>
                     </div>
-                    <div class="col-md-4 grid rgt">
-                        <h4>Committee Members</h4>
-                        <p>Rohan D, Ameeth P, Swati J, Neerav K, Chandrashekhar B.</p>
-                    </div>
-                    <div class="clear-fix"></div>
                 </div>
             </div>
         </div>
@@ -129,27 +136,35 @@
                                     <div class="row">
                                         <div class="col-md-3 flt">
                                             <h4>Lai Bhaari Gladiators</h4>
-                                            <img src="../../content/images/team_logo/LaiBhaariGladiators.png" alt="" class="img-responsive img-team-logo"/>
+                                            <img src="../../content/images/team_logo/LaiBhaariGladiators.png" alt=""
+                                                 class="img-responsive img-team-logo"/>
                                             <hr>
-                                            <img src="../../content/images/team_owner/archana.jpg" alt="" class="img-responsive img-team-owner"/>
+                                            <img src="../../content/images/team_owner/archana.jpg" alt=""
+                                                 class="img-responsive img-team-owner"/>
                                         </div>
                                         <div class="col-md-3 flt">
                                             <h4>Invincibles</h4>
-                                            <img src="../../content/images/team_logo/invincible_logo.png" alt="" class="img-responsive img-team-logo"/>
+                                            <img src="../../content/images/team_logo/invincible_logo.png" alt=""
+                                                 class="img-responsive img-team-logo"/>
                                             <hr>
-                                            <img src="../../content/images/team_owner/ashwini.png" alt="" class="img-responsive img-team-owner"/>
+                                            <img src="../../content/images/team_owner/ashwini.png" alt=""
+                                                 class="img-responsive img-team-owner"/>
                                         </div>
                                         <div class="col-md-3 flt">
                                             <h4>Targaryens</h4>
-                                            <img src="../../content/images/team_logo/targaryens.jpg" alt="" class="img-responsive img-team-logo"/>
+                                            <img src="../../content/images/team_logo/targaryens.jpg" alt=""
+                                                 class="img-responsive img-team-logo"/>
                                             <hr>
-                                            <img src="../../content/images/team_owner/surbhi.jpeg" alt="" class="img-responsive img-team-owner"/>
+                                            <img src="../../content/images/team_owner/surbhi.jpeg" alt=""
+                                                 class="img-responsive img-team-owner"/>
                                         </div>
                                         <div class="col-md-3 flt">
                                             <h4>Innocent Killers</h4>
-                                            <img src="../../content/images/team_logo/Sneha_Avinash Team logo.png" alt="" class="img-responsive img-team-logo"/>
+                                            <img src="../../content/images/team_logo/Sneha_Avinash Team logo.png" alt=""
+                                                 class="img-responsive img-team-logo"/>
                                             <hr>
-                                            <img src="../../content/images/team_owner/sneha.jpg" alt="" class="img-responsive img-team-owner"/>
+                                            <img src="../../content/images/team_owner/sneha.jpg" alt=""
+                                                 class="img-responsive img-team-owner"/>
                                         </div>
                                     </div>
                                     <hr>
