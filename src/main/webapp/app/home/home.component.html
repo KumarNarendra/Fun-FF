@@ -50,34 +50,10 @@
             <div class="row cen">
                 <div class="col-md-3 flt" style="border-right: 1px dashed #FFF" *ngFor="let franchise of franchises">
                     <h4>{{franchise.name}}</h4><h5>{{franchise.owner}}</h5>
-                    <img [(src)]=franchise.logoPath alt="" class="img-responsive img-team-logo"/>
-                </div>
-            </div>
-
-            <div class="row cen">
-                <div class="col-md-3 flt">
-                    <!--<h4>Lai Bhaari Gladiators</h4>-->
-                    <img src="../../content/images/team_logo/LaiBhaariGladiators.png" alt=""
-                         class="img-responsive img-team-logo"/>
-                    <hr>
-                </div>
-                <div class="col-md-3 flt">
-                    <!--<h4>Invincibles</h4>-->
-                    <img src="../../content/images/team_logo/invincible_logo.png" alt=""
-                         class="img-responsive img-team-logo"/>
-                    <hr>
-                </div>
-                <div class="col-md-3 flt">
-                    <!--<h4>Targaryens</h4>-->
-                    <img src="../../content/images/team_logo/targaryens.jpg" alt=""
-                         class="img-responsive img-team-logo"/>
-                    <hr>
-                </div>
-                <div class="col-md-3 flt">
-                    <!--<h4>Innocent Killers</h4>-->
-                    <img src="../../content/images/team_logo/Sneha_Avinash Team logo.png" alt=""
-                         class="img-responsive img-team-logo"/>
-                    <hr>
+                    <a *ngIf="franchise.logo" (click)="openFile(franchise.logoContentType, franchise.logo)">
+                        <img [src]="'data:' + franchise.logoContentType + ';base64,' + franchise.logo"
+                             class="img-responsive img-team-logo" alt="franchise image"/>
+                    </a>
                 </div>
             </div>
         </div>
