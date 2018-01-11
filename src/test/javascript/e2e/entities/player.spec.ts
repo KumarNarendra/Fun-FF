@@ -1,11 +1,13 @@
 import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-
+import * as path from 'path';
 describe('Player e2e test', () => {
 
     let navBarPage: NavBarPage;
     let playerDialogPage: PlayerDialogPage;
     let playerComponentsPage: PlayerComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
 
     beforeAll(() => {
         browser.get('/');
@@ -40,6 +42,7 @@ describe('Player e2e test', () => {
         playerDialogPage.optedGamesSelectLastOption();
         playerDialogPage.setPointsInput('5');
         expect(playerDialogPage.getPointsInput()).toMatch('5');
+        playerDialogPage.setProfilePicInput(absolutePath);
         playerDialogPage.franchiseSelectLastOption();
         playerDialogPage.save();
         expect(playerDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -72,6 +75,7 @@ export class PlayerDialogPage {
     bidPriceInput = element(by.css('input#field_bidPrice'));
     optedGamesSelect = element(by.css('select#field_optedGames'));
     pointsInput = element(by.css('input#field_points'));
+    profilePicInput = element(by.css('input#file_profilePic'));
     franchiseSelect = element(by.css('select#field_franchise'));
 
     getModalTitle() {
@@ -119,6 +123,14 @@ export class PlayerDialogPage {
 
     getPointsInput = function() {
         return this.pointsInput.getAttribute('value');
+    }
+
+    setProfilePicInput = function(profilePic) {
+        this.profilePicInput.sendKeys(profilePic);
+    }
+
+    getProfilePicInput = function() {
+        return this.profilePicInput.getAttribute('value');
     }
 
     franchiseSelectLastOption = function() {

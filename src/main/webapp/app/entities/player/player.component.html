@@ -30,6 +30,8 @@
                         class="fa fa-sort"></span></th>
                     <th jhiSortBy="points"><span jhiTranslate="fafiApp.player.points">Points</span> <span
                         class="fa fa-sort"></span></th>
+                    <th jhiSortBy="profilePic"><span jhiTranslate="fafiApp.player.profilePic">Profile Pic</span> <span
+                        class="fa fa-sort"></span></th>
                     <th jhiSortBy="franchiseName"><span jhiTranslate="fafiApp.player.franchise">Franchise</span> <span
                         class="fa fa-sort"></span></th>
                     <th></th>
@@ -47,6 +49,14 @@
                         </div>
                     </td>
                     <td>{{player.points}}</td>
+                    <td>
+                        <a *ngIf="player.profilePic"
+                           (click)="openFile(player.profilePicContentType, player.profilePic)">
+                            <img [src]="'data:' + player.profilePicContentType + ';base64,' + player.profilePic"
+                                 style="max-height: 30px;" alt="player image"/>
+                        </a>
+                        <span *ngIf="player.profilePic">{{player.profilePicContentType}}, {{byteSize(player.profilePic)}}</span>
+                    </td>
                     <td>
                         <div *ngIf="player.franchiseId">
                             <a [routerLink]="['../franchise', player.franchiseId  ]">{{player.franchiseName}}</a>

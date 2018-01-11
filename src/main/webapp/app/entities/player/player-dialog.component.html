@@ -49,6 +49,23 @@
             <input type="number" class="form-control" name="points" id="field_points"
                 [(ngModel)]="player.points" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="fafiApp.player.profilePic" for="field_profilePic">Profile Pic</label>
+            <div>
+                <img [src]="'data:' + player.profilePicContentType + ';base64,' + player.profilePic" style="max-height: 100px;" *ngIf="player.profilePic" alt="player image"/>
+                <div *ngIf="player.profilePic" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{player.profilePicContentType}}, {{byteSize(player.profilePic)}}</span>
+                    <button type="button" (click)="clearInputImage('profilePic', 'profilePicContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_profilePic" (change)="setFileData($event, player, 'profilePic', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="profilePic" id="field_profilePic"
+                [(ngModel)]="player.profilePic" />
+            <input type="hidden" class="form-control" name="profilePicContentType" id="field_profilePicContentType"
+                [(ngModel)]="player.profilePicContentType" />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="fafiApp.player.franchise" for="field_franchise">Franchise</label>

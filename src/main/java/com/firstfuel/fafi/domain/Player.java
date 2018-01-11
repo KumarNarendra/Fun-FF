@@ -44,6 +44,13 @@ public class Player implements Serializable {
     @Column(name = "points")
     private Double points;
 
+    @Lob
+    @Column(name = "profile_pic")
+    private byte[] profilePic;
+
+    @Column(name = "profile_pic_content_type")
+    private String profilePicContentType;
+
     @ManyToOne
     private Franchise franchise;
 
@@ -121,6 +128,32 @@ public class Player implements Serializable {
         this.points = points;
     }
 
+    public byte[] getProfilePic() {
+        return profilePic;
+    }
+
+    public Player profilePic(byte[] profilePic) {
+        this.profilePic = profilePic;
+        return this;
+    }
+
+    public void setProfilePic(byte[] profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getProfilePicContentType() {
+        return profilePicContentType;
+    }
+
+    public Player profilePicContentType(String profilePicContentType) {
+        this.profilePicContentType = profilePicContentType;
+        return this;
+    }
+
+    public void setProfilePicContentType(String profilePicContentType) {
+        this.profilePicContentType = profilePicContentType;
+    }
+
     public Franchise getFranchise() {
         return franchise;
     }
@@ -164,6 +197,8 @@ public class Player implements Serializable {
             ", bidPrice=" + getBidPrice() +
             ", optedGames='" + getOptedGames() + "'" +
             ", points=" + getPoints() +
+            ", profilePic='" + getProfilePic() + "'" +
+            ", profilePicContentType='" + getProfilePicContentType() + "'" +
             "}";
     }
 }

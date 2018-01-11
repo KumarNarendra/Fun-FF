@@ -26,6 +26,16 @@
             <dd>
                 <span>{{player.points}}</span>
             </dd>
+            <dt><span jhiTranslate="fafiApp.player.profilePic">Profile Pic</span></dt>
+            <dd>
+                <div *ngIf="player.profilePic">
+                    <a (click)="openFile(player.profilePicContentType, player.profilePic)">
+                        <img [src]="'data:' + player.profilePicContentType + ';base64,' + player.profilePic"
+                             style="max-width: 100%;" alt="player image"/>
+                    </a>
+                    {{player.profilePicContentType}}, {{byteSize(player.profilePic)}}
+                </div>
+            </dd>
             <dt><span jhiTranslate="fafiApp.player.franchise">Franchise</span></dt>
             <dd>
                 <div *ngIf="player.franchiseId">

@@ -5,8 +5,8 @@ export const enum Games {
     'Chess',
     'Badminton',
     'Ludo',
-    'Table Tennis',
-    'Box Cricket'
+    'Table_Tennis',
+    'Box_Cricket'
 }
 
 export class Player implements BaseEntity {
@@ -17,6 +17,8 @@ export class Player implements BaseEntity {
         public bidPrice?: number,
         public optedGames?: Games[],
         public points?: number,
+        public profilePicContentType?: string,
+        public profilePic?: any,
         public franchiseId?: number,
         public franchiseName?: string,
     ) {

@@ -26,11 +26,11 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="base_price" type="double" defaultValue="0.0">
+            <column name="base_price" type="double">
                 <constraints nullable="true" />
             </column>
 
-            <column name="bid_price" type="double" defaultValue="0.0">
+            <column name="bid_price" type="double">
                 <constraints nullable="true" />
             </column>
 
@@ -38,7 +38,14 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="points" type="double" defaultValue="0.0">
+            <column name="points" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="profile_pic" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="profile_pic_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
@@ -48,7 +55,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

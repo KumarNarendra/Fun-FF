@@ -56,7 +56,17 @@
                                                 <tr *ngFor="let franchiseStandingOption of franchiseStandings">
                                                     <td>{{franchiseStandingOption.rank}}</td>
                                                     <!--<td><a [routerLink]="['../franchise', franchise.id ]">{{franchise.id}}</a></td>-->
-                                                    <td>{{franchiseStandingOption.franchise.name}}</td>
+                                                    <td style="text-align: justify">
+                                                        <span>
+                                                            <a *ngIf="franchiseStandingOption.franchise.logo"
+                                                               (click)="openFile(franchiseStandingOption.franchise.logoContentType, franchiseStandingOption.franchise.logo)">
+                                                                <img
+                                                                    [src]="'data:' + franchiseStandingOption.franchise.logoContentType + ';base64,' + franchiseStandingOption.franchise.logo"
+                                                                    style="height: 30px; width: 30px;" alt="franchise image"/>
+                                                            </a>
+                                                            <span>{{franchiseStandingOption.franchise.name}}</span>
+                                                        </span>
+                                                    </td>
                                                     <td>{{franchiseStandingOption.totalMatchesPlayed}}</td>
                                                     <td>{{franchiseStandingOption.totalPoints}}</td>
                                                     <!--<td>{{franchiseStandingOption.currentForm}}</td>-->
@@ -134,7 +144,16 @@
                                                 <tr *ngFor="let playerStandingOption of playerStandings">
                                                     <td>{{playerStandingOption.rank}}</td>
                                                     <td>{{playerStandingOption.franchise.name}}</td>
-                                                    <td>{{playerStandingOption.player.name}}</td>
+                                                    <td>
+                                                        <div>
+                                                            <a *ngIf="player.profilePic"
+                                                               (click)="openFile(player.profilePicContentType, player.profilePic)">
+                                                                <img [src]="'data:' + player.profilePicContentType + ';base64,' + player.profilePic"
+                                                                     style="max-height: 30px;" alt="player image"/>
+                                                            </a>
+                                                            <span>{{playerStandingOption.player.name}}</span>
+                                                        </div>
+                                                    </td>
                                                     <td>{{playerStandingOption.totalMatchesPlayed}}</td>
                                                     <td>{{playerStandingOption.totalPoints}}</td>
                                                     <td>

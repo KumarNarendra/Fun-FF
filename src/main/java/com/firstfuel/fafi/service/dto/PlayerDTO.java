@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
+import javax.persistence.Lob;
 import com.firstfuel.fafi.domain.enumeration.Games;
 
 /**
@@ -27,6 +27,10 @@ public class PlayerDTO
     private Set<Games> optedGames;
 
     private Double points;
+
+    @Lob
+    private byte[] profilePic;
+    private String profilePicContentType;
 
     private Long franchiseId;
 
@@ -80,6 +84,22 @@ public class PlayerDTO
         this.points = points;
     }
 
+    public byte[] getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(byte[] profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getProfilePicContentType() {
+        return profilePicContentType;
+    }
+
+    public void setProfilePicContentType(String profilePicContentType) {
+        this.profilePicContentType = profilePicContentType;
+    }
+
     public Long getFranchiseId() {
         return franchiseId;
     }
@@ -126,6 +146,7 @@ public class PlayerDTO
             ", bidPrice=" + getBidPrice() +
             ", optedGames='" + getOptedGames() + "'" +
             ", points=" + getPoints() +
+            ", profilePic='" + getProfilePic() + "'" +
             "}";
     }
 }
